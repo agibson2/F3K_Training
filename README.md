@@ -1,22 +1,15 @@
 # F3K TRAINING
 
-Actual version 3.03B with some implements of X7 Views.
-Original project on: https://www.rcgroups.com/forums/showthread.php?2298914-F3K-training-script-for-the-Taranis-Q-and-Horus/page22
+NOT WORKING AT ALL YET (2021-12-30).  I have to copy my current changes to this repo.  Don't bother trying it... yet.
 
-1. Manage some missing view task on X7 folder and errors.
-    - view_k.lua
-    - view_l.lua
-    - view_d.lua
-    - view_d2.lua
-2. Modify f3k.lua for select last task FF too.
+Version 4.0 Work in progress for FrSky Ethos radios using the alpha builds available from FrSky.  It will likely take me a LONG LONG time to get it presentable and working as I still don't fully understand how it all works.  It has taken me way too many hours just to get Free Flight partially working and Ethos Lua is still in alpha testing and API changing weekly.
 
-## INSTALL ON OPENTX Radio
-1. Open SD card of your openTX Radio
-2. Copy this folder F3K_TRAINING in folder 'SDVolume':\SCRIPTS
-3. Copy the f3k.lua in folder 'SDVolume':\SCRIPTS\TELEMETRY
+This version does not work with OpenTX as there were too many changes for me to understand how to make them work or to even know if it is possible to keep compatibility with OpenTX.
+
+## INSTALL ON ETHOS Radio
+1. Open SD card of your Ethos radio (the one with directories for models, scripts, etc)
+2. Copy the F3K_TRAINING folder in the SCRIPTS folder on the SD card  ...\Scripts\F3K_TRAINING\
+3. Copy the f3ktraining.lua also into the SCRIPTS folder  ...\Scripts\f3ktraining.lua
 
 ## CUSTOMIZE SWITCH
-This you can manage the prestet swicth to start / stop timer correctly.
-1. open the 'sdVolume':\SCRIPTS\F3K_TRAINING folder
-2. Open the Custom.lua file.
-3. search this line local PRELAUNCH_SWITCH = 'se' and change 'se' with your preset switch if it is not equal.
+Once install, you can add the F3K Training widget to your model config and then configure it in the Widget config for the F3K Training widget.
