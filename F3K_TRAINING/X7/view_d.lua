@@ -36,11 +36,11 @@ function task.display()
 		if i < task.current -1 then				
 			local val = task.times.getVal( 4-task.current+i )
 			--if val then
-			lcd.drawTimer( 106, y, val, att + SMLSIZE )
+			f3kDrawTimer( 106, y, val, att + SMLSIZE )
 			--end
 		end
 	end
-	lcd.drawTimer( 106, 52, task.times.getTotal(), INVERS + SMLSIZE )
+	f3kDrawTimer( 106, 52, task.times.getTotal(), INVERS + SMLSIZE )
 
 	return OpenTX.backgroundRun( task )
 end

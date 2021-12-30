@@ -37,13 +37,13 @@ function task.display( context )
 		if i < task.current then
 			local val = task.flights[ i+1 ]
 			if val then
-				OpenTX.lcd.drawTimer( 334, y, val, att )
+				f3kDrawTimer( 334, y, val, att )
 			end
 		end
 	end
 
 	OpenTX.lcd.drawFilledRectangle( 281, 130, context.zone.w - 281, context.zone.h - 130, TEXT_INVERTED_BGCOLOR )
-	OpenTX.lcd.drawTimer( 312, 139, task.times.getTotal(), INVERS )
+	f3kDrawTimer( 312, 139, task.times.getTotal(), INVERS )
 
 	return OpenTX.backgroundRun( task )
 end

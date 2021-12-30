@@ -15,7 +15,7 @@ local task = dofile( F3K_SCRIPT_PATH .. 'task_ff.lua' )
 function task.display()
 	task.timer1.draw( 24, 4, XXLSIZE )
 	task.timer2.draw( 80, 53, 0 )
-	lcd.drawTimer( 120, 53, getValue( 'clock' ), 0 )
+	f3kDrawTimer( 120, 53, getValue( 'clock' ), 0 )
 
 	lcd.drawLine( 0, 47, 159, 47, SOLID, 2 )
 	lcd.drawText( 2, 53, task.name, 0 )

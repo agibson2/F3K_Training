@@ -37,7 +37,7 @@ function task.display( context )
 	end
 
 	OpenTX.lcd.drawFilledRectangle( 281, 130, context.zone.w - 281, context.zone.h - 130, TEXT_INVERTED_BGCOLOR )  -- 52w and 11h
-	OpenTX.lcd.drawTimer( 311, 140, total, INVERS )
+	f3kDrawTimer( 311, 140, total, INVERS )
 
 	return OpenTX.backgroundRun( task )
 end

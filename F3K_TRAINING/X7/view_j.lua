@@ -16,7 +16,7 @@ function task.display()
 	--if task.state == 4 then
 	--	if task.possibleImprovement > 0 and task.flightCount >= task.COUNT then
 			lcd.drawText( 95, 1, 'Margin', SMLSIZE )
-			lcd.drawTimer( 95, 10, task.possibleImprovement, MIDSIZE )
+			f3kDrawTimer( 95, 10, task.possibleImprovement, MIDSIZE )
 	--	end
 	--end
 

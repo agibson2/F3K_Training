@@ -68,10 +68,10 @@ function createTimeKeeper( size, limit )
 	local function draw( x, y, i, att )
 		local val = tab[ i ]
 		if val > 0 then
-			OpenTX.lcd.drawTimer( x, y, val, att )
+			f3kDrawTimer( x, y, val, att )
 		else
 			--OpenTX.lcd.drawText( x, y, '--:--', att )
-			OpenTX.lcd.drawEmptyTimer( x, y, att )
+			f3kDrawTimer( x, y, nil, att )
 		end
 	end
 

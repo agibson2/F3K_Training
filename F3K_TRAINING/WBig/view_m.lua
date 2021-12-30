@@ -29,13 +29,13 @@ function task.display( context )
 
 		if i < task.current - 1 then
 			local val = task.times.getVal( 7 - task.current + i )
-			OpenTX.lcd.drawTimer( 338, y, val, 0 )
+			f3kDrawTimer( 338, y, val, 0 )
 			total = total + math.min( max, val )
 		end
 	end
 
 	OpenTX.lcd.drawFilledRectangle( 280 + 1, 126, context.zone.w - 281, context.zone.h - 126, TEXT_INVERTED_BGCOLOR )
-	OpenTX.lcd.drawTimer( 312, 138, total, INVERS )
+	f3kDrawTimer( 312, 138, total, INVERS )
 
 	return OpenTX.backgroundRun( task )
 end

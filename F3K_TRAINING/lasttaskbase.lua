@@ -26,7 +26,7 @@ end
 function taskBase.flyingState()
 	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if F3KConfig.landed() then
+		if f3klanded() then
 			taskBase.timer2.stop()
 			taskBase.times.pushTime( taskBase.timer2.getTarget() - taskBase.timer2.getVal() )
 
@@ -55,7 +55,7 @@ end
 function taskBase.landedState()
 	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
 		-- Wait for the pilot to launch the plane
-		if F3KConfig.launched() then
+		if f3klaunched() then
 			local remaining = taskBase.timer1.getVal()
 
 			if remaining < taskBase.MAX_FLIGHT_TIME then

@@ -17,7 +17,7 @@ function task.display()
 		if task.possibleImprovement > 0 then
 			lcd.drawText( 166, 4, 'Improve', 0 )
 			lcd.drawText( 168, 14, 'margin', 0 )
-			lcd.drawTimer( 172, 25, task.possibleImprovement, MIDSIZE )
+			f3kDrawTimer( 172, 25, task.possibleImprovement, MIDSIZE )
 		end
 	end
 

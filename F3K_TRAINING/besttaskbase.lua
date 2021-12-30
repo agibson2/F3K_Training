@@ -32,7 +32,7 @@ function taskBase.landedState()
 		end
 
 		-- Wait for the pilot to launch the plane
-		if F3KConfig.launched() then
+		if f3klaunched() then
 			if remaining < taskBase.MAX_FLIGHT_TIME then
 				taskBase.timer2.start( remaining )
 				taskBase.playSound( 'remaining' )

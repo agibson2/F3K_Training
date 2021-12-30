@@ -39,7 +39,7 @@ function task.display( context )
 
 	OpenTX.lcd.drawLine( verticaldividerx, 151, context.zone.w - 1, 151, SOLID, 2 )
 	OpenTX.lcd.drawText( 283, 152, 'Total', INVERS )
-	OpenTX.lcd.drawTimer( 333, 152, task.times.getTotal(), 0 )
+	f3kDrawTimer( 333, 152, task.times.getTotal(), 0 )
 
 	return OpenTX.backgroundRun( task )
 end

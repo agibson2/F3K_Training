@@ -29,13 +29,13 @@ function task.display()
 		lcd.drawText( 100, y, '9:59', 0 )
 
 		local val = task.times.getVal( 3-task.current+i )
-		lcd.drawTimer( 106, y, val, 0 )
+		f3kDrawTimer( 106, y, val, 0 )
 		total = total + math.min( max, val )
 
 	end
 
 	lcd.drawFilledRectangle( 85, 47, 52, 18, 0 )
-	lcd.drawTimer( 106, 53, total, INVERS )
+	f3kDrawTimer( 106, 53, total, INVERS )
 
 	return OpenTX.backgroundRun( task )
 end

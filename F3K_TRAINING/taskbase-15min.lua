@@ -47,11 +47,11 @@ function taskBase.playTime( time )
 	local val = math.floor( time / 60 )
 	if val > 0 then
 	    				taskBase.playSound( 'remaining' )
-		playNumber( val, OpenTX.MINUTES, 0 )
+		playNumber( val, UNIT_MINUTES, 0 )
 	end
 	val = time % 60
 	if val > 0 then
-		playNumber( val, OpenTX.SECONDS, 0 )
+		playNumber( val, UNIT_SECOND, 0 )
 	end
 end
 
@@ -152,7 +152,7 @@ function taskBase.startedState()
 			taskBase.timer1.start()
 
 			taskBase.state = 4
-		elseif F3KConfig.launched() then		-- allow the rotation to happen during prep time
+		elseif f3klaunched() then		-- allow the rotation to happen during prep time
 			taskBase.playSound( 'badflight' )	-- but not the launch itself
 		end
 	end
@@ -162,7 +162,7 @@ end
 function taskBase.flyingState()
 	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
 		-- Wait for the pilot to catch/land/crash (he/she's supposed to pull the temp switch at that moment)
-		if F3KConfig.landed() then
+		if f3klanded() then
 			taskBase.timer2.stop()
 			taskBase.times.addTime( taskBase.timer2.getTarget() - taskBase.timer2.getVal() )
 			taskBase.state = 4
@@ -174,7 +174,7 @@ end
 function taskBase.landedState()
 	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
 		-- Wait for the pilot to launch the plane
-		if F3KConfig.launched() then
+		if f3klaunched() then
 			taskBase.timer2.start()
 			taskBase.flightCount = taskBase.flightCount + 1
 			taskBase.state = 3

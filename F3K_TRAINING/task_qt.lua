@@ -73,7 +73,7 @@ end
 function taskQT.flyingState()
 	if not taskQT.endOfWindow() and not taskQT.earlyReset() then
 		-- Wait for the pilot to catch/land/crash (he/she's supposed to pull the temp switch at that moment)
-		if F3KConfig.landed() then
+		if f3klanded() then
 			taskQT.timer2.stop()
 			taskQT.times.addTime( taskQT.timer2.getTarget() - taskQT.timer2.getVal() )
 			taskQT.deltas = taskQT.computeDeltas()
@@ -95,7 +95,7 @@ end
 function taskQT.landedState()
 	if not taskQT.endOfWindow() and not taskQT.earlyReset() then
 		-- Wait for the pilot to launch the plane
-		if F3KConfig.launched() then
+		if f3klaunched() then
 			local remaining = taskQT.timer1.getVal()
 			if remaining < taskQT.MAX_FLIGHT_TIME then
 				taskQT.timer2.start( remaining )

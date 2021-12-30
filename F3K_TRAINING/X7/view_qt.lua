@@ -35,7 +35,7 @@ function task.display()
 
 	lcd.drawLine( 85, 55, 127, 55, SOLID, 2 )
 	lcd.drawText( 86, 57, 'Tot.', INVERS + SMLSIZE )
-	lcd.drawTimer( 105, 57, task.times.getTotal(), SMLSIZE )
+	f3kDrawTimer( 105, 57, task.times.getTotal(), SMLSIZE )
 
 	return OpenTX.backgroundRun( task )
 end

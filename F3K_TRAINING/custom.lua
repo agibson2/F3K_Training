@@ -7,20 +7,7 @@
 --]]
 
 
--- Customize your switches and menu scroll input axis here.
-
--- On Horus using widgets, you can customize it in the GUI Widget settings menu 
--- by holding the select button while the widget is selected.
-
-local PRELAUNCH_SWITCH = 'se' 		-- temporary switch on the left
---local PRELAUNCH_SWITCH = 'sh'		-- temporary switch on the right (or emulator)
-local MENU_SWITCH = 'sc'		-- a 3-pos switch is mandatory here : up=menu; mid=stop; down=run
-local MENU_SCROLL_ENCODER = 'thr'
-
 local SOUND_PATH = F3K_SCRIPT_PATH .. 'sounds/'
-
-
-
 
 local lastTimeLanded = 0	-- 0=must pull first ; other=time of the last pull
 
@@ -28,12 +15,14 @@ local function resetLaunchDetection()
 	lastTimeLanded = 0
 end
 
-
-
 -- >>> Launch / Land detection <<< ---
 local function launched()
+	if not widget.prelaunchswitch then
+		return
+	end
+
 	local ret = false
-	if getValue( Options.PrelaunchSwitch ) < 0 then
+	if widget.prelaunchswitch:getValue() < 0 then
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed
 		if lastTimeLanded > 0 then
@@ -51,7 +40,10 @@ local function launched()
 end
 
 local function landed()
-	if getValue( Options.PrelaunchSwitch ) > 0 then
+	if not widget.prelaunchswitch then
+		return
+	end
+	if widget.prelaunchswitch:getValue() > 0 then
 		lastTimeLanded = getTime()
 		return true
 	end
@@ -77,10 +69,11 @@ end
 
 
 return { 
-	MENU_SWITCH = getFieldInfo( MENU_SWITCH ).id,
-	PRELAUNCH_SWITCH = getFieldInfo( PRELAUNCH_SWITCH ).id,
-	MENU_SCROLL_ENCODER = getFieldInfo( MENU_SCROLL_ENCODER ).id,
+	BGCOLOR_R = 200,
+	BGCOLOR_G = 200,
+	BGCOLOR_B = 200,
 	SOUND_PATH = SOUND_PATH,
+
 
 	resetLaunchDetection = resetLaunchDetection,
 	launched = launched,

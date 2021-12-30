@@ -17,7 +17,7 @@ function task.display( context )
 		if task.possibleImprovement > 0 then
 			OpenTX.lcd.drawText( 300, 12, 'Improve', 0 )
 			OpenTX.lcd.drawText( 305, 30, 'margin', 0 )
-			OpenTX.lcd.drawTimer( 300, 55, task.possibleImprovement, MIDSIZE )
+			f3kDrawTimer( 300, 55, task.possibleImprovement, MIDSIZE )
 		end
 	end
 

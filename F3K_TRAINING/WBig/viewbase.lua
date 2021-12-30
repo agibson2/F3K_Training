@@ -43,7 +43,7 @@ function widget.drawCommonLastBest( context, task )
 	task.timer2.drawReverse( 200, 129, MIDSIZE )
 	
 	OpenTX.lcd.drawFilledRectangle( 281, 130, context.zone.w - 281, context.zone.h - 130, TEXT_INVERTED_BGCOLOR )
-	OpenTX.lcd.drawTimer( 312, 139, task.times.getTotal(), INVERS )
+	f3kDrawTimer( 312, 139, task.times.getTotal(), INVERS )
 end
 
 

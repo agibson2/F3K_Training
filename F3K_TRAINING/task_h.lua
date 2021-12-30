@@ -70,7 +70,7 @@ end
 function taskH.flyingState()
 	if not taskH.endOfWindow() and not taskH.earlyReset() then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if F3KConfig.landed() then
+		if f3klanded() then
 			taskH.timer2.stop()
 
 			local val = taskH.timer2.getVal()

@@ -45,13 +45,13 @@ function task.display()
 			--local val = task.times.getVal( 2 + 1 * i )
 			
 			--print (val)
-			lcd.drawTimer( 187, y, val, 0 )
+			f3kDrawTimer( 187, y, val, 0 )
 			total = total + math.min( max, val )
 		end
 	end
 
 	lcd.drawFilledRectangle( 160, 47, 52, 18, 0 )
-	lcd.drawTimer( 176, 53, total, INVERS )
+	f3kDrawTimer( 176, 53, total, INVERS )
 
 	return OpenTX.backgroundRun( task )
 end

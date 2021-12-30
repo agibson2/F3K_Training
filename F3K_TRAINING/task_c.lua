@@ -65,7 +65,7 @@ end
 function taskC.flyingState()
 	if not taskC.earlyReset() then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if F3KConfig.landed() then
+		if f3klanded() then
 			taskC.timer2.stop()
 			taskC.times.pushTime( taskC.MAX_FLIGHT_TIME - taskC.timer2.getVal() )
 			taskC.gotDown()
@@ -83,7 +83,7 @@ end
 function taskC.landedState()
 	if taskC.flightCount < 5 and not taskC.earlyReset() then
 		-- Wait for the pilot to launch the plane
-		if F3KConfig.launched() then
+		if f3klaunched() then
 			taskC.timer2.start()
 			taskC.flightCount = taskC.flightCount + 1
 			taskC.state = 3

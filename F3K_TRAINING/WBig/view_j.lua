@@ -16,7 +16,7 @@ function task.display( context )
 	if task.state == 4 then
 		if task.possibleImprovement > 0 and task.flightCount >= task.COUNT then
 			OpenTX.lcd.drawText( 296, 3, 'Impr. Mrg.', 0 )
-			OpenTX.lcd.drawTimer( 304, 27, task.possibleImprovement, MIDSIZE )
+			f3kDrawTimer( 304, 27, task.possibleImprovement, MIDSIZE )
 		end
 	end
 

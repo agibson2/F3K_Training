@@ -26,7 +26,7 @@ end
 function taskF.flyingState()
 	if not taskF.endOfWindow() and not taskF.earlyReset() then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if F3KConfig.landed() then
+		if f3klanded() then
 			taskF.timer2.stop()
 			taskF.times.addTime( taskF.MAX_FLIGHT_TIME - taskF.timer2.getVal() )
 			if taskF.times.getTotal( 3 ) == 540 and not taskF.wellDone then
@@ -60,7 +60,7 @@ function taskF.landedState()
 		end
 
 		-- Wait for the pilot to launch the plane
-		if F3KConfig.launched() then
+		if f3klaunched() then
 			if remaining < taskF.MAX_FLIGHT_TIME then
 				taskF.timer2.start( remaining )
 				taskF.playSound( 'remaining' )

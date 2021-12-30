@@ -38,12 +38,12 @@ function task.display()
 		if i < task.current then
 			local val = task.flights[ i+1 ]
 			if val then
-				lcd.drawTimer( 187, y, val, att )
+				f3kDrawTimer( 187, y, val, att )
 			end
 		end
 	end
 
-	lcd.drawTimer( 129, 53, task.times.getTotal(), INVERS )
+	f3kDrawTimer( 129, 53, task.times.getTotal(), INVERS )
 
 	return OpenTX.backgroundRun( task )
 end

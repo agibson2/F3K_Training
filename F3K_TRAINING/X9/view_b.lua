@@ -17,7 +17,7 @@ function task.display()
 		if task.possibleImprovement > 0 and task.flightCount >= task.COUNT then
 			lcd.drawText( 166, 2, 'Improve', 0 )
 			lcd.drawText( 168, 12, 'margin', 0 )
-			lcd.drawTimer( 172, 20, task.possibleImprovement, MIDSIZE )
+			f3kDrawTimer( 172, 20, task.possibleImprovement, MIDSIZE )
 		end
 	end
 

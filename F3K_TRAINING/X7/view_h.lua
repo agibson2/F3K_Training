@@ -41,7 +41,7 @@ function task.display()
 	end
 
 	lcd.drawFilledRectangle( 81, 53, 47, 11, 0 )
-	lcd.drawTimer( 104, 55, total, INVERS )
+	f3kDrawTimer( 104, 55, total, INVERS )
 
 	return OpenTX.backgroundRun( task )
 end
