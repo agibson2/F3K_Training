@@ -55,8 +55,6 @@ F3KVersion = '4.00'
 	4.0.0 alpha 1 - xStatiCa (Adam)
 	      Major Ethos changes which removes OpenTX compatibility
 		  Task Free Flight and TaskA are working but still need some GUI cleanup
-	4.0.0 alpha 2
-	      remove getTime() wrapper function and simmode option.  Just use os.clock() directly so that precision is the same for sim and radio
 --]]
 
 local FTRAINDebug=0
@@ -89,15 +87,27 @@ local function resetLaunchDetection()
 	lastTimeLanded = 0
 end
 
+function getTime()
+	return os.clock()*1000 -- 1/100th
+end
+
 -- >>> Launch / Land detection <<< ---
 function f3klaunched(widget)
 	local ret = false
 	local prelaunchpressed=false
 	if not widget.prelaunchswitch:state() then
+		local gettime60milliseconds
+		if(widget.simmode) then
+			--os.clock() has different resolution on PC vs the radio
+			gettime60milliseconds = 600
+		else
+			gettime60milliseconds = 6000
+		end
+
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed		
 		if lastTimeLanded > 0 then
-			if (os.clock() - lastTimeLanded) > 0.060 then   -- 60 milliseconds
+			if (getTime() - lastTimeLanded) > gettime60milliseconds then   -- 60 milliseconds FIXME this needs to be 6000 for X20S and 600 for simulator
 				ret = true
 			end
 			lastTimeLanded = 0
@@ -108,7 +118,7 @@ function f3klaunched(widget)
 			lastTimeLanded = getTime()
 		end
 	end
-	if (DebugLaunched) then print("FTRAIN: f3klaunched() ret=" .. tostring(ret) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. os.clock()) end
+	if (DebugLaunched) then print("FTRAIN: f3klaunched() ret=" .. tostring(ret) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. getTime()) end
 	return ret
 end
 
@@ -119,7 +129,7 @@ function f3klanded(widget)
 		lastTimeLanded = getTime()
 		retVal = true
 	end
-	if (DebugLanded) then print("FTRAIN: f3klanded() ret=" .. tostring(retVal) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. os.clock()) end
+	if (DebugLanded) then print("FTRAIN: f3klanded() ret=" .. tostring(retVal) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. getTime()) end
 	return retVal
 end
 
@@ -174,7 +184,7 @@ local function create()
 	if (DebugFunctionCalls) then print("FTRAIN: create()") end
 	currentTask = createMenu()
 	checkTimers()
-	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil}
+	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, simmode=false}
 end
 
 local function read(widget)
@@ -184,6 +194,7 @@ local function read(widget)
 		widget.startswitch = storage.read("source")
 		widget.prelaunchswitch = storage.read("source")
 		widget.menuscrollencoder = storage.read("source")
+		widget.simmode = storage.read("boolean")
 	end
 end
 
@@ -194,6 +205,7 @@ local function write(widget)
 		storage.write("source", widget.startswitch)
 		storage.write("source", widget.prelaunchswitch)
 		storage.write("source", widget.menuscrollencoder)
+		storage.write("boolean", widget.simmode)
 	end
 end
 
@@ -271,6 +283,8 @@ end
 local function configure(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: configure()") end
 	-- source choices
+	line = form.addLine("Simulator Mode (enable for PC sim)")
+	form.addBooleanField(line, form.getFieldSlots(line)[0], function() return widget.simmode end, function(value) widget.simmode = value end)	
 	line = form.addLine("Menu Select Switch Position")
 	form.addSwitchField(line, form.getFieldSlots(line)[0], function() return widget.menuswitch end, function(value) widget.menuswitch = value end)
 	line = form.addLine("Start Switch Position")

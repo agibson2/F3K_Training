@@ -26,14 +26,14 @@ local function launched()
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed
 		if lastTimeLanded > 0 then
-			if (os.clock() - lastTimeLanded) > 0.060 then
+			if (getTime() - lastTimeLanded) > 60 then
 				ret = true
 			end
 			lastTimeLanded = 0
 		end
 	else
 		if lastTimeLanded == 0 then
-			lastTimeLanded = os.clock()
+			lastTimeLanded = getTime()
 		end
 	end
 	return ret
@@ -44,7 +44,7 @@ local function landed()
 		return
 	end
 	if widget.prelaunchswitch:getValue() > 0 then
-		lastTimeLanded = os.clock()
+		lastTimeLanded = getTime()
 		return true
 	end
 	return false
