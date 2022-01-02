@@ -51,8 +51,8 @@ function vbase.drawCommonLastBest( widget, task )
 	lcd.color(150,0,0) --FIXME expriment with dark red to see what is being drawn
 	lcd.drawFilledRectangle( 281, 130, widget_w - 281, widget_h - 130, 0 )
 	lcd.color(WHITE)
-	f3kDrawTimer( 312, 133, task.times.getTotal(), 0 )
-	lcd.drawText( 312 + 75, 133, "Total", 0 )
+	f3kDrawTimer( 312, 153, task.times.getTotal(), 0 )
+	lcd.drawText( 312 + 75, 153, "Total", 0 )
 end
 
 

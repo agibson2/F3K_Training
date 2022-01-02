@@ -54,7 +54,8 @@ F3KVersion = '4.00'
 		Fixed a regression introduced in 3.00 where a false launch could be detected when running the same task more than once
 	4.0.0 alpha 1 - xStatiCa (Adam)
 	      Major Ethos changes which removes OpenTX compatibility
-		  Task Free Flight and TaskA are working but still need some GUI cleanup
+		  Task Free Flight and TaskA are working
+		  Task B working
 --]]
 
 local FTRAINDebug=0
@@ -303,7 +304,7 @@ createMenu = function()
 	if (DebugFunctionCalls) then print("FTRAIN: createMenu()") end
 	local TASKS = {
 		{ id='A', desc='Last flight' },
-		{ id='B', desc='Last two NotWorking' },
+		{ id='B', desc='Last two' },
 		{ id='C', desc='AULD NotWorking' },
 		{ id='D', desc='Two Flights NotWorking' },
 		{ id='F', desc='3 out of 6 NotWorking' },

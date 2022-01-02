@@ -18,12 +18,12 @@ function task.display( widget )
 	if task.state == 4 then	-- landed
 		if task.possibleImprovement > 0 then
 			lcd.drawText( 300, 12, 'Improve margin', 0 )
-			f3kDrawTimer( 350, 55, task.possibleImprovement, MIDSIZE )
+			f3kDrawTimer( 350, 55, task.possibleImprovement, 0 )
 		end
 	end
 
 	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		lcd.drawText( 305, 25, 'Done !', MIDSIZE )
+		lcd.drawText( 305, 25, 'Done !', 0 )
 	end
 
 	lcd.drawLine( 280, 90, widget_w - 1, 90, SOLID, 2 )
