@@ -7,28 +7,29 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_a.lua' )
-local widget = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local view = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 
-function task.display( context )
-	widget.drawCommonLastBest( context, task )
+function task.display( widget )
+	if (DebugFunctionCalls) then print("FTRAIN: viewA.display()") end
+	local widget_w, widget_h = lcd.getWindowSize()
+	view.drawCommonLastBest( widget, task )
 
 	if task.state == 4 then	-- landed
 		if task.possibleImprovement > 0 then
-			OpenTX.lcd.drawText( 300, 12, 'Improve', 0 )
-			OpenTX.lcd.drawText( 305, 30, 'margin', 0 )
-			f3kDrawTimer( 300, 55, task.possibleImprovement, MIDSIZE )
+			lcd.drawText( 300, 12, 'Improve margin', 0 )
+			f3kDrawTimer( 350, 55, task.possibleImprovement, MIDSIZE )
 		end
 	end
 
 	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		OpenTX.lcd.drawText( 305, 25, 'Done !', MIDSIZE )
+		lcd.drawText( 305, 25, 'Done !', MIDSIZE )
 	end
 
-	OpenTX.lcd.drawLine( 280, 90, context.zone.w - 1, 90, SOLID, 2 )
+	lcd.drawLine( 280, 90, widget_w - 1, 90, SOLID, 2 )
 	task.times.draw( 312, 98, 1, 0 )
 
-	return OpenTX.backgroundRun( task )
+	return task.background( widget )
 end
 
 

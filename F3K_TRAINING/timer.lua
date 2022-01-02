@@ -14,7 +14,6 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 	local id = timerId
 	local timer = model.getTimer(id)
 	local running = false  -- Had to create something for Ethos to know if the timer is stopped or started
-	local stoppedTime = 0  -- if timer is stopped, the stopped time is stored here because I can't find a way to pause the timer in Ethos
 	
 	if timer == nil then
 		timer = model.createTimer(id)
@@ -22,6 +21,8 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 			print("FTRAIN: f3kCreateTimer() createTimer returned nil for '" .. timerId .. "'")
 		else
 			timer:name(timerId)
+			--FIXME create it in stopped state.  Hack to pause timer in Ethos.. it works but unsure what it is selecting as source.
+			timer:activeCondition( system.getSource({category=0, member=1, options=0}) ) 
 		end
 	end
 	
@@ -60,22 +61,15 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 	end
 
 	local function stop()
-		local wasRunning = running --FIXME no pause/disable timer yet (timer.mode > 0)
-		timer:activeCondition(nil)
-		running = false
-		stoppedTime = timer:value()
-		--model.setTimer( id, timer )
-		--FIXME need to pause/disable timer when Ethos supports it
-		return wasRunning, stoppedTime
+		local wasRunning = running
+		--FIXME Hack to pause timer in Ethos.. it works but unsure what it is selecting as source.
+		timer:activeCondition( system.getSource({category=0, member=1, options=0}) ) 
+
+		return wasRunning, timer:value()
 	end
 
 	local function draw( x, y, att )
-		local thetime
-		if (running) then
-			thetime = timer:value()
-		else
-			thetime = stoppedTime
-		end
+		local thetime = timer:value()
 		local theseconds = thetime % 60
 		local theminutes = math.floor(thetime/60)
 		local textTimer = string.format("%02d:%02d", theminutes, theseconds)
@@ -84,11 +78,7 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 	end
 
 	local function drawReverse( x, y, att )
-		if (running) then
-			thetime = timer:value()
-		else
-			thetime = stoppedTime
-		end
+		local thetime = timer:value()
 		local theseconds = thetime % 60
 		local theminutes = math.floor(thetime/60)
 		--FIXME need to draw a box or something grey

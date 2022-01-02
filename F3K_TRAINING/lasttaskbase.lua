@@ -15,20 +15,23 @@ taskBase.possibleImprovement = 0
 taskBase.TIMES_SORTED = false
 
 
-function taskBase.earlyReset()
-	if taskBase.earlyResetBase() then
+function taskBase.earlyReset(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: lastTaskBase.earlyReset()") end
+	if taskBase.earlyResetBase(widget) then
 		taskBase.possibleImprovement = 0
 		return true
 	end
 	return false
 end
 
-function taskBase.flyingState()
-	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
+function taskBase.flyingState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: lastTaskBase.flyingState()") end
+	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded() then
+		if f3klanded(widget) then
 			taskBase.timer2.stop()
 			taskBase.times.pushTime( taskBase.timer2.getTarget() - taskBase.timer2.getVal() )
+			--if(DebugTimes) then print("FTRAIN: lasttaskbase.flyingState() pushTime( " .. taskBase.timer2.getTarget() .. " - " .. taskBase.timer2.getVal() " )") end
 
 			local remaining = math.min( taskBase.timer1.getVal(), taskBase.MAX_FLIGHT_TIME )
 			taskBase.possibleImprovement = remaining - taskBase.times.getVal( 1, true )     -- possible improvement against the first flight of the list
@@ -52,10 +55,11 @@ function taskBase.flyingState()
 	end
 end
 
-function taskBase.landedState()
-	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
+function taskBase.landedState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: lastTaskBase.landedState()") end
+	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
-		if f3klaunched() then
+		if f3klaunched(widget) then
 			local remaining = taskBase.timer1.getVal()
 
 			if remaining < taskBase.MAX_FLIGHT_TIME then

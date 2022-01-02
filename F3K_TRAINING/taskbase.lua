@@ -44,6 +44,7 @@ local taskBase = {
 	-- Some common stuff
 
 function taskBase.playTime( time )
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.playTime()") end
 	local val = math.floor( time / 60 )
 	if val > 0 then
 	    				taskBase.playSound( 'remaining' )
@@ -57,21 +58,25 @@ end
 
 
 function taskBase.playSound( sound )
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.playSound()") end
 	system.playFile( SOUND_PATH .. sound .. '.wav' )
 end
 
 
 function taskBase.initFlightTimer()
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.initFlightTimer()") end
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
 	taskBase.timer2 = f3kCreateTimer( "f3kOne", taskBase.MAX_FLIGHT_TIME, 2, true )	-- current flight time (descending from MAX_FLIGHT_TIME)
 end
 
 function taskBase.initPrepTimer()
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.PrepTimer()") end
 	taskBase.timer1 = f3kCreateTimer( "f3kZero", taskBase.PREP_TIME, 2, false )
 end
 
 
 function taskBase.commonInit( name, scoreCnt, wavFile )
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.commonInit()") end
 	taskBase.name = name
 	taskBase.wav = wavFile
 
@@ -84,7 +89,8 @@ end
 
 -- Recurring tests of the end of task conditions (user reset or work time ellapsed)
 function taskBase.earlyResetBase(widget)
-	if widget.menuswitch:state() then
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.earlyResetBase()") end
+	if not widget.startswitch:state() then
 		-- Stop the timers and reset the internal state
 		taskBase.timer1.stop()
 		taskBase.timer2.stop()
@@ -100,12 +106,14 @@ function taskBase.earlyResetBase(widget)
 end
 
 
-function taskBase.earlyReset()
-	return taskBase.earlyResetBase()
+function taskBase.earlyReset(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.earlyReset()") end
+	return taskBase.earlyResetBase(widget)
 end
 
 
 function taskBase.endOfWindow()
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.endOfWindow()") end
 	if taskBase.timer1.getVal() <= 0 then
 		local timeRunning, val = taskBase.timer2.stop()
 		taskBase.timer1.stop()
@@ -113,7 +121,9 @@ function taskBase.endOfWindow()
 		if timeRunning then
 			if taskBase.TIMES_SORTED then
 				taskBase.times.addTime( taskBase.timer2.getTarget() - val )
+				if(DebugTimes) then print ("FTRAIN: taskbase.endOfWindow() addTime( " .. taskBase.timer2.getTarget() .. " - " .. val " )") end
 			else
+				if(DebugTimes) then print ("FTRAIN: taskbase.endOfWindow() pushTime( " .. taskBase.timer2.getTarget() .. " - " .. val " )") end
 				taskBase.times.pushTime( taskBase.timer2.getTarget() - val )
 			end
 		end
@@ -127,8 +137,9 @@ end
 
 -- State functions (default implementation)
 function taskBase.resetState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.resetState() taskBase.state=" .. taskBase.state .. " menuswitch=" .. tostring(widget.menuswitch:state()) ) end
 	-- Wait for the start of the task
-	if widget.menuswitch:state() then
+	if widget.startswitch:state() then
 		taskBase.playSound( taskBase.wav )
 
 		-- reset the scores
@@ -139,42 +150,46 @@ function taskBase.resetState(widget)
 		taskBase.timer1.start()
 
 		taskBase.state = 2
-	else
+	elseif not widget.menuswitch:state() then
 		taskBase.running = false
 	end
 end
 
 
-function taskBase.startedState()
-	if not taskBase.earlyReset() then
+function taskBase.startedState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.startedState()") end
+	if not taskBase.earlyReset(widget) then
 		if taskBase.timer1.getVal() <= 0 then
 			taskBase.timer1 = f3kCreateTimer( "f3kZero", taskBase.WINDOW_TIME, 0, false )	-- working time
 			taskBase.timer1.start()
 
 			taskBase.state = 4
-		elseif f3klaunched() then		-- allow the rotation to happen during prep time
+		elseif f3klaunched(widget) then		-- allow the rotation to happen during prep time
 			taskBase.playSound( 'badflight' )	-- but not the launch itself
 		end
 	end
 end
 
 
-function taskBase.flyingState()
-	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
+function taskBase.flyingState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.flyingState()") end
+	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		-- Wait for the pilot to catch/land/crash (he/she's supposed to pull the temp switch at that moment)
 		if f3klanded() then   --FIXME was just landed()... not sure if same as F3KConfig.landed()
 			taskBase.timer2.stop()
 			taskBase.times.addTime( taskBase.timer2.getTarget() - taskBase.timer2.getVal() )
+			if(DebugTimes) then print ("FTRAIN: taskbase.flyingState() addTime( " .. taskBase.timer2.getTarget() .. " - " .. taskBase.timer2.getVal() " )") end
 			taskBase.state = 4
 		end
 	end
 end
 
 
-function taskBase.landedState()
-	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
+function taskBase.landedState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.landedState()") end
+	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
-		if f3klaunched() then
+		if f3klaunched(widget) then
 			taskBase.timer2.start()
 			taskBase.flightCount = taskBase.flightCount + 1
 			taskBase.state = 3
@@ -183,21 +198,30 @@ function taskBase.landedState()
 end
 
 
-function taskBase.endState()
+function taskBase.endState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.endState()") end
 	-- Wait for reset
-	if taskBase.earlyReset() then
+	if taskBase.earlyReset(widget) then
 		resetLaunchDetection()
 	end
 end
 
 
 function taskBase.backgroundState()
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.backgroundState()") end
 	return taskBase.running
 end	
 
 
+local lasttimestamp = 0
 -- Run the correct function based on the current state
 function taskBase.background(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.background()") end
+	local newtimestamp = os.clock()
+	if (newtimestamp - lasttimestamp > 1) then
+		lcd.invalidate()
+		lastrefreshtime = newtimestamp
+	end
 	({ taskBase.resetState, taskBase.startedState, taskBase.flyingState, taskBase.landedState, taskBase.endState })[ taskBase.state ](widget)
 	return taskBase.running
 end

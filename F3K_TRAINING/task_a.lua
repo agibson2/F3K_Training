@@ -15,6 +15,7 @@ taskA.COUNT = 1
 
 -- public interface
 function taskA.init( win )
+	if (DebugFunctionCalls) then print("FTRAIN: taskA.init()") end
 	taskA.WINDOW_TIME = win
 	taskA.commonInit( 'Last Flight', taskA.COUNT, 'taska' )
 end

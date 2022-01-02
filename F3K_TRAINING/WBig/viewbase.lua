@@ -5,46 +5,55 @@
 	Big widget views common stuff
 --]]
 
-local widget = {}
+local vbase = {}
 
 
-function widget.drawCommon( context, task )
-	local w = context.zone.w
-	local h = context.zone.h
+function vbase.drawCommon( widget, task )
+	local widget_w, widget_h = lcd.getWindowSize()
 	local horizontaldividery = 115
 	local verticaldividerx = 280
 
-	task.timer1.draw( 55, 13, XXLSIZE )
+	lcd.font(FONT_XL)
+	task.timer1.draw( 115, 44, 0 )
 
-	OpenTX.lcd.setColor( CUSTOM_COLOR, context.options.BackgroundColor )
+	lcd.color( lcd.RGB(25,25,25) )
 	-- background rect right side
-	OpenTX.lcd.drawFilledRectangle( verticaldividerx, 0, w - verticaldividerx, h - 1, CUSTOM_COLOR )
+	lcd.drawFilledRectangle( verticaldividerx, 0, widget_w - verticaldividerx, widget_h - 1, 0 )
 	-- background rect bottom
-	OpenTX.lcd.drawFilledRectangle( 0, horizontaldividery, verticaldividerx, h - horizontaldividery, CUSTOM_COLOR )
+	lcd.drawFilledRectangle( 0, horizontaldividery, verticaldividerx, widget_h - horizontaldividery, 0 )
 	-- outline left side
-	OpenTX.lcd.drawLine( 0, horizontaldividery, 0, h, SOLID, 2 )
+	lcd.color(BLACK)
+	lcd.drawLine( 0, horizontaldividery, 0, widget_h, SOLID, 2 )
 	-- outline at top of right box
-	OpenTX.lcd.drawLine( verticaldividerx, 0, w, 0, SOLID, 2 )
+	lcd.drawLine( verticaldividerx, 0, widget_w, 0, SOLID, 2 )
 	-- outline at right side
-	OpenTX.lcd.drawLine( w, 0, w, h, SOLID, 2 )
+	lcd.drawLine( widget_w, 0, widget_w, widget_h, SOLID, 2 )
 	-- outline at bottom
-	OpenTX.lcd.drawLine( 0, h, w, h, SOLID, 2 )
+	lcd.drawLine( 0, widget_h, widget_w, widget_h, SOLID, 2 )
 
-	OpenTX.lcd.drawLine( 0, horizontaldividery, verticaldividerx, horizontaldividery, SOLID, 2 )
-	OpenTX.lcd.drawText( 10, 133, task.name, 0 )
-	OpenTX.lcd.drawLine( verticaldividerx, 0, verticaldividerx, h - 1, SOLID, 2 )
+	lcd.drawLine( 0, horizontaldividery, verticaldividerx, horizontaldividery, SOLID, 2 )
+	lcd.color(WHITE)
+	lcd.font(FONT_L)
+	lcd.drawText( 10, 0, task.name, 0 )
+	lcd.color(BLACK)
+	lcd.drawLine( verticaldividerx, 0, verticaldividerx, widget_h - 1, SOLID, 2 )
 end
 
 
-function widget.drawCommonLastBest( context, task )
-	widget.drawCommon( context, task )
+function vbase.drawCommonLastBest( widget, task )
+	local widget_w, widget_h = lcd.getWindowSize()
+	vbase.drawCommon( widget, task )
 
-	OpenTX.lcd.drawText( 120, 133, 'Current: ', 0 )
-	task.timer2.drawReverse( 200, 129, MIDSIZE )
-	
-	OpenTX.lcd.drawFilledRectangle( 281, 130, context.zone.w - 281, context.zone.h - 130, TEXT_INVERTED_BGCOLOR )
-	f3kDrawTimer( 312, 139, task.times.getTotal(), INVERS )
+	lcd.font(FONT_L)
+	lcd.color(WHITE)
+	lcd.drawText( 85, 133, 'Current: ', 0 )
+	task.timer2.drawReverse( 200, 133, 0 )
+	lcd.color(150,0,0) --FIXME expriment with dark red to see what is being drawn
+	lcd.drawFilledRectangle( 281, 130, widget_w - 281, widget_h - 130, 0 )
+	lcd.color(WHITE)
+	f3kDrawTimer( 312, 133, task.times.getTotal(), 0 )
+	lcd.drawText( 312 + 75, 133, "Total", 0 )
 end
 
 
-return widget
+return vbase

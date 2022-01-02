@@ -51,16 +51,18 @@ F3KVersion = '4.00'
 	3.01	Horus widget fix : browsing through widgets to install a new one in another zone broke an already installed Training widget.
 	3.02	Added AULD
 		Fixed a regression introduced in 3.00 where a false launch could be detected when running the same task more than once
-	4.00    xStatiCa (Adam) - Major Ethos changes which removes OpenTX compatibility
+	4.00    xStatiCa (Adam) - Alpha builds... Major Ethos changes which removes OpenTX compatibility
 --]]
 
 local FTRAINDebug=0
 
-local DebugFunctionCalls=false
-local DebugInvalidateWindow=false
-local DebugConfig=false
-local DebugMenu=false
-local DebugLaunched=false
+DebugFunctionCalls=true
+DebugInvalidateWindow=false
+DebugConfig=false
+DebugMenu=false
+DebugLaunched=false
+DebugLanded=true
+DebugTimes=true
 
 if(FTRAINDebug >= 1) then
 	DebugInvalidateWindow=true
@@ -69,6 +71,7 @@ end
 if(FTRAINDebug >= 2) then
 	DebugFunctionCalls=true
 	DebugLaunched=true
+	DebugLanded=true
 end
 if(FTRAINDebug >= 3) then
 	--DebugMenu=true
@@ -93,7 +96,7 @@ function f3klaunched(widget)
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed
 		if lastTimeLanded > 0 then
-			if (getTime() - lastTimeLanded) > 6000 then   -- 60 milliseconds FIXME this needs to be 6000 for X20S and 600 for simulator
+			if (getTime() - lastTimeLanded) > 600 then   -- 60 milliseconds FIXME this needs to be 6000 for X20S and 600 for simulator
 				ret = true
 			end
 			lastTimeLanded = 0
@@ -109,11 +112,14 @@ function f3klaunched(widget)
 end
 
 function f3klanded(widget)
-	if widget.prelaunchswitch:state() then
+	local retVal = false
+	local prelaunchpressed = widget.prelaunchswitch:state()
+	if prelaunchpressed then
 		lastTimeLanded = getTime()
-		return true
+		retVal = true
 	end
-	return false
+	if (DebugLanded) then print("FTRAIN: f3klanded() ret=" .. tostring(retVal) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. getTime()) end
+	return retVal
 end
 
 function f3kDrawTimer( x, y, value, flags )
@@ -167,21 +173,14 @@ local function create()
 	if (DebugFunctionCalls) then print("FTRAIN: create()") end
 	currentTask = createMenu()
 	checkTimers()
-	if(DebugConfig) then
-		local tmpms=system.getSource("SC")
-		local tmpps=system.getSource("SA")
-		local tmpme=system.getSource("THROTTLE")
-		print ("FTRAIN: create() returnvals = ", tmpms, tmpps, tmpme)
-		return {menuswitch=tmpms, prelaunchswitch=tmpps, menuscrollencoder=tmpme}
-	else
-		return {menuswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil}
-	end
+	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil}
 end
 
 local function read(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: read()") end
 	if(not DebugConfig) then
 		widget.menuswitch = storage.read("source")
+		widget.startswitch = storage.read("source")
 		widget.prelaunchswitch = storage.read("source")
 		widget.menuscrollencoder = storage.read("source")
 	end
@@ -191,6 +190,7 @@ local function write(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: write()") end
 	if(not DebugConfig) then
 		storage.write("source", widget.menuswitch)
+		storage.write("source", widget.startswitch)
 		storage.write("source", widget.prelaunchswitch)
 		storage.write("source", widget.menuscrollencoder)
 	end
@@ -241,7 +241,7 @@ local function display( widget )
 	--print("widget_h", widget_w, widget_h)
 	if timersavailable == false then
 		running = noTimersAvailable( widget )
-	elseif (widget.menuswitch == nil) then
+	elseif (widget.menuswitch == nil or widget.startswitch == nil or widget.prelaunchswitch == nil or widget.menuscrollencoder == nil) then
 		lcd.color(BLACK)
 		lcd.drawText(0, 0, "Configure widget needed", 0)
 		return
@@ -270,11 +270,13 @@ end
 local function configure(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: configure()") end
 	-- source choices
-	line = form.addLine("MenuSwitch")
+	line = form.addLine("Menu Select Switch Position")
 	form.addSwitchField(line, form.getFieldSlots(line)[0], function() return widget.menuswitch end, function(value) widget.menuswitch = value end)
-	line = form.addLine("PreLaunchSwitch")
+	line = form.addLine("Start Switch Position")
+	form.addSwitchField(line, form.getFieldSlots(line)[0], function() return widget.startswitch end, function(value) widget.startswitch = value end)
+	line = form.addLine("PreLaunch Switch Position")
 	form.addSwitchField(line, form.getFieldSlots(line)[0], function() return widget.prelaunchswitch end, function(value) widget.prelaunchswitch = value end)
-	line = form.addLine("MenuScrollEncoder")
+	line = form.addLine("Menu Scroll Analog")
 	form.addSourceField(line, form.getFieldSlots(line)[0], function() return widget.menuscrollencoder end, function(value) widget.menuscrollencoder = value end)
 end
 
