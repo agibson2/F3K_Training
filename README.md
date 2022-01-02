@@ -4,7 +4,7 @@ This is code originally by Mike (ON4MJ on rcgroups) with previous changes also b
 
 Only Free Flight and TaskA is working and it isn't pretty :)
 
-Version 4.0.0 Work in progress for FrSky Ethos radios using the alpha builds available from FrSky.  It will likely take me a LONG LONG time to get it presentable and working as I still don't fully understand how it all works.  It has taken me way too many hours just to get Free Flight partially working and Ethos Lua is still in alpha testing and API changing weekly.
+Version 4.0 Work in progress for FrSky Ethos radios using the alpha builds available from FrSky.  It will likely take me a LONG LONG time to get it presentable and working as I still don't fully understand how it all works.  It has taken me way too many hours just to get Free Flight partially working and Ethos Lua is still in alpha testing and API changing weekly.
 
 This version does not work with OpenTX as there were too many changes for me to understand how to make them work or to even know if it is possible to keep compatibility with OpenTX.
 
@@ -22,6 +22,3 @@ This is how I configured the widget...
 - PreLaunch Switch Position: SI down
 - Menu Scroll Analog: Throttle (no motor on DLGs as i use flaps for throttle)
 
-## Changelog
-4.0.0 alpha 1 - initial release
-4.0.0 alpha 2 - No need to configure a simmode option to know if it is on the sim or the radio.  Removed getTime() wrapper function and simmode option.  Just use os.clock() directly so that precision is the same for sim and radio.
