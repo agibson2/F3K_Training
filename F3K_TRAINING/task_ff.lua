@@ -52,7 +52,7 @@ end
 -- Recurring tests of the end of task conditions (user reset or work time ellapsed)
 function taskFF.earlyReset(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.earlyReset()") end
-	if not widget.menuswitch:state() then
+	if not widget.startswitch:state() then
 		-- Stop the timers and reset the internal state
 		taskFF.timer1.stop()
 		taskFF.timer2.stop()
@@ -67,7 +67,7 @@ end
 function taskFF.resetState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.resetState()") end
 	-- Wait for the start of the task
-	if widget.menuswitch:state() then
+	if widget.startswitch:state() then
 		taskFF.playSound( taskFF.wav )
 
 		-- reset the scores
@@ -77,7 +77,7 @@ function taskFF.resetState(widget)
 		taskFF.timer2.start()
 
 		taskFF.state = 2
-	else
+	elseif not widget.menuswitch:state() then
 		taskFF.running = false
 	end
 end
