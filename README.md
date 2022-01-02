@@ -23,5 +23,5 @@ This is how I configured the widget...
 - Menu Scroll Analog: Throttle (no motor on DLGs as i use flaps for throttle)
 
 ## Changelog
-4.0.0 alpha 1 - initial release
-4.0.0 alpha 2 - No need to configure a simmode option to know if it is on the sim or the radio.  Removed getTime() wrapper function and simmode option.  Just use os.clock() directly so that precision is the same for sim and radio.
+- 4.0.0 alpha 1 - initial release
+- 4.0.0 alpha 2 - No need to configure a simmode option to know if it is on the sim or the radio.  Removed getTime() wrapper function and simmode option.  Just use os.clock() directly so that precision is the same for sim and radio.
