@@ -17,8 +17,8 @@ function task.display( widget )
 	local horizontalDividerY = 115
 	local verticalDividerX = 280
 	local widget_w, widget_h = lcd.getWindowSize()
-	
-	lcd.color( lcd.RGB(25,25,25) ) -- Ethos green
+	 
+	lcd.color( lcd.RGB(25,25,25) ) --grey
 	-- background rect right side
 	lcd.drawFilledRectangle( verticalDividerX, 0, widget_w - verticalDividerX, widget_h - 1 )
 	-- background rect bottom
@@ -38,15 +38,20 @@ function task.display( widget )
 	lcd.drawLine( verticalDividerX, 0, verticalDividerX, widget_h - 1, SOLID )
 
 	lcd.color(WHITE)
-	lcd.drawText( 10, 133, task.name, 0 )
+	lcd.font(FONT_L)
+	lcd.drawText( 10, 0, task.name, 0 )
 	
-	lcd.font(L)
-	task.timer1.draw( 55, 13, 0 )
-	task.timer2.draw( 120, 133, 0 )
+	lcd.font(FONT_XL)
+
+	task.timer1.draw( 90, 33, 0 )
+	lcd.font(FONT_L)
+	lcd.drawText( 25, 133, "Session:", 0)
+	task.timer2.draw( 150, 133, 0 )
 	--f3kDrawTimer( 190, 133, getValue( 'clock' ), 0 )
 
+	local text_w, text_h = lcd.getTextSize("")
 	for i=0,9 do
-		task.times.draw( 312, 3 + 16*i, i+1, 0 )
+		task.times.draw( 312, 3 + text_h*i, i+1, 0 )
 	end
 	return task.background(widget)
 end
