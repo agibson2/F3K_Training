@@ -15,8 +15,8 @@ Version 4.0 Work in progress for FrSky Ethos radios using the alpha builds avail
 This version does not work with OpenTX as there were too many changes for me to understand how to make them work or to even know if it is possible to keep compatibility with OpenTX.
 
 ## INSTALL ON ETHOS Radio
-1. Open SD card of your Ethos radio (the one with directories for models, scripts, etc)
-2. Copy the F3K_TRAINING folder in the SCRIPTS folder on the SD card  ...\Scripts\F3K_TRAINING\
+1. Open SD card of your Ethos radio on your PC (the one with directories for models, scripts, etc)
+2. Copy the F3K_TRAINING folder into the SCRIPTS folder on the SD card  ...\Scripts\F3K_TRAINING\
 3. Copy the f3ktraining.lua also into the SCRIPTS folder  ...\Scripts\f3ktraining.lua
 
 ## CUSTOMIZE SWITCH
