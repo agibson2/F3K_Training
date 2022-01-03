@@ -1,4 +1,4 @@
-F3KVersion = '4.00'
+F3KVersion = '4.0.0'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	(Ethos conversion by xStatiCa)
@@ -305,7 +305,7 @@ createMenu = function()
 	local TASKS = {
 		{ id='A', desc='Last flight' },
 		{ id='B', desc='Last two' },
-		{ id='C', desc='AULD NotWorking' },
+		{ id='C', desc='AULD' },
 		{ id='D', desc='Two Flights NotWorking' },
 		{ id='F', desc='3 out of 6 NotWorking' },
 		{ id='G', desc='5x2 NotWorking' },

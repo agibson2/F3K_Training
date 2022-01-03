@@ -48,11 +48,11 @@ function taskBase.playTime( time )
 	local val = math.floor( time / 60 )
 	if val > 0 then
 	    				taskBase.playSound( 'remaining' )
-		playNumber( val, UNIT_MINUTES, 0 )
+		system.playNumber( val, UNIT_MINUTES, 0 )
 	end
 	val = time % 60
 	if val > 0 then
-		playNumber( val, UNIT_SECOND, 0 )
+		system.playNumber( val, UNIT_SECOND, 0 )
 	end
 end
 

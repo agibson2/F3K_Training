@@ -1,51 +1,66 @@
 --[[
-	F3K Training - 	Mike, ON4MJ
+	F3K Training - 	CIRRUS_RC   08 Mar 2020
 
-	WBig/view_d.lua
-	Big widget view for the Ladder task
+	view_d.lua
+	Task D : Two Flights (10 min window)
+	Each competitor has two (2) flights. These two flights will be added together. The maximum accounted single flight time is 300 seconds. Working time is 10 minutes.
+--]]
+
+
+--[[
+	F3K Training - 	CIRRUS_RC   08 Mar 2020
+
+	view_d.lua
+	Task D : Two Flights (10 min window)
+	Each competitor has two (2) flights. These two flights will be added together. The maximum accounted single flight time is 300 seconds. Working time is 10 minutes.
 --]]
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_d.lua' )
-local widget = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local display = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 
-function task.display( context )
-	widget.drawCommon( context, task )
+function task.display( widget )
 
-	if task.done then
-		OpenTX.lcd.drawText( 160, 129, 'Done !', MIDSIZE )
+	display.drawCommon( widget, task )
+
+	lcd.font(FONT_L)
+	lcd.color(WHITE)
+	if not task.done then
+		--lcd.drawText( 312, 53, '5 min target ', 0 )
+		lcd.drawText( 85, 133, 'Current: ', 0 )
+		task.timer2.drawReverse( 200, 133, 0 )
 	else
-		OpenTX.lcd.drawText( 140, 133, task.MAX_FLIGHT_TIME .. 's: ', 0 )
-		task.timer2.drawReverse( 192, 129, MIDSIZE )
+		lcd.drawText( 312, 53, 'Done !', 0 )
 	end
 
-	if task.current > 1 then
-		OpenTX.lcd.drawFilledRectangle( 281, 1, context.zone.w - 281, 17 * (task.current - 1) + 4, TEXT_INVERTED_BGCOLOR )
-	end
+	local text_w, text_h = lcd.getTextSize("A")
+	local total = 0
+	for i=0,1 do
+	--print("i : " .. i)
+		local y = text_h * i
+		local max = 300
+		lcd.drawText( 312, y, '5min', 0 )
 
-	for i=0,6 do
-		local att = 0
 		if i < task.current - 1 then
-			att = INVERS
-		end
-
-		local y = 2 + 17 * i
-		OpenTX.lcd.drawNumber( 314, y, 30 + 15*i, att + RIGHT )
-		OpenTX.lcd.drawText( 314, y, 's', att )
-
-		if i < task.current then
-			local val = task.flights[ i+1 ]
-			if val then
-				f3kDrawTimer( 334, y, val, att )
-			end
+		--print (4-task.current+i)
+			local val = task.times.getVal( 4-task.current+i )
+			--local val = task.times.getVal( 2 + 1 * i )
+			
+			--print (val)
+			f3kDrawTimer( 400, y, val, 0 )
+			total = total + math.min( max, val )
+		else
+			lcd.drawText( 400, y, "--:--", 0 )
 		end
 	end
 
-	OpenTX.lcd.drawFilledRectangle( 281, 130, context.zone.w - 281, context.zone.h - 130, TEXT_INVERTED_BGCOLOR )
-	f3kDrawTimer( 312, 139, task.times.getTotal(), INVERS )
+	--lcd.drawFilledRectangle( 160, 47, 52, 18, 0 )
+	f3kDrawTimer( 312, text_h * 4, total, 0 )
+	lcd.drawText( 390, text_h * 4, "Total" )
 
-	return OpenTX.backgroundRun( task )
+	return task.background( widget )
 end
+
 
 return { init=task.init, background=task.background, display=task.display }
