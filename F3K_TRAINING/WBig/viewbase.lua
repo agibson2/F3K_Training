@@ -16,7 +16,7 @@ function vbase.drawCommon( widget, task )
 	lcd.font(FONT_XL)
 	task.timer1.draw( 115, 44, 0 )
 
-	lcd.color( lcd.RGB(25,25,25) )
+	lcd.color( lcd.RGB(0,35,0) )
 	-- background rect right side
 	lcd.drawFilledRectangle( verticaldividerx, 0, widget_w - verticaldividerx, widget_h - 1, 0 )
 	-- background rect bottom
