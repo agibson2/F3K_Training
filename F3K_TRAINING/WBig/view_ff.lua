@@ -18,7 +18,7 @@ function task.display( widget )
 	local verticalDividerX = 280
 	local widget_w, widget_h = lcd.getWindowSize()
 	 
-	lcd.color( lcd.RGB(25,25,25) ) --grey
+	lcd.color( lcd.RGB(0,35,0) ) --dark green
 	-- background rect right side
 	lcd.drawFilledRectangle( verticalDividerX, 0, widget_w - verticalDividerX, widget_h - 1 )
 	-- background rect bottom
