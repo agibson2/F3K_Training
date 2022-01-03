@@ -18,7 +18,7 @@ function task.display( widget )
 	local verticalDividerX = 280
 	local widget_w, widget_h = lcd.getWindowSize()
 	 
-	lcd.color( lcd.RGB(0,35,0) ) --dark green
+	lcd.color( widget.backgroundcolor )
 	-- background rect right side
 	lcd.drawFilledRectangle( verticalDividerX, 0, widget_w - verticalDividerX, widget_h - 1 )
 	-- background rect bottom
@@ -27,7 +27,7 @@ function task.display( widget )
 	lcd.color(BLACK)
 	lcd.drawLine( 0, horizontalDividerY, 0, widget_h, SOLID )
 	-- outline at top of right box
-	lcd.drawLine( verticalDividerX, 0, widget_h, 0, SOLID )
+	lcd.drawLine( verticalDividerX, 0, widget_w, 0, SOLID )
 	-- outline at right side
 	lcd.drawLine( widget_w, 0, widget_w, widget_h, SOLID )
 	-- outline at bottom

@@ -185,7 +185,7 @@ local function create()
 	if (DebugFunctionCalls) then print("FTRAIN: create()") end
 	currentTask = createMenu()
 	checkTimers()
-	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, simmode=false}
+	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, simmode=false, backgroundcolor=lcd.RGB(0,35,0)}
 end
 
 local function read(widget)
@@ -196,6 +196,7 @@ local function read(widget)
 		widget.prelaunchswitch = storage.read("source")
 		widget.menuscrollencoder = storage.read("source")
 		widget.simmode = storage.read("boolean")
+		widget.backgroundcolor = storage.read("color")
 	end
 end
 
@@ -207,6 +208,7 @@ local function write(widget)
 		storage.write("source", widget.prelaunchswitch)
 		storage.write("source", widget.menuscrollencoder)
 		storage.write("boolean", widget.simmode)
+		storage.write("color", widget.backgroundcolor)
 	end
 end
 
@@ -284,16 +286,18 @@ end
 local function configure(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: configure()") end
 	-- source choices
+	local line = form.addLine("Background Color")
+	form.addColorField(line, nil, function() return widget.backgroundcolor end, function(value) widget.backgroundcolor = value end)
 	line = form.addLine("Simulator Mode (enable for PC sim)")
-	form.addBooleanField(line, form.getFieldSlots(line)[0], function() return widget.simmode end, function(value) widget.simmode = value end)	
+	form.addBooleanField(line, nil, function() return widget.simmode end, function(value) widget.simmode = value end)	
 	line = form.addLine("Menu Select Switch Position")
-	form.addSwitchField(line, form.getFieldSlots(line)[0], function() return widget.menuswitch end, function(value) widget.menuswitch = value end)
+	form.addSwitchField(line, nil, function() return widget.menuswitch end, function(value) widget.menuswitch = value end)
 	line = form.addLine("Start Switch Position")
-	form.addSwitchField(line, form.getFieldSlots(line)[0], function() return widget.startswitch end, function(value) widget.startswitch = value end)
+	form.addSwitchField(line, nil, function() return widget.startswitch end, function(value) widget.startswitch = value end)
 	line = form.addLine("PreLaunch Switch Position")
-	form.addSwitchField(line, form.getFieldSlots(line)[0], function() return widget.prelaunchswitch end, function(value) widget.prelaunchswitch = value end)
+	form.addSwitchField(line, nil, function() return widget.prelaunchswitch end, function(value) widget.prelaunchswitch = value end)
 	line = form.addLine("Menu Scroll Analog")
-	form.addSourceField(line, form.getFieldSlots(line)[0], function() return widget.menuscrollencoder end, function(value) widget.menuscrollencoder = value end)
+	form.addSourceField(line, nil, function() return widget.menuscrollencoder end, function(value) widget.menuscrollencoder = value end)
 end
 
 
@@ -354,16 +358,16 @@ createMenu = function()
 			local att = STD
 			local halfMenuEntries = math.floor( menuEntriesShown / 2 )
 			if i == halfMenuEntries then
-				lcd.color(GREEN)
+				lcd.color(widget.backgroundcolor)
 				lcd.drawFilledRectangle( 0, 1 + text_h * i, widget_w - 130 - text_w - text_w, text_h )
 				--att = BOLD
 			end
 			local ii = i + selection - halfMenuEntries + 1
 			if ii >= 1 and ii <= #TASKS then
 				if i == halfMenuEntries then
-					lcd.color(BLACK)
-				else
 					lcd.color(WHITE)
+				else
+					lcd.color(lcd.RGB(190,190,190))
 				end
 				lcd.drawText( text_w , 1 + text_h * i, TASKS[ ii ].id, att )
 				if (DebugMenu) then print("FTRAIN: menu.display() LCDDraw", text_w, 1+ text_h * i, TASKS[ ii ].id, att ) end
@@ -375,18 +379,17 @@ createMenu = function()
 
 		if menuF3kTextOffset > 22 * text_w then
 			--lcd.color( 192, 192, 192 )  -- LIGHT_GREY = Silver
-			lcd.color( WHITE )  -- DARKGREY = Gray
+			lcd.color( widget.backgroundcolor )  -- DARKGREY = Gray
 			lcd.drawFilledRectangle( menuF3kTextOffset - 3, 8, 130, 80 )
 			--lcd.color( 128, 128, 128 )  -- DARKGREY = Gray
-			lcd.color( GREEN )  -- DARKGREY = White
+			lcd.color( WHITE )  -- DARKGREY = White
 			lcd.drawText( menuF3kTextOffset, 8, 'F3K', DBLSIZE )
-			lcd.color( GREEN )  -- Ethos Green
 			lcd.drawText( menuF3kTextOffset, 48, 'Training', 0 )
 		end
 		
 		lcd.color( BROWN )  -- LIGHT_GREY = Gray
-		lcd.drawFilledRectangle( widget_h - text_w * 4 - 2, widget_h - text_h, text_w * 4, text_h - 1, GREY_DEFAULT )
-		lcd.color( BROWN ) -- DARKGREY = Gray
+		--lcd.drawFilledRectangle( widget_h - text_w * 4 - 2, widget_h - text_h, text_w * 4, text_h - 1, GREY_DEFAULT )
+		--lcd.color( BROWN ) -- DARKGREY = Gray
 		lcd.drawText( widget_w - text_w * 4 - 2, widget_h - text_h, 'v', 0 )
 		lcd.drawText( widget_w - text_w * 3 - 2, widget_h - text_h, F3KVersion, 0 )
 		lcd.color( BLACK ) -- BLACK = Black

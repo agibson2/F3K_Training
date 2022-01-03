@@ -18,7 +18,7 @@ function task.display( widget )
 	local horizontaldividery = 115
 	local verticaldividerx = 280
 	
-	lcd.color( lcd.RGB(0, 35, 0) )
+	lcd.color( widget.backgroundcolor )
 	-- background rect right side
 	lcd.drawFilledRectangle( verticaldividerx, 0, widget_w - verticaldividerx, widget_h - 1, 0 )
 	-- background rect bottom
@@ -48,7 +48,7 @@ function task.display( widget )
 	for i=0,4 do
 		task.times.draw( 312, 10 + 22*i, i+1, 0 )
 	end
-	lcd.color( lcd.RGB(0, 35, 0) )
+	lcd.color( widget.backgroundcolor )
 	lcd.drawFilledRectangle( 281, 130, widget_w - 281, widget_h - 130, 0 )
 	lcd.color( WHITE )
 	f3kDrawTimer( 312, 139, task.times.getTotal(), 0 )

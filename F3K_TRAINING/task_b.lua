@@ -22,6 +22,8 @@ function taskB.init( win )
 		wav = wav .. '7'
 	end
 	taskB.commonInit( 'Last two', taskB.COUNT, wav )
+	taskB.timer1.stop()
+	taskB.timer2.stop()
 end
 
 

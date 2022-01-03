@@ -46,6 +46,8 @@ function taskFF.init()
 	taskFF.times = createTimeKeeper( 10, 0 )
 	taskFF.state = 1 	-- 1=reset
 	taskFF.initTimers()
+	taskFF.timer1.stop()
+	taskFF.timer2.stop()
 end
 
 
