@@ -13,8 +13,8 @@ taskF.MAX_FLIGHT_TIME = 180
 taskF.saidSorry = false
 
 
-function taskF.earlyReset()
-	if taskF.earlyResetBase() then
+function taskF.earlyReset(widget)
+	if taskF.earlyResetBase(widget) then
 		taskF.saidSorry = false
 		return true
 	end
@@ -23,10 +23,10 @@ end
 
 
 -- State functions
-function taskF.flyingState()
-	if not taskF.endOfWindow() and not taskF.earlyReset() then
+function taskF.flyingState(widget)
+	if not taskF.endOfWindow() and not taskF.earlyReset(widget) then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded() then
+		if f3klanded(widget) then
 			taskF.timer2.stop()
 			taskF.times.addTime( taskF.MAX_FLIGHT_TIME - taskF.timer2.getVal() )
 			if taskF.times.getTotal( 3 ) == 540 and not taskF.wellDone then
@@ -51,8 +51,8 @@ function taskF.flyingState()
 	end
 end
 
-function taskF.landedState()
-	if not taskF.endOfWindow() and not taskF.earlyReset() then
+function taskF.landedState(widget)
+	if not taskF.endOfWindow() and not taskF.earlyReset(widget) then
 		local remaining = taskF.timer1.getVal()
 		if remaining <= taskF.times.getVal( 3 ) and not taskF.wellDone and not taskF.saidSorry then
 			taskF.playSound( 'cant' )
@@ -60,7 +60,7 @@ function taskF.landedState()
 		end
 
 		-- Wait for the pilot to launch the plane
-		if f3klaunched() then
+		if f3klaunched(widget) then
 			if remaining < taskF.MAX_FLIGHT_TIME then
 				taskF.timer2.start( remaining )
 				taskF.playSound( 'remaining' )
@@ -78,6 +78,8 @@ end
 -- public interface
 function taskF.init()
 	taskF.commonInit( '3oo6', 6, 'taskf' )
+	taskF.timer1.stop()
+	taskF.timer2.stop()
 end
 
 
