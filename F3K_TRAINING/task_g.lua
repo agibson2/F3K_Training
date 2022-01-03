@@ -16,6 +16,8 @@ taskG.BEST_COUNT = 5
 -- public interface
 function taskG.init()
 	taskG.commonInit( '5x2', taskG.BEST_COUNT, 'taskg' )
+	taskG.timer1.stop()
+	taskG.timer2.stop()
 end
 
 

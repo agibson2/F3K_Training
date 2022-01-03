@@ -175,7 +175,7 @@ function taskBase.flyingState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.flyingState()") end
 	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		-- Wait for the pilot to catch/land/crash (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded() then   --FIXME was just landed()... not sure if same as F3KConfig.landed()
+		if f3klanded(widget) then
 			taskBase.timer2.stop()
 			taskBase.times.addTime( taskBase.timer2.getTarget() - taskBase.timer2.getVal() )
 			if(DebugTimes) then print ("FTRAIN: taskbase.flyingState() addTime( " .. taskBase.timer2.getTarget() .. " - " .. taskBase.timer2.getVal() " )") end

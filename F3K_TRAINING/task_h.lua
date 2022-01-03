@@ -34,9 +34,10 @@ function taskH.getDoneList()
 end
 
 
-function taskH.initFlightTimer()
-	taskH.timer2 = createTimer( 1, 0, 0, true )	-- current flight time, going up here
-end
+--function taskH.initFlightTimer()
+--	taskH.timer2 = createTimer( "f3kOne", 0, 0, true )	-- current flight time, going up here
+--	
+--end
 
 
 function taskH.endOfWindow()
@@ -55,8 +56,8 @@ function taskH.endOfWindow()
 end
 
 
-function taskH.earlyReset()
-	if taskH.earlyResetBase() then
+function taskH.earlyReset(widget)
+	if taskH.earlyResetBase(widget) then
 		taskH.target = 4
 		taskH.done = false
 		taskH.previousTime = 0
@@ -67,10 +68,10 @@ end
 
 
 -- state functions
-function taskH.flyingState()
-	if not taskH.endOfWindow() and not taskH.earlyReset() then
+function taskH.flyingState(widget)
+	if not taskH.endOfWindow() and not taskH.earlyReset(widget) then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded() then
+		if f3klanded(widget) then
 			taskH.timer2.stop()
 
 			local val = taskH.timer2.getVal()
@@ -122,6 +123,8 @@ function taskH.init()
 
 	taskH.initPrepTimer()
 	taskH.initFlightTimer()
+	taskH.timer1.stop()
+	taskH.timer2.stop()
 end
 
 

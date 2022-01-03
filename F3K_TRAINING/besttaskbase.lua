@@ -13,16 +13,16 @@ taskBase.BEST_COUNT = 0
 taskBase.saidSorry = false
 
 
-function taskBase.earlyReset()
-	if taskBase.earlyResetBase() then
+function taskBase.earlyReset(widget)
+	if taskBase.earlyResetBase(widget) then
 		taskBase.saidSorry = false
 		return true
 	end
 	return false
 end
 
-function taskBase.landedState()
-	if not taskBase.endOfWindow() and not taskBase.earlyReset() then
+function taskBase.landedState(widget)
+	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		local remaining = taskBase.timer1.getVal()
 		if remaining < taskBase.times.getVal( taskBase.BEST_COUNT ) then
 			if not taskBase.saidSorry then		
@@ -32,7 +32,7 @@ function taskBase.landedState()
 		end
 
 		-- Wait for the pilot to launch the plane
-		if f3klaunched() then
+		if f3klaunched(widget) then
 			if remaining < taskBase.MAX_FLIGHT_TIME then
 				taskBase.timer2.start( remaining )
 				taskBase.playSound( 'remaining' )
