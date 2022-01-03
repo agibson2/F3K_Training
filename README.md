@@ -3,7 +3,7 @@
 This is code originally by Mike (ON4MJ on rcgroups) with previous changes also by me to help convert it to a Widget for OpenTX.  It was then modified by Mattoia90 to include some newer f3k tasks as well as add some missing views.  With this forked version though, OpenTX is no longer working.  A big thanks for all the work that was put into this over the years.  This new fork is a work in progress to get it working on the new FrSky Ethos Lua RC radios.  It currently requires an alpha build of Ethos 1.1.0 alpha 12 for it to work.
 
 Tasks working...
-Free Flight
+- Free Flight
 - TaskA
 - TaskB
 - TaskC
