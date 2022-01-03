@@ -18,8 +18,8 @@ function taskC.endOfTask()
 end
 
 
-function taskC.earlyReset()
-	if getValue( Options.MenuSwitch ) <= 0 then
+function taskC.earlyReset(widget)
+	if not widget.startswitch:state() then
 		-- Stop the timers and reset the internal state
 		taskC.timer2.stop()
 		taskC.flightCount = 0
@@ -31,9 +31,9 @@ end
 
 
 -- state functions
-function taskC.resetState()
+function taskC.resetState(widget)
 	-- Wait for the start of the task
-	if getValue( Options.MenuSwitch ) > 0 then
+	if widget.startswitch:state() then
 		taskC.playSound( taskC.wav )
 
 		-- reset the scores
@@ -41,7 +41,7 @@ function taskC.resetState()
 
 		taskC.initFlightTimer()
 		taskC.state = 2
-	elseif getValue( Options.MenuSwitch ) < 0 then
+	elseif not widget.menuswitch:state() then
 		taskC.running = false
 	end
 end
@@ -62,10 +62,10 @@ function taskC.gotDown()
 end
 
 
-function taskC.flyingState()
-	if not taskC.earlyReset() then
+function taskC.flyingState(widget)
+	if not taskC.earlyReset(widget) then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded() then
+		if f3klanded(widget) then
 			taskC.timer2.stop()
 			taskC.times.pushTime( taskC.MAX_FLIGHT_TIME - taskC.timer2.getVal() )
 			taskC.gotDown()
@@ -80,10 +80,10 @@ function taskC.flyingState()
 end
 
 
-function taskC.landedState()
+function taskC.landedState(widget)
 	if taskC.flightCount < 5 and not taskC.earlyReset() then
 		-- Wait for the pilot to launch the plane
-		if f3klaunched() then
+		if f3klaunched(widget) then
 			taskC.timer2.start()
 			taskC.flightCount = taskC.flightCount + 1
 			taskC.state = 3

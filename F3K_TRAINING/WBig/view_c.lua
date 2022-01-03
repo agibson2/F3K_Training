@@ -7,47 +7,49 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_c.lua' )
-local widget = {}
+--local widget = {}
 
 
-function task.display( context )
-	task.timer2.drawReverse( 55, 13, XXLSIZE )
+function task.display( widget )
+	local widget_w, widget_h = lcd.getWindowSize()
+	lcd.font(FONT_XL)
+	task.timer2.drawReverse( 55, 13, 0 )
 
-	local w = context.zone.w
-	local h = context.zone.h
 	local horizontaldividery = 115
 	local verticaldividerx = 280
-	OpenTX.lcd.setColor( CUSTOM_COLOR, context.options.BackgroundColor )
+	
+	lcd.color( lcd.RGB(0, 50, 0) )
 	-- background rect right side
-	OpenTX.lcd.drawFilledRectangle( verticaldividerx, 0, w - verticaldividerx, h - 1, CUSTOM_COLOR )
+	lcd.drawFilledRectangle( verticaldividerx, 0, widget_w - verticaldividerx, widget_h - 1, 0 )
 	-- background rect bottom
-	OpenTX.lcd.drawFilledRectangle( 0, horizontaldividery, verticaldividerx, h - horizontaldividery, CUSTOM_COLOR )
+	lcd.drawFilledRectangle( 0, horizontaldividery, verticaldividerx, widget_h - horizontaldividery, 0 )
 	-- outline left side
-	OpenTX.lcd.drawLine( 0, horizontaldividery, 0, h, SOLID, 2 )
+	lcd.drawLine( 0, horizontaldividery, 0, widget_h, SOLID, 2 )
 	-- outline at top of right box
-	OpenTX.lcd.drawLine( verticaldividerx, 0, w, 0, SOLID, 2 )
+	lcd.drawLine( verticaldividerx, 0, widget_w, 0, SOLID, 2 )
 	-- outline at right side
-	OpenTX.lcd.drawLine( w, 0, w, h, SOLID, 2 )
+	lcd.drawLine( widget_w, 0, widget_w, widget_h, SOLID, 2 )
 	-- outline at bottom
-	OpenTX.lcd.drawLine( 0, h, w, h, SOLID, 2 )
+	lcd.drawLine( 0, widget_h, widget_w, widget_h, SOLID, 2 )
 
-	OpenTX.lcd.drawLine( 0, horizontaldividery, verticaldividerx, horizontaldividery, SOLID, 2 )
-	OpenTX.lcd.drawText( 10, 133, task.name, 0 )
-	OpenTX.lcd.drawLine( verticaldividerx, 0, verticaldividerx, h - 1, SOLID, 2 )
+	lcd.drawLine( 0, horizontaldividery, verticaldividerx, horizontaldividery, SOLID, 2 )
+	lcd.font(FONT_L)
+	lcd.drawText( 10, 133, task.name, 0 )
+	lcd.drawLine( verticaldividerx, 0, verticaldividerx, widget_h - 1, SOLID, 2 )
 
 
 	if task.state == 5 then
-		OpenTX.lcd.drawText( 110, 130, 'Done !', MIDSIZE )
+		lcd.drawText( 110, 130, 'Done !', MIDSIZE )
 	end
 
 	for i=0,4 do
 		task.times.draw( 312, 10 + 22*i, i+1, 0 )
 	end
 
-	OpenTX.lcd.drawFilledRectangle( 281, 130, context.zone.w - 281, context.zone.h - 130, TEXT_INVERTED_BGCOLOR )
+	lcd.drawFilledRectangle( 281, 130, widget_w - 281, widget_h - 130, 0 )
 	f3kDrawTimer( 312, 139, task.times.getTotal(), INVERS )
 
-	return OpenTX.backgroundRun( task )
+	return task.background( widget )
 end
 
 return { init=task.init, background=task.background, display=task.display }
