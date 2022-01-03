@@ -2,6 +2,8 @@
 
 This is code originally by Mike (ON4MJ on rcgroups) with previous changes also by me to help convert it to a Widget for OpenTX.  It was then modified by Mattoia90 to include some newer f3k tasks as well as add some missing views.  With this forked version though, OpenTX is no longer working.  A big thanks for all the work that was put into this over the years.  This new fork is a work in progress to get it working on the new FrSky Ethos Lua RC radios.  It currently requires an alpha build of Ethos 1.1.0 alpha 12 for it to work.
 
+One of the main reasons I like ON4MJ's script so much is that the menu is controlled via stick input to very quickly position it on the task you want and selecting tasks and starting them use switches.  Launching is detecting by holding and then at some point releasing the pre-launch switch that you define.  I use button SI for that which is on the back of tthe transmitter.
+
 Tasks working...
 - Free Flight
 - TaskA
