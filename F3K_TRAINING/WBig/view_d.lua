@@ -51,7 +51,8 @@ function task.display( widget )
 			f3kDrawTimer( 400, y, val, 0 )
 			total = total + math.min( max, val )
 		else
-			lcd.drawText( 400, y, "--:--", 0 )
+			local text_w_timer, text_h_timer = lcd.getTextSize("00:00")
+			lcd.drawText( 400 + text_w_timer/2, y, "--:--", CENTERED )
 		end
 	end
 

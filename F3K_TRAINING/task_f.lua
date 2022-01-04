@@ -78,8 +78,6 @@ end
 -- public interface
 function taskF.init()
 	taskF.commonInit( '3oo6', 6, 'taskf' )
-	taskF.timer1.stop()
-	taskF.timer2.stop()
 end
 
 

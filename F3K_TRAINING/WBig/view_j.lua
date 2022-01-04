@@ -7,29 +7,34 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_j.lua' )
-local widget = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 
-function task.display( context )
-	widget.drawCommonLastBest( context, task )
+function task.display( widget )
+	local widget_w, widget_h = lcd.getWindowSize()
+	local text_w, text_h = lcd.getTextSize("")
+	vbase.drawCommonLastBest( widget, task )
 
 	if task.state == 4 then
 		if task.possibleImprovement > 0 and task.flightCount >= task.COUNT then
-			OpenTX.lcd.drawText( 296, 3, 'Impr. Mrg.', 0 )
-			f3kDrawTimer( 304, 27, task.possibleImprovement, MIDSIZE )
+			lcd.drawText( 296, 3, 'Improve margin', 0 )
+			f3kDrawTimer( 304, text_h + 3, task.possibleImprovement, 0 )
 		end
 	end
 
 	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		OpenTX.lcd.drawText( 305, 16, 'Done !', MIDSIZE )
+		lcd.drawText( 305, 16, 'Done !', 0 )
 	end
+	
+	lcd.color(BLACK)
+	lcd.drawLine( 280, 62, widget_w - 1, 62, SOLID, 2 )
 
-	OpenTX.lcd.drawLine( 280, 62, context.zone.w - 1, 62, SOLID, 2 )
+	lcd.color(WHITE)	
 	for i=1,task.COUNT do
-		task.times.draw( 312, 44 + 21*i, i, 0 )
+		task.times.draw( 312, 44 + text_h*i, i, 0 )
 	end
 
-	return OpenTX.backgroundRun( task )
+	return task.background( widget )
 end
 
 return { init=task.init, background=task.background, display=task.display }

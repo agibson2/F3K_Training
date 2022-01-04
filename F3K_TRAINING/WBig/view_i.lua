@@ -7,23 +7,25 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_i.lua' )
-local widget = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 
-function task.display( context )
-	widget.drawCommonLastBest( context, task )
+function task.display( widget )
+	local widget_w, widget_h = lcd.getWindowSize()
+	vbase.drawCommonLastBest( widget, task )
 
 	if task.state == 4 and task.times.getVal( task.BEST_COUNT ) >= task.timer1.getVal() then
-		OpenTX.lcd.drawText( 305, 12, 'Done !', MIDSIZE )
+		lcd.drawText( 305, 12, 'Done !', 0 )
 	end
-	OpenTX.lcd.drawLine( 280, 54, context.zone.w - 1, 54, SOLID, 2 )
+	lcd.drawLine( 280, 54, widget_w - 1, 54, SOLID, 2 )
 
-	local y = 59
+	local text_w, text_h = lcd.getTextSize("")
+	local y = text_h
 	for i=0,2 do
-		task.times.draw( 312, y + 22*i, i+1, 0 )
+		task.times.draw( 312, y + text_h*i, i+1, 0 )
 	end
 
-	return OpenTX.backgroundRun( task )
+	return task.background( widget )
 end
 
 

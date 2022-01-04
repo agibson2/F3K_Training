@@ -84,6 +84,8 @@ function taskBase.commonInit( name, scoreCnt, wavFile )
 	taskBase.state = 1 	-- 1=reset
 	taskBase.initPrepTimer()
 	taskBase.initFlightTimer()
+	taskBase.timer1.stop()
+	taskBase.timer2.stop()
 end
 
 

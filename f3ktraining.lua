@@ -136,7 +136,8 @@ end
 
 function f3kDrawTimer( x, y, value, flags )
 	if value == nil then
-		lcd.drawText( x, y, '--:--', flags )
+		local text_w_timer, text_h_timer = lcd.getTextSize("00:00")
+		lcd.drawText( x + text_w_timer/2, y, '--:--', CENTERED + flags )
 	else
 		local minutesText = math.floor(value / 60)
 		local secondsText = value % 60
@@ -156,7 +157,8 @@ local createMenu
 local currentTask
 	
 local function drawEmptyTimer( x, y, flags )
-	lcd.drawText( x, y, '--:--', flags )
+	local text_w_timer, text_h_timer = lcd.getTextSize("00:00")
+	lcd.drawText( x + text_w_timer/2, y, '--:--', CENTERED + flags )
 end
 
 local timersavailable = false
@@ -314,8 +316,9 @@ createMenu = function()
 		{ id='F', desc='3 out of 6' },
 		{ id='G', desc='5x2' },
 		{ id='H', desc='1234' },
-		{ id='I', desc='Best three NotWorking' },
-		{ id='J', desc='Last three NotWorking' },
+		{ id='I', desc='Best three' },
+		{ id='J', desc='Last three' },
+		{ id='K', desc='Big Ladder' },
 		{ id='L', desc='One flight NotWorking' },
 		{ id='M', desc='Big Ladder NotWorking' },
 		{ id='A', desc='Last flight (7 min) NotWorking', win=7 },

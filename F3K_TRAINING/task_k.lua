@@ -16,8 +16,8 @@ taskK.current = 1
 taskK.done = false
 
 
-function taskK.earlyReset() 
-	if taskK.earlyResetBase() then
+function taskK.earlyReset(widget) 
+	if taskK.earlyResetBase(widget) then
 		taskK.MAX_FLIGHT_TIME = 60
 
 		taskK.current = 1
@@ -53,10 +53,10 @@ end
 
 
 -- state functions
-function taskK.flyingState()
-	if not taskK.endOfWindow() and not taskK.earlyReset() then
+function taskK.flyingState(widget)
+	if not taskK.endOfWindow() and not taskK.earlyReset(widget) then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded() then
+		if f3klanded(widget) then
 			taskK.timer2.stop()
 
 			taskK.times.pushTime( taskK.MAX_FLIGHT_TIME - taskK.timer2.getVal() )
@@ -91,6 +91,8 @@ function taskK.init()
 
 	taskK.initPrepTimer()
 	taskK.initFlightTimer()
+	taskK.timer1.stop()
+	taskK.timer2.stop()
 end
 
 
