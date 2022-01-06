@@ -33,8 +33,8 @@ end
 function taskFF.initTimers()
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.initTimers()") end
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskFF.timer1 = f3kCreateTimer( "f3kZero", 0, 0, true )	-- current flight time
-	taskFF.timer2 = f3kCreateTimer( "f3kOne", 0, 0, false )
+	taskFF.timer1 = createTimer( "f3kZero", 0, AUDIO_MUTE, true )	-- current flight time
+	taskFF.timer2 = createTimer( "f3kOne", 0, AUDIO_VOICE, false )
 end
 
 

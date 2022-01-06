@@ -23,8 +23,10 @@ This version does not work with OpenTX as there were too many changes for me to 
 
 ## INSTALL ON ETHOS Radio
 1. Open SD card of your Ethos radio on your PC (the one with directories for models, scripts, etc)
-2. Copy the F3K_TRAINING folder into the SCRIPTS folder on the SD card  ...\Scripts\F3K_TRAINING\
-3. Copy the f3ktraining.lua also into the SCRIPTS folder  ...\Scripts\f3ktraining.lua
+2. Copy the F3K_TRAINING folder into the SCRIPTS folder on the SD card.  The directory should look like this assuming F: is your SD card...
+- F:\Scripts\F3K_TRAINING\main.lua
+- F:\Scripts\F3K_TRAINING\timer.lua
+- ... etc
 
 ## CUSTOMIZE SWITCH
 Once install, you can add the F3K Training widget to your model config and then configure it in the Widget config for the F3K Training widget.

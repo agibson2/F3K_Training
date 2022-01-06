@@ -66,12 +66,12 @@ end
 function taskBase.initFlightTimer()
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.initFlightTimer()") end
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskBase.timer2 = f3kCreateTimer( "f3kOne", taskBase.MAX_FLIGHT_TIME, 2, true )	-- current flight time (descending from MAX_FLIGHT_TIME)
+	taskBase.timer2 = createTimer( "f3kOne", taskBase.MAX_FLIGHT_TIME, AUDIO_VOICE, true )	-- current flight time (descending from MAX_FLIGHT_TIME)
 end
 
 function taskBase.initPrepTimer()
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.PrepTimer()") end
-	taskBase.timer1 = f3kCreateTimer( "f3kZero", taskBase.PREP_TIME, 2, false )
+	taskBase.timer1 = createTimer( "f3kZero", taskBase.PREP_TIME, AUDIO_VOICE, false )
 end
 
 
@@ -162,7 +162,7 @@ function taskBase.startedState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.startedState()") end
 	if not taskBase.earlyReset(widget) then
 		if taskBase.timer1.getVal() <= 0 then
-			taskBase.timer1 = f3kCreateTimer( "f3kZero", taskBase.WINDOW_TIME, 0, false )	-- working time
+			taskBase.timer1 = createTimer( "f3kZero", taskBase.WINDOW_TIME, AUDIO_MUTE, false )	-- working time
 			taskBase.timer1.start()
 
 			taskBase.state = 4

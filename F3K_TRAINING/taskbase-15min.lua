@@ -63,11 +63,11 @@ end
 
 function taskBase.initFlightTimer()
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskBase.timer2 = createTimer( 1, taskBase.MAX_FLIGHT_TIME, 2, true )	-- current flight time (descending from MAX_FLIGHT_TIME)
+	taskBase.timer2 = createTimer( 1, taskBase.MAX_FLIGHT_TIME, AUDIO_VOICE, true )	-- current flight time (descending from MAX_FLIGHT_TIME)
 end
 
 function taskBase.initPrepTimer()
-	taskBase.timer1 = createTimer( 0, taskBase.PREP_TIME, 2, false )
+	taskBase.timer1 = createTimer( 0, taskBase.PREP_TIME, AUDIO_VOICE, false )
 end
 
 
@@ -148,7 +148,7 @@ end
 function taskBase.startedState()
 	if not taskBase.earlyReset() then
 		if taskBase.timer1.getVal() <= 0 then
-			taskBase.timer1 = createTimer( 0, taskBase.WINDOW_TIME, 0, false )	-- working time
+			taskBase.timer1 = createTimer( 0, taskBase.WINDOW_TIME, AUDIO_MUTE, false )	-- working time
 			taskBase.timer1.start()
 
 			taskBase.state = 4

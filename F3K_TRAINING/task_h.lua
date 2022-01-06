@@ -34,10 +34,10 @@ function taskH.getDoneList()
 end
 
 
---function taskH.initFlightTimer()
---	taskH.timer2 = createTimer( "f3kOne", 0, 0, true )	-- current flight time, going up here
---	
---end
+function taskH.initFlightTimer()
+	taskH.timer2 = createTimer( "f3kOne", 0, AUDIO_MUTE, true )	-- current flight time, going up here
+	
+end
 
 
 function taskH.endOfWindow()

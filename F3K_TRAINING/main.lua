@@ -56,7 +56,11 @@ F3KVersion = '4.0.0'
 	      Major Ethos changes which removes OpenTX compatibility
 		  Task Free Flight and TaskA are working
 		  Task B working
+		  Tasks C D E F G H I J K working
 --]]
+
+--FIXME remove this when future version defines this (not in 1.1.0 alpha14)...
+AUDIO_VOICE=2
 
 local FTRAINDebug=0
 
@@ -88,27 +92,15 @@ local function resetLaunchDetection()
 	lastTimeLanded = 0
 end
 
-function getTime()
-	return os.clock()*1000 -- 1/100th
-end
-
 -- >>> Launch / Land detection <<< ---
 function f3klaunched(widget)
 	local ret = false
 	local prelaunchpressed=false
 	if not widget.prelaunchswitch:state() then
-		local gettime60milliseconds
-		if(widget.simmode) then
-			--os.clock() has different resolution on PC vs the radio
-			gettime60milliseconds = 600
-		else
-			gettime60milliseconds = 6000
-		end
-
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed		
 		if lastTimeLanded > 0 then
-			if (getTime() - lastTimeLanded) > gettime60milliseconds then   -- 60 milliseconds FIXME this needs to be 6000 for X20S and 600 for simulator
+			if (os.clock() - lastTimeLanded) > 0.060 then   -- 60 milliseconds
 				ret = true
 			end
 			lastTimeLanded = 0
@@ -116,10 +108,10 @@ function f3klaunched(widget)
 	else
 		prelaunchpressed=true
 		if lastTimeLanded == 0 then
-			lastTimeLanded = getTime()
+			lastTimeLanded = os.clock()
 		end
 	end
-	if (DebugLaunched) then print("FTRAIN: f3klaunched() ret=" .. tostring(ret) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. getTime()) end
+	if (DebugLaunched) then print("FTRAIN: f3klaunched() ret=" .. tostring(ret) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. os.clock()) end
 	return ret
 end
 
@@ -127,10 +119,10 @@ function f3klanded(widget)
 	local retVal = false
 	local prelaunchpressed = widget.prelaunchswitch:state()
 	if prelaunchpressed then
-		lastTimeLanded = getTime()
+		lastTimeLanded = os.clock()
 		retVal = true
 	end
-	if (DebugLanded) then print("FTRAIN: f3klanded() ret=" .. tostring(retVal) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. getTime()) end
+	if (DebugLanded) then print("FTRAIN: f3klanded() ret=" .. tostring(retVal) .. "PLpressed=" .. tostring(prelaunchpressed) .. " lastTimeLanded=" .. lastTimeLanded .. " time=" .. os.clock()) end
 	return retVal
 end
 
@@ -165,10 +157,10 @@ local timersavailable = false
 local function checkTimers( widget )
 	if (DebugFunctionCalls) then print("FTRAIN: checkTimers()") end
 	local available = 0
+	local f3kzerofound = false
+	local f3konefound = false
 	for timerid=0,7 do
 		local timer = model.getTimer(timerid)
-		local f3kzerofound = false
-		local f3konefound = false
 		if timer == nil then
 			available = available + 1
 		elseif timer:name() == 'f3kOne' then
@@ -179,6 +171,7 @@ local function checkTimers( widget )
 		
 		if (f3konefound and f3kzerofound) or (available >= 2) or (available == 1 and (f3kzerofound or f3konefound)) then
 			timersavailable = true
+		else
 		end
 	end
 end
@@ -187,7 +180,7 @@ local function create()
 	if (DebugFunctionCalls) then print("FTRAIN: create()") end
 	currentTask = createMenu()
 	checkTimers()
-	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, simmode=false, backgroundcolor=lcd.RGB(0,35,0)}
+	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, backgroundcolor=lcd.RGB(0,40,0)}
 end
 
 local function read(widget)
@@ -197,7 +190,6 @@ local function read(widget)
 		widget.startswitch = storage.read("source")
 		widget.prelaunchswitch = storage.read("source")
 		widget.menuscrollencoder = storage.read("source")
-		widget.simmode = storage.read("boolean")
 		widget.backgroundcolor = storage.read("color")
 	end
 end
@@ -209,7 +201,6 @@ local function write(widget)
 		storage.write("source", widget.startswitch)
 		storage.write("source", widget.prelaunchswitch)
 		storage.write("source", widget.menuscrollencoder)
-		storage.write("boolean", widget.simmode)
 		storage.write("color", widget.backgroundcolor)
 	end
 end
@@ -221,6 +212,8 @@ end
 local function background(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: background()") end
 	if timersavailable == false then
+		return
+	elseif (widget.menuswitch == nil or widget.startswitch == nil or widget.prelaunchswitch == nil or widget.menuscrollencoder == nil) then
 		return
 	end
 	
@@ -290,8 +283,6 @@ local function configure(widget)
 	-- source choices
 	local line = form.addLine("Background Color")
 	form.addColorField(line, nil, function() return widget.backgroundcolor end, function(value) widget.backgroundcolor = value end)
-	line = form.addLine("Simulator Mode (enable for PC sim)")
-	form.addBooleanField(line, nil, function() return widget.simmode end, function(value) widget.simmode = value end)	
 	line = form.addLine("Menu Select Switch Position")
 	form.addSwitchField(line, nil, function() return widget.menuswitch end, function(value) widget.menuswitch = value end)
 	line = form.addLine("Start Switch Position")
@@ -418,6 +409,22 @@ createMenu = function()
 			currentTask = dofile( F3K_SCRIPT_PATH .. 'WBig/view_' .. TASKS[ selection+1 ].id .. '.lua' )
 			local win = TASKS[ selection+1 ].win or 10
 			inittask( win * 60 )
+		end
+		
+		-- Stop the timers (If they have been created) while in the menu
+		local f3kZTimer = model.getTimer("f3kZero")
+		local f3kOTimer = model.getTimer("f3kOne")
+		if f3kZTimer ~= nil then
+			local catNoneSource = system.getSource(nil)
+			if f3kZTimer:activeCondition() ~= catNoneSource then
+				f3kZTimer:activeCondition(catNoneSource)
+			end
+		end
+		if f3kOTimer ~= nil then
+			local catNoneSource = system.getSource(nil)
+			if f3kZTimer:activeCondition() ~= catNoneSource then
+				f3kZTimer:activeCondition(catNoneSource)
+			end
 		end
 		
 		return(true)

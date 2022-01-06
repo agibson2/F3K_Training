@@ -21,10 +21,23 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 			print("FTRAIN: f3kCreateTimer() createTimer returned nil for '" .. timerId .. "'")
 		else
 			timer:name(timerId)
-			--FIXME create it in stopped state.  Hack to pause timer in Ethos.. it works but unsure what it is selecting as source.
-			timer:activeCondition( system.getSource({category=0, member=1, options=0}) ) 
+			timer:activeCondition( system.getSource(nil) ) --nil is used to stop the timer
 		end
 	end
+	
+	if countdownBeep == 1 then
+		timer:audioMode(AUDIO_BEEP)
+	elseif countdownBeep == 2 then
+		timer:audioMode(AUDIO_VOICE)
+	else
+		timer:audioMode(AUDIO_MUTE)
+	end
+			
+	-- if timerId == 'f3kOne' then
+		-- print("FTRAIN: timer: f3kCreateTimer() Setting audiomode to voice and setting countdown start and step")
+		-- timer:countdownStart(60)
+		-- timer:countdownStep(30)
+	-- end
 	
 	local originalStartValue = timer:start()
 	local target = 0
@@ -55,7 +68,7 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 			timer:direction(-1)
 		end
 		
-		timer:activeCondition({category=CATEGORY_ALWAYS_ON})
+		timer:activeCondition({category=CATEGORY_ALWAYS_ON, member=1, options=0})
 
 		--model.setTimer( id, timer )  --OpenTx way to set timer parameters
 	end

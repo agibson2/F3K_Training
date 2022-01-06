@@ -47,7 +47,7 @@ end
 -- public interface
 function taskQT.initFlightTimer()
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskQT.timer2 = createTimer( 1, taskQT.MAX_FLIGHT_TIME, 0, false )
+	taskQT.timer2 = createTimer( 1, taskQT.MAX_FLIGHT_TIME, AUDIO_MUTE, false )
 end
 
 
