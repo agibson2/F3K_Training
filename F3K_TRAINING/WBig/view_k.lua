@@ -29,7 +29,7 @@ function task.display( widget )
 		local y = text_h * i
 		local max = 60 + 30 * i
 		--local textlength, textheight = lcd.getTextSize(tostring(max))
-		lcd.drawNumber( 333, y, max, 0, RIGHT ) -- RIGHT justification doesn't work yet in Ethos so use workaround in above line
+		lcd.drawNumber( 333, y, max, UNIT_SECONDS, 0, RIGHT ) -- RIGHT justification doesn't work yet in Ethos so use workaround in above line
 		lcd.drawText( 333, y, 's', 0 )
 
 		if i < task.current - 1 then

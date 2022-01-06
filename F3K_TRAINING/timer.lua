@@ -32,6 +32,16 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 	else
 		timer:audioMode(AUDIO_MUTE)
 	end
+	
+	if minuteBeep then
+		--countdown every minute
+		timer:countdownStart(540)
+		timer:countdownStep(60)
+	else
+		-- then disable the countdown... hopefully this works
+		timer:countdownStart(0)
+		timer:countdownStep(60)
+	end
 			
 	-- if timerId == 'f3kOne' then
 		-- print("FTRAIN: timer: f3kCreateTimer() Setting audiomode to voice and setting countdown start and step")

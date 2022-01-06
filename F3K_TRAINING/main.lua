@@ -59,9 +59,6 @@ F3KVersion = '4.0.0'
 		  Tasks C D E F G H I J K working
 --]]
 
---FIXME remove this when future version defines this (not in 1.1.0 alpha14)...
-AUDIO_VOICE=2
-
 local FTRAINDebug=0
 
 DebugFunctionCalls=false
@@ -310,7 +307,7 @@ createMenu = function()
 		{ id='I', desc='Best three' },
 		{ id='J', desc='Last three' },
 		{ id='K', desc='Big Ladder' },
-		{ id='L', desc='One flight NotWorking' },
+		{ id='L', desc='One flight' },
 		{ id='M', desc='Big Ladder NotWorking' },
 		{ id='A', desc='Last flight (7 min) NotWorking', win=7 },
 		{ id='B', desc='Last two (7 min) NotWorking', win=7 },
