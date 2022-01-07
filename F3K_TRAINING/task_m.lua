@@ -8,8 +8,10 @@
 --]]
 
 
-local taskM = dofile( F3K_SCRIPT_PATH .. 'taskbase-15min.lua' )
-
+local taskM = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
+-- override prep and window for this task
+taskM.PREP_TIME = 20
+taskM.WINDOW_TIME = 900
 
 taskM.MAX_FLIGHT_TIME = 180 	-- This won't be a constant here, but for consistency (and memory !), we'll keep it uppercase'd
 taskM.TIMES_SORTED = false
@@ -18,8 +20,8 @@ taskM.current = 1
 taskM.done = false
 
 
-function taskM.earlyReset() 
-	if taskM.earlyResetBase() then
+function taskM.earlyReset(widget) 
+	if taskM.earlyResetBase(widget) then
 		taskM.MAX_FLIGHT_TIME = 180
 
 		taskM.current = 1
@@ -55,10 +57,10 @@ end
 
 
 -- state functions
-function taskM.flyingState()
-	if not taskM.endOfWindow() and not taskM.earlyReset() then
+function taskM.flyingState(widget)
+	if not taskM.endOfWindow() and not taskM.earlyReset(widget) then
 		-- Wait for the pilot to catch/land (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded() then
+		if f3klanded(widget) then
 			taskM.timer2.stop()
 
 			taskM.times.pushTime( taskM.MAX_FLIGHT_TIME - taskM.timer2.getVal() )
@@ -93,6 +95,8 @@ function taskM.init()
 
 	taskM.initPrepTimer()
 	taskM.initFlightTimer()
+	taskM.timer1:stop()
+	taskM.timer2:stop()
 end
 
 

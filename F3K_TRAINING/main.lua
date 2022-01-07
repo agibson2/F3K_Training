@@ -85,7 +85,7 @@ end
 
 local lastTimeLanded = 0	-- 0=must pull first ; other=time of the last pull
 
-local function resetLaunchDetection()
+function resetLaunchDetection()
 	lastTimeLanded = 0
 end
 
@@ -317,7 +317,7 @@ createMenu = function()
 		{ id='J', desc='Last three' },
 		{ id='K', desc='Big Ladder' },
 		{ id='L', desc='One flight' },
-		{ id='M', desc='Big Ladder NotWorking' },
+		{ id='M', desc='Huge Ladder' },
 		{ id='A', desc='Last flight (7 min) NotWorking', win=7 },
 		{ id='B', desc='Last two (7 min) NotWorking', win=7 },
 		{ id='QT', desc='QT practice (15 x 40s) NotWorking' },

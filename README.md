@@ -16,6 +16,8 @@ Tasks working...
 - TaskI
 - TaskJ
 - TaskK
+- TaskL
+- TaskM
 
 Version 4.0 Work in progress for FrSky Ethos radios using the alpha builds available from FrSky.  It will likely take me a LONG LONG time to get it presentable and working as I still don't fully understand how it all works.  It has taken me way too many hours just to get Free Flight partially working and Ethos Lua is still in alpha testing and API changing weekly.
 

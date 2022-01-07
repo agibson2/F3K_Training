@@ -7,13 +7,13 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_k.lua' )
-local display = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 
 function task.display( widget )
 	local widget_w, widget_h = lcd.getWindowSize()
 	local text_w, text_h = lcd.getTextSize("A")
-	display.drawCommon( widget, task )
+	vbase.drawCommon( widget, task )
 
 	lcd.color(WHITE)
 	if not task.done then
@@ -28,10 +28,9 @@ function task.display( widget )
 	local total = 0
 	for i=0,4 do
 	--print("i : " .. i)
-		local y = text_h * i
+		local y = 8 + text_h * i
 		local max = 60 + 30 * i
-		--local textlength, textheight = lcd.getTextSize(tostring(max))
-		lcd.drawNumber( 333, y, max, UNIT_SECONDS, 0, RIGHT ) -- RIGHT justification doesn't work yet in Ethos so use workaround in above line
+		lcd.drawNumber( 333, y, max, UNIT_SECONDS, 0, RIGHT )
 		lcd.drawText( 333, y, 's', 0 )
 
 		if i < task.current - 1 then

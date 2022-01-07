@@ -2,42 +2,58 @@
 	F3K Training - 	Mike, ON4MJ
 
 	WBig/view_m.lua
-	Big widget view for the Big Ladder task
+	Fly-off Task M (Increasing time by 2 minutes “Huge Ladder”)
+    Each competitor must launch his/her model glider exactly three (3) times to achieve three (3) target times as follows: 3:00 (180 seconds), 5:00 (300 seconds), 7:00 (420 seconds). The targets must be flown in the increasing order as specified. The actual times of each flight up to (not exceeding) the target time will be added up and used as the final score for the task. The competitors do not have to reach or exceed the target times to count each flight time.
+    Working time: 15 minutes.
 --]]
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_m.lua' )
-local widget = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 
-function task.display( context )
-	widget.drawCommon( context, task )
+function task.display(widget)
+	local widget_w, widget_h = lcd.getWindowSize()
+	local text_w, text_h = lcd.getTextSize("A")
+	vbase.drawCommon( widget, task )
 
+	print("FTRAIN: TEST 1")
+	lcd.color(WHITE)
 	if not task.done then
-		OpenTX.lcd.drawText( 132, 133, task.MAX_FLIGHT_TIME .. 's: ', 0 )
-		task.timer2.drawReverse( 184, 129, MIDSIZE )
+		lcd.font(FONT_XL)
+		lcd.drawText( 123, 133, task.MAX_FLIGHT_TIME .. 's: ', RIGHT )
+		task.timer2.drawReverse( 143, 133, 0 )
+		lcd.font(FONT_L)
 	else
-		OpenTX.lcd.drawText( 132, 129, 'Done !', MIDSIZE )
+		lcd.drawText( 113, 140, 'Done !', 0 )
 	end
 
-	local total = 0
-	for i=0,4 do
-		local y = 10 + 21 * i
-		local max = 60 + 30 * i
-		OpenTX.lcd.drawNumber( 318, y, max, RIGHT )
-		OpenTX.lcd.drawText( 318, y, 's', 0 )
+	print("FTRAIN: TEST 2")
 
+	local total = 0
+	for i=0,2 do
+		--print("i : " .. i)
+		local y = 8 + text_h * i
+		local max = 180 + 120 * i
+		lcd.drawNumber( 333, y, max, UNIT_SECONDS, 0, RIGHT )
+		lcd.drawText( 333, y, 's', 0 )
 		if i < task.current - 1 then
-			local val = task.times.getVal( 7 - task.current + i )
-			f3kDrawTimer( 338, y, val, 0 )
+		--print (5-task.current+i)
+			local val = task.times.getVal( 5-task.current+i )
+			--print( val )
+			f3kDrawTimer( 333+text_w*2, y, val, 0 )
 			total = total + math.min( max, val )
+		else
+			local text_w_timer, text_h_timer = lcd.getTextSize("00:00")
+			lcd.drawText( 333+text_w*2 + text_w_timer/2, y, "--:--", CENTERED )
 		end
 	end
 
-	OpenTX.lcd.drawFilledRectangle( 280 + 1, 126, context.zone.w - 281, context.zone.h - 126, TEXT_INVERTED_BGCOLOR )
-	f3kDrawTimer( 312, 138, total, INVERS )
+	--lcd.drawFilledRectangle( 160, 47, 52, 18, 0 )
+	f3kDrawTimer( 295, 133, total, 0 )  -- was bold and inverted text
+	lcd.drawText( 370, 133, "Total", 0 )
 
-	return OpenTX.backgroundRun( task )
+	return task.background( widget )
 end
 
 
