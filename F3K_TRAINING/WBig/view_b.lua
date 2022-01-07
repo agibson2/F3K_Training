@@ -13,6 +13,7 @@ local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 function task.display( widget )
 	if (DebugFunctionCalls) then print("FTRAIN: viewB.display()") end
 	local widget_w, widget_h = lcd.getWindowSize()
+	widget_w = widget_w - vbase.f3kDashboardOffset  -- exclude right side for dashboard
 	vbase.drawCommonLastBest( widget, task )
 
 	if task.state == 4 then
@@ -26,7 +27,9 @@ function task.display( widget )
 		lcd.drawText( 305, 25, 'Done !', 0 )
 	end
 
+	lcd.color(BLACK)
 	lcd.drawLine( 280, 82, widget_w, 82, SOLID, 2 )
+	lcd.color(WHITE)
 	local text_w, text_h = lcd.getTextSize("")
 	for i=1,task.COUNT do
 		task.times.draw( 312, 70 + text_h*i, i, 0 )

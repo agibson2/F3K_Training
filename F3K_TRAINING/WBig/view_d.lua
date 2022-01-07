@@ -24,16 +24,18 @@ function task.display( widget )
 
 	display.drawCommon( widget, task )
 
-	lcd.font(FONT_L)
 	lcd.color(WHITE)
 	if not task.done then
+	lcd.font(FONT_XL)
 		--lcd.drawText( 312, 53, '5 min target ', 0 )
-		lcd.drawText( 85, 133, 'Current: ', 0 )
-		task.timer2.drawReverse( 200, 133, 0 )
+		lcd.drawText( 35, 133, 'Current: ', 0 )
+		task.timer2.drawReverse( 170, 133, 0 )
 	else
+		lcd.font(FONT_L)
 		lcd.drawText( 312, 53, 'Done !', 0 )
 	end
 
+	lcd.font(FONT_L)
 	local text_w, text_h = lcd.getTextSize("A")
 	local total = 0
 	for i=0,1 do

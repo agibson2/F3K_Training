@@ -10,7 +10,7 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_ff.lua' )
-
+local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 function task.display( widget )
 	if (DebugFunctionCalls) then print("FTRAIN: ff_display()") end
@@ -44,15 +44,17 @@ function task.display( widget )
 	lcd.font(FONT_XL)
 
 	task.timer1.draw( 90, 33, 0 )
-	lcd.font(FONT_L)
-	lcd.drawText( 25, 133, "Session:", 0)
-	task.timer2.draw( 150, 133, 0 )
+	lcd.drawText( 20, 133, "Session:", 0)
+	task.timer2.draw( 154, 133, 0 )
 	--f3kDrawTimer( 190, 133, getValue( 'clock' ), 0 )
 
+	lcd.font(FONT_L)
 	local text_w, text_h = lcd.getTextSize("")
 	for i=0,9 do
 		task.times.draw( 312, 3 + text_h*i, i+1, 0 )
 	end
+	
+	vbase.drawDashboard( widget )
 	return task.background(widget)
 end
 

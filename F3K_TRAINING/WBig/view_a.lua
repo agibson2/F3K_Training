@@ -7,13 +7,14 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_a.lua' )
-local view = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 
 function task.display( widget )
 	if (DebugFunctionCalls) then print("FTRAIN: viewA.display()") end
 	local widget_w, widget_h = lcd.getWindowSize()
-	view.drawCommonLastBest( widget, task )
+	widget_w = widget_w - vbase.f3kDashboardOffset  -- exclude right side for dashboard
+	vbase.drawCommonLastBest( widget, task )
 
 	if task.state == 4 then	-- landed
 		if task.possibleImprovement > 0 then
@@ -26,9 +27,10 @@ function task.display( widget )
 		lcd.drawText( 305, 25, 'Done !', 0 )
 	end
 
-	lcd.drawLine( 280, 90, widget_w - 1, 90, SOLID, 2 )
 	task.times.draw( 312, 98, 1, 0 )
-
+	lcd.color(BLACK)
+	lcd.drawLine( vbase.verticaldividerx, 90, widget_w - 1, 90, SOLID, 2 )
+	
 	return task.background( widget )
 end
 

@@ -97,7 +97,8 @@ function f3klaunched(widget)
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed		
 		if lastTimeLanded > 0 then
-			if (os.clock() - lastTimeLanded) > 0.060 then   -- 60 milliseconds
+			print("FTRAIN: f3klaunched() lastTimeLanded > 0 os.clock()=" .. os.clock() .. " lastTimeLanded=" .. lastTimeLanded .. " difference=" .. os.clock() - lastTimeLanded)
+			if (os.clock() - lastTimeLanded) > 0.6 then   -- 600 milliseconds
 				ret = true
 			end
 			lastTimeLanded = 0
@@ -177,7 +178,7 @@ local function create()
 	if (DebugFunctionCalls) then print("FTRAIN: create()") end
 	currentTask = createMenu()
 	checkTimers()
-	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, backgroundcolor=lcd.RGB(0,40,0)}
+	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_rxbatteryv=system.getSource("RxBatt")}
 end
 
 local function read(widget)
@@ -188,6 +189,8 @@ local function read(widget)
 		widget.prelaunchswitch = storage.read("source")
 		widget.menuscrollencoder = storage.read("source")
 		widget.backgroundcolor = storage.read("color")
+		widget.sensor_rssi = storage.read("source")
+		widget.sensor_rxbatteryv = storage.read("source")
 	end
 end
 
@@ -199,6 +202,8 @@ local function write(widget)
 		storage.write("source", widget.prelaunchswitch)
 		storage.write("source", widget.menuscrollencoder)
 		storage.write("color", widget.backgroundcolor)
+		storage.write("source", widget.sensor_rssi)
+		storage.write("source", widget.sensor_rxbatteryv)
 	end
 end
 
@@ -288,6 +293,10 @@ local function configure(widget)
 	form.addSwitchField(line, nil, function() return widget.prelaunchswitch end, function(value) widget.prelaunchswitch = value end)
 	line = form.addLine("Menu Scroll Analog")
 	form.addSourceField(line, nil, function() return widget.menuscrollencoder end, function(value) widget.menuscrollencoder = value end)
+	line = form.addLine("RSSI")
+	form.addSwitchField(line, nil, function() return widget.sensor_rssi end, function(value) widget.sensor_rssi = value end)
+	line = form.addLine("Receiver battery voltage")
+	form.addSwitchField(line, nil, function() return widget.sensor_rxbatteryv end, function(value) widget.sensor_rxbatteryv = value end)
 end
 
 

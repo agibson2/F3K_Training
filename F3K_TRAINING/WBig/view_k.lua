@@ -17,8 +17,10 @@ function task.display( widget )
 
 	lcd.color(WHITE)
 	if not task.done then
-		lcd.drawText( 153, 133, task.MAX_FLIGHT_TIME .. 's: ', RIGHT )
-		task.timer2.drawReverse( 163, 133, 0 )
+		lcd.font(FONT_XL)
+		lcd.drawText( 123, 133, task.MAX_FLIGHT_TIME .. 's: ', RIGHT )
+		task.timer2.drawReverse( 143, 133, 0 )
+		lcd.font(FONT_L)
 	else
 		lcd.drawText( 113, 140, 'Done !', 0 )
 	end
