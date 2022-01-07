@@ -46,13 +46,13 @@ function vbase.drawDashboard( widget )
 		lcd.drawLine( widget_w, 0, widget_w, 8 + 8 + text_h*2 ) -- bottom of f3k logo area
 
 		lcd.color(WHITE)
-		if widget.sensor_rxbatteryv ~= nil then
+		if widget.sensor_battery ~= nil then
 			lcd.drawText( f3kTextOffset + 8, text_h*4, "Rx Battery" )
-			lcd.drawNumber( f3kTextOffset + 8 + text_w*1, text_h*5, widget.sensor_rxbatteryv:value(), UNIT_VOLT)
+			lcd.drawNumber( f3kTextOffset + 8 + text_w*1, text_h*5, widget.sensor_battery:value(), UNIT_VOLT, 2)
 		end
 		if widget.sensor_rssi ~= nil then
 			lcd.drawText( f3kTextOffset + 8, text_h*7, "Rx RSSI" )
-			lcd.drawNumber( f3kTextOffset + 8 + text_w*1, text_h*8, widget.sensor_rssi:value() )
+			lcd.drawNumber( f3kTextOffset + 8 + text_w*1, text_h*8, widget.sensor_rssi:value(), UNIT_DB )
 		end
 	end
 end

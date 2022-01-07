@@ -174,11 +174,45 @@ local function checkTimers( widget )
 	end
 end
 
+-- Switch position special characters... we can't use getSource("SA-") as the special characters seem to cause problems so we use member= instead
+-- CATEGORY_SWITCH_POSITION members...
+-- member[0]=SA┴  (UP)
+-- member[1]=SA-  (MID)
+-- member[2]=SA├  (DOWN)
+-- member[3]=SB┴
+-- member[4]=SB-
+-- member[5]=SB├
+-- member[6]=SC┴
+-- member[7]=SC-
+-- member[8]=SC├
+-- member[9]=SD┴
+-- member[10]=SD-
+-- member[11]=SD├
+-- member[12]=SE┴
+-- member[13]=SE-
+-- member[14]=SE├
+-- member[15]=SF┴
+-- member[16]=SF-
+-- member[17]=SF├
+-- member[18]=SG┴
+-- member[19]=SG-
+-- member[20]=SG├
+-- member[21]=SH┴
+-- member[22]=SH-
+-- member[23]=SH├
+-- member[24]=SI┴
+-- member[25]=SI-
+-- member[26]=SI├
+-- member[27]=SJ┴
+-- member[28]=SJ-
+-- member[29]=SJ├
+
 local function create()
 	if (DebugFunctionCalls) then print("FTRAIN: create()") end
 	currentTask = createMenu()
 	checkTimers()
-	return {menuswitch=nil, startswitch=nil, prelaunchswitch=nil, menuscrollencoder=nil, backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_rxbatteryv=system.getSource("RxBatt")}
+	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt")}
 end
 
 local function read(widget)
@@ -190,7 +224,7 @@ local function read(widget)
 		widget.menuscrollencoder = storage.read("source")
 		widget.backgroundcolor = storage.read("color")
 		widget.sensor_rssi = storage.read("source")
-		widget.sensor_rxbatteryv = storage.read("source")
+		widget.sensor_battery = storage.read("source")
 	end
 end
 
@@ -203,7 +237,7 @@ local function write(widget)
 		storage.write("source", widget.menuscrollencoder)
 		storage.write("color", widget.backgroundcolor)
 		storage.write("source", widget.sensor_rssi)
-		storage.write("source", widget.sensor_rxbatteryv)
+		storage.write("source", widget.sensor_battery)
 	end
 end
 
@@ -294,9 +328,9 @@ local function configure(widget)
 	line = form.addLine("Menu Scroll Analog")
 	form.addSourceField(line, nil, function() return widget.menuscrollencoder end, function(value) widget.menuscrollencoder = value end)
 	line = form.addLine("RSSI")
-	form.addSwitchField(line, nil, function() return widget.sensor_rssi end, function(value) widget.sensor_rssi = value end)
+	form.addSourceField(line, nil, function() return widget.sensor_rssi end, function(value) widget.sensor_rssi = value end)
 	line = form.addLine("Receiver battery voltage")
-	form.addSwitchField(line, nil, function() return widget.sensor_rxbatteryv end, function(value) widget.sensor_rxbatteryv = value end)
+	form.addSourceField(line, nil, function() return widget.sensor_battery end, function(value) widget.sensor_battery = value end)
 end
 
 
