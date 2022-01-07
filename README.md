@@ -37,3 +37,4 @@ This is how I configured the widget...
 - PreLaunch Switch Position: SI down
 - Menu Scroll Analog: Throttle (no motor on DLGs as i use flaps for throttle)
 
+- Optionally set the RSSI and RxBattery sensor options to have them displayed on right hand side
