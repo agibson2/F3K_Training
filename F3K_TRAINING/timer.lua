@@ -87,7 +87,7 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 		local wasRunning = running
 		--FIXME Hack to pause timer in Ethos.. it works but unsure what it is selecting as source.
 		timer:activeCondition( system.getSource({category=0, member=1, options=0}) ) 
-
+		running = false
 		return wasRunning, timer:value()
 	end
 

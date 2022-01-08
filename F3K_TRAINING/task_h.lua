@@ -103,10 +103,39 @@ function taskH.flyingState(widget)
 			local t = taskH.timer2.getVal()
 			if t ~= taskH.previousTime then
 				local sec = t % 60
-				if sec > 44 or sec == 30 then
-					taskH.playNumber( sec, (sec == 30) and OpenTX.SECONDS or 0, 0 )
-					taskH.previousTime = t
+				local minfract = t / 60
+				local min = math.floor( minfract )
+				if sec == 30 or sec == 45 then
+					if min > 0 then
+						system.playNumber( min, UNIT_MINUTE, 0 )
+					end
+					system.playNumber( sec, UNIT_SECOND, 0 )  -- play full number plus seconds at 30 and 45
+				elseif (sec > 49) then
+					last10 = 60 - sec
+					system.playNumber( last10, 0, 0 )  -- play the last 10 seconds up to next minute
+				elseif min > 0 and sec == 0 then
+					system.playNumber( min, UNIT_MINUTE, 0 )  -- also announce top of the minute
+					
+					if taskH.target == min then
+						taskH.playSound("targach")
+						local check = taskH.getDoneList()
+						local nexttarg = nil
+						for i=4,1,-1 do
+							if not check[i] and i ~= taskH.target then
+								nexttarg = i
+								break
+							end
+						end
+						if nexttarg ~= nil then
+							taskH.playSound("nxttarget")
+							system.playNumber(nexttarg, UNIT_MINUTE, 0) -- anounce next target if we meet the time
+						end
+					end
+				elseif min + 1 == taskH.target and sec == 15 then
+					taskH.playSound("target45")
 				end
+				
+				taskH.previousTime = t
 			end
 		end
 	end

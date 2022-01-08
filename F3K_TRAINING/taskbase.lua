@@ -47,8 +47,8 @@ function taskBase.playTime( time )
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.playTime()") end
 	local val = math.floor( time / 60 )
 	if val > 0 then
-	    				taskBase.playSound( 'remaining' )
-		system.playNumber( val, UNIT_MINUTES, 0 )
+		taskBase.playSound( 'remaining' )
+		system.playNumber( val, UNIT_MINUTE, 0 )
 	end
 	val = time % 60
 	if val > 0 then

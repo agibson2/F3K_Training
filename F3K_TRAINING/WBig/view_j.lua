@@ -13,6 +13,7 @@ local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 function task.display( widget )
 	local widget_w, widget_h = lcd.getWindowSize()
 	local text_w, text_h = lcd.getTextSize("")
+	widget_w = widget_w - vbase.f3kDashboardOffset  -- exclude right side for dashboard
 	vbase.drawCommonLastBest( widget, task )
 
 	if task.state == 4 then

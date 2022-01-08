@@ -97,7 +97,7 @@ function f3klaunched(widget)
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed		
 		if lastTimeLanded > 0 then
-			print("FTRAIN: f3klaunched() lastTimeLanded > 0 os.clock()=" .. os.clock() .. " lastTimeLanded=" .. lastTimeLanded .. " difference=" .. os.clock() - lastTimeLanded)
+			if (DebugLaunched) then print("FTRAIN: f3klaunched() lastTimeLanded > 0 os.clock()=" .. os.clock() .. " lastTimeLanded=" .. lastTimeLanded .. " difference=" .. os.clock() - lastTimeLanded) end
 			if (os.clock() - lastTimeLanded) > 0.6 then   -- 600 milliseconds
 				ret = true
 			end
