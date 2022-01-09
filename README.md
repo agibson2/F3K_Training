@@ -1,25 +1,10 @@
-# F3K TRAINING for FrSky Ethos radios 
+# F3K TRAINING for FrSky Ethos radios
+
+Requires at least Ethos version 1.1.0 alpha15.  Alpha versions of Ethos are not meant to be flown even though I have been doing so testing this script.  With that said though, I recommend waiting until the official release of Ethos 1.1.0 is out before using this.
 
 This is code originally by Mike (ON4MJ on rcgroups) with previous changes also by me to help convert it to a Widget for OpenTX.  It was then modified by Mattoia90 to include some newer f3k tasks as well as add some missing views.  With this forked version though, OpenTX is no longer working.  A big thanks for all the work that was put into this over the years.  This new fork is a work in progress to get it working on the new FrSky Ethos Lua RC radios.  It currently requires an alpha build of Ethos 1.1.0 alpha 12 for it to work.
 
-One of the main reasons I like ON4MJ's script so much is that the menu is controlled via stick input to very quickly position it on the task you want and selecting tasks and starting them use switches.  Launching is detecting by holding and then at some point releasing the pre-launch switch position that you define.  I use button SI for that which is on the back of tthe transmitter.
-
-Tasks working...
-- Free Flight
-- TaskA
-- TaskB
-- TaskC
-- TaskD
-- TaskF
-- TaskG
-- TaskH
-- TaskI
-- TaskJ
-- TaskK
-- TaskL
-- TaskM
-
-Version 4.0 Work in progress for FrSky Ethos radios using the alpha builds available from FrSky.  It will likely take me a LONG LONG time to get it presentable and working as I still don't fully understand how it all works.  It has taken me way too many hours just to get Free Flight partially working and Ethos Lua is still in alpha testing and API changing weekly.
+One of the main reasons I like ON4MJ's script so much is that the menu is controlled via stick input to very quickly position it on the task you want and selecting tasks and starting the task using a switch.  No need to push buttons or touch the screen.  Launching is detected by holding and then at some point releasing the pre-launch switch position that you define.  I use button SI for that which is on the back of tthe transmitter.
 
 This version does not work with OpenTX as there were too many changes for me to understand how to make them work or to even know if it is possible to keep compatibility with OpenTX.
 
