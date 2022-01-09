@@ -68,6 +68,7 @@ DebugMenu=false
 DebugLaunched=false
 DebugLanded=false
 DebugTimes=false
+DebugTimers=false
 
 if(FTRAINDebug >= 1) then
 	DebugInvalidateWindow=true
@@ -352,9 +353,9 @@ createMenu = function()
 		{ id='K', desc='Big Ladder' },
 		{ id='L', desc='One flight' },
 		{ id='M', desc='Huge Ladder' },
-		{ id='A', desc='Last flight (7 min) NotWorking', win=7 },
-		{ id='B', desc='Last two (7 min) NotWorking', win=7 },
-		{ id='QT', desc='QT practice (15 x 40s) NotWorking' },
+		{ id='A', desc='Last flight (7 min)', win=7 },
+		{ id='B', desc='Last two (7 min)', win=7 },
+		{ id='QT', desc='QT practice (15 x 40s)' },
 		{ id='FF', desc='Free flight (simple timer)' }
 	}
 

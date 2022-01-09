@@ -10,6 +10,7 @@
 --]]
 
 function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
+	if (DebugFunctionCalls) then print("FTRAIN: timer.f3kCreateTimer()=" .. timerId .. " startValue=" .. startValue) end
 	-- Precondition: timerId is either 0 or 1
 	local id = timerId
 	local timer = model.getTimer(id)
@@ -42,12 +43,6 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 		timer:countdownStart(0)
 		timer:countdownStep(60)
 	end
-			
-	-- if timerId == 'f3kOne' then
-		-- print("FTRAIN: timer: f3kCreateTimer() Setting audiomode to voice and setting countdown start and step")
-		-- timer:countdownStart(60)
-		-- timer:countdownStep(30)
-	-- end
 	
 	local originalStartValue = timer:start()
 	local target = 0
@@ -62,7 +57,7 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 	end
 
 	local function start( newStartValue )
-		--model.resetTimer( id )
+		if (DebugFunctionCalls) then print("FTRAIN: timer.start()") end
 
 		if not newStartValue then
 			newStartValue = originalStartValue
@@ -79,11 +74,10 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 		end
 		
 		timer:activeCondition({category=CATEGORY_ALWAYS_ON, member=1, options=0})
-
-		--model.setTimer( id, timer )  --OpenTx way to set timer parameters
 	end
 
 	local function stop()
+		if (DebugFunctionCalls) then print("FTRAIN: timer.stop()") end
 		local wasRunning = running
 		--FIXME Hack to pause timer in Ethos.. it works but unsure what it is selecting as source.
 		timer:activeCondition( system.getSource({category=0, member=1, options=0}) ) 
@@ -93,40 +87,55 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 
 	local function draw( x, y, att )
 		local thetime = timer:value()
+		local isnegative=false
+		if thetime < 0 then
+			isnegative=true
+			thetime=math.abs(thetime)
+		end
+		
 		local theseconds = thetime % 60
 		local theminutes = math.floor(thetime/60)
-		local textTimer = string.format("%02d:%02d", theminutes, theseconds)
+		local texttimer
+		if isnegative then
+			theminutes=-theminutes
+			textTimer = string.format("-%01d:%02d", theminutes, theseconds)
+		else
+			textTimer = string.format("%02d:%02d", theminutes, theseconds)
+		end
 		lcd.drawText(x, y, textTimer, LEFT)
 		return val
 	end
 
 	local function drawReverse( x, y, att )
 		local thetime = timer:value()
+		local isnegative=false
+		if thetime < 0 then
+			isnegative=true
+			thetime=math.abs(thetime)
+		end
+		
+		--FIXME need to draw a box or something grey
 		local theseconds = thetime % 60
 		local theminutes = math.floor(thetime/60)
-		--FIXME need to draw a box or something grey
-		local textTimer = string.format("%02d:%02d", theminutes, theseconds)
+		local texttimer
+		if isnegative then
+			theminutes=-theminutes
+			textTimer = string.format("-%01d:%02d", theminutes, theseconds)
+		else
+			textTimer = string.format("%02d:%02d", theminutes, theseconds)
+		end
+
 		lcd.drawText(x, y, textTimer, LEFT)
 		return val
 	end
 
-
-	-- "constructor"
-	--timer.countdownBeep = countdownBeep
-	--timer.minuteBeep = minuteBeep
-	--timer.persistent = 0
-
 	if startValue then
+		if (DebugTimers) then print("FTRAIN: timer startValue=" .. startValue) end
 		originalStartValue = startValue
 		timer:start(startValue)
 		timer:value(startValue)
 		target = startValue
 	end
-
-	--FIXME need to pause/disable timer when Ethos supports it
-	--timer.mode = 0
-	--model.setTimer( id, timer )
-
 
 	return {
 		start = start,
