@@ -18,7 +18,6 @@ This version does not work with OpenTX as there were too many changes for me to 
 ## CUSTOMIZE SWITCH
 Once install, you can add the F3K Training widget to your model config and then configure it in the Widget config for the F3K Training widget.
 This is how I configured the widget...
-- Sim mode: disabled (that is for when it is running on the sim as os.clock() has different precision on the sim vs radio)
 - Menu Select Switch Position: SD-
 - Start Switch Position: SD down
 - PreLaunch Switch Position: SI down
