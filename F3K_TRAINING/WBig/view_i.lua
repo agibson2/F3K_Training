@@ -15,7 +15,7 @@ function task.display( widget )
 	vbase.drawCommonLastBest( widget, task )
 
 	if task.state == 4 and task.times.getVal( task.BEST_COUNT ) >= task.timer1.getVal() then
-		lcd.drawText( 305, 12, 'Done !', 0 )
+		lcd.drawText( 305, 12, 'Done !' )
 	end
 	lcd.drawLine( 280, 54, widget_w - 1, 54, SOLID, 2 )
 

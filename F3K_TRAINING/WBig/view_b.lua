@@ -18,7 +18,7 @@ function task.display( widget )
 
 	if task.state == 4 then
 		if task.possibleImprovement > 0 and task.flightCount >= task.COUNT then
-			lcd.drawText( 300, 12, 'Improve margin', 0 )
+			lcd.drawText( 300, 12, 'Improve margin' )
 			f3kDrawTimer( 350, 55, task.possibleImprovement, 0 )
 		end
 	end

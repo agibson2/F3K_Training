@@ -27,12 +27,11 @@ function task.display( widget )
 	lcd.color(WHITE)
 	if not task.done then
 	lcd.font(FONT_XL)
-		--lcd.drawText( 312, 53, '5 min target ', 0 )
-		lcd.drawText( 35, 133, 'Current: ', 0 )
+		lcd.drawText( 35, 133, 'Current: ' )
 		task.timer2.drawReverse( 170, 133, 0 )
 	else
 		lcd.font(FONT_L)
-		lcd.drawText( 312, 53, 'Done !', 0 )
+		lcd.drawText( 312, 53, 'Done !' )
 	end
 
 	lcd.font(FONT_L)
@@ -42,7 +41,7 @@ function task.display( widget )
 	--print("i : " .. i)
 		local y = text_h * i
 		local max = 300
-		lcd.drawText( 312, y, '5min', 0 )
+		lcd.drawText( 312, y, '5min' )
 
 		if i < task.current - 1 then
 		--print (4-task.current+i)

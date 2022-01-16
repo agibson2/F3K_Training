@@ -36,13 +36,13 @@ function task.display( widget )
 	lcd.drawLine( 0, horizontaldividery, verticaldividerx, horizontaldividery, SOLID, 2 )
 	lcd.font(FONT_L)
 	lcd.color(WHITE)
-	lcd.drawText( 10, 0, task.name, 0 )
+	lcd.drawText( 10, 0, task.name )
 	lcd.color(BLACK)
 	lcd.drawLine( verticaldividerx, 0, verticaldividerx, widget_h - 1, SOLID, 2 )
 
 	lcd.color(WHITE)
 	if task.state == 5 then
-		lcd.drawText( 110, 133, 'Done !', 0 )
+		lcd.drawText( 110, 133, 'Done !' )
 	end
 
 	for i=0,4 do
@@ -52,7 +52,7 @@ function task.display( widget )
 	lcd.drawFilledRectangle( 281, 130, widget_w - 281, widget_h - 130, 0 )
 	lcd.color( WHITE )
 	f3kDrawTimer( 312, 139, task.times.getTotal(), 0 )
-	lcd.drawText( 390, 139, "Total", 0 )
+	lcd.drawText( 390, 139, "Total" )
 
 	return task.background( widget )
 end

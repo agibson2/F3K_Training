@@ -128,7 +128,7 @@ end
 function f3kDrawTimer( x, y, value, flags )
 	if value == nil then
 		local text_w_timer, text_h_timer = lcd.getTextSize("00:00")
-		lcd.drawText( x + text_w_timer/2, y, '--:--', CENTERED + flags )
+		lcd.drawText( x + text_w_timer/2, y, '--:--', CENTERED | flags )
 	else
 		local minutesText = math.floor(value / 60)
 		local secondsText = value % 60
@@ -139,8 +139,6 @@ end
 F3K_SCRIPT_PATH = "/SCRIPTS/F3K_TRAINING/"
 SOUND_PATH = F3K_SCRIPT_PATH .. 'sounds/'
 
---OpenTX = dofile( F3K_SCRIPT_PATH .. 'opentx_srv.lua' )
-
 createTimer = dofile( F3K_SCRIPT_PATH .. 'timer.lua' )
 createTimeKeeper = dofile( F3K_SCRIPT_PATH .. 'timekeeper.lua' )
 
@@ -149,7 +147,7 @@ local currentTask
 	
 local function drawEmptyTimer( x, y, flags )
 	local text_w_timer, text_h_timer = lcd.getTextSize("00:00")
-	lcd.drawText( x + text_w_timer/2, y, '--:--', CENTERED + flags )
+	lcd.drawText( x + text_w_timer/2, y, '--:--', CENTERED | flags )
 end
 
 local timersavailable = false
@@ -260,21 +258,21 @@ local function background(widget)
 end
 
 local function unsupportedDisplay( widget )
-	lcd.font(S)
+	lcd.font(FONT_S)
 	local text_w, text_h = lcd.getTextSize("")
 	 
-	lcd.drawText( 0, 0, 'F3K Training', BOLD )
-	lcd.drawText( 0, text_h, 'Unsupported widget size', 0 )
+	lcd.drawText( 0, 0, 'F3K Training' )
+	lcd.drawText( 0, text_h, 'Unsupported widget size' )
 	return true
 end
 
 local function noTimersAvailable( widget )
-	lcd.font(S)
+	lcd.font(FONT_S)
 	local text_w, text_h = lcd.getTextSize("")
 	 
-	lcd.drawText( 0, 0, 'F3K Training', BOLD )
-	lcd.drawText( 0, text_h, 'Not enough timers available.', 0 )
-	lcd.drawText( 0, text_h * 2, 'Need 2 available timers.', 0 )
+	lcd.drawText( 0, 0, 'F3K Training' )
+	lcd.drawText( 0, text_h, 'Not enough timers available.' )
+	lcd.drawText( 0, text_h * 2, 'Need 2 available timers.' )
 	return true
 end
 
@@ -291,7 +289,7 @@ local function display( widget )
 		running = noTimersAvailable( widget )
 	elseif (widget.menuswitch == nil or widget.startswitch == nil or widget.prelaunchswitch == nil or widget.menuscrollencoder == nil) then
 		lcd.color(BLACK)
-		lcd.drawText(0, 0, "Configure widget needed", 0)
+		lcd.drawText(0, 0, "Configure widget needed" )
 		return
 	elseif widget_w  >= 784 and widget_h >= 294 then
 		-- X20(s) Large Widget
@@ -299,15 +297,6 @@ local function display( widget )
 	else
 		running = unsupportedDisplay( widget )
 	end
-
-   -- if widget.menuswitch ~= nil then
-    --    lcd.font(XL)
-	--	--lcd.drawText(w/2, ((h - text_h)/2) - text_h, "widget.menuswitch:raw() = "..widget.menuswitch:raw(), CENTERED)
-    --    lcd.drawText(w/2, (h - text_h)/2, "widget.menuswitch:value() = "..widget.menuswitch:value(), CENTERED)
-	--	--lcd.drawText(w/2, ((h - text_h)/2) + text_h, "widget.menuswitch:unit() = "..widget.menuswitch:unit(), CENTERED)
-	--	--lcd.drawText(w/2, ((h - text_h)/2) + (text_h * 2), "widget.menuswitch:stringUnit() = "..widget.menuswitch:unit(), CENTERED)
-	--	lcd.drawText(w/2, ((h - text_h)/2) + (text_h * 3), "widget.menuswitch:stringValue() = "..widget.menuswitch:stringValue(), CENTERED)
-    --end
 
 	if not running then
 		currentTask = createMenu()
@@ -373,16 +362,7 @@ createMenu = function()
 		local widget_w, widget_h = lcd.getWindowSize()
 		if (DebugMenu) then print("widget_h=", widget_h, "widget_w=", widget_w) end
 
--- Define positions
-		if widget_h < 50 then
-			lcd.font(XS)
-		elseif widget_h < 80 then
-			lcd.font(S)
-		elseif widget_h > 170 then
-			lcd.font(XL)
-		else
-			lcd.font(STD)
-		end
+		lcd.font(XL)
 
 		local text_w, text_h = lcd.getTextSize("A")
 		if (DebugMenu) then print("text_w = ", text_w, "text_h = ", text_h) end
@@ -390,47 +370,35 @@ createMenu = function()
 		local menuEntriesShown = math.floor( widget_h / text_h )
 		if(DebugMenu) then print("F3KTRAIN: menu.display() menuEntriesShown = ", menuEntriesShown) end
 		for i=0,menuEntriesShown - 1 do
-			local att = STD
 			local halfMenuEntries = math.floor( menuEntriesShown / 2 )
-			if i == halfMenuEntries then
-				lcd.color(widget.backgroundcolor)
-				lcd.drawFilledRectangle( 0, 1 + text_h * i, widget_w - 130 - text_w - text_w, text_h )
-				--att = BOLD
-			end
 			local ii = i + selection - halfMenuEntries + 1
 			if ii >= 1 and ii <= #TASKS then
 				if i == halfMenuEntries then
+					lcd.color(widget.backgroundcolor)
+					lcd.drawFilledRectangle( 0, 1 + text_h * i, widget_w - 130 - text_w - text_w, text_h )
 					lcd.color(WHITE)
 				else
-					lcd.color(lcd.RGB(190,190,190))
+					lcd.color(lcd.GREY(190))
 				end
-				lcd.drawText( text_w , 1 + text_h * i, TASKS[ ii ].id, att )
-				if (DebugMenu) then print("FTRAIN: menu.display() LCDDraw", text_w, 1+ text_h * i, TASKS[ ii ].id, att ) end
-				lcd.drawText( text_w * 4, 1 + text_h * i, TASKS[ ii ].desc, att )
+				lcd.drawText( text_w , 1 + text_h * i, TASKS[ ii ].id )
+				if (DebugMenu) then print("FTRAIN: menu.display() LCDDraw", text_w, 1+ text_h * i, TASKS[ ii ].id ) end
+				lcd.drawText( text_w * 4, 1 + text_h * i, TASKS[ ii ].desc )
 			end
 		end
 
+		-- Draw the F3K Training name on right side of screen
 		local menuF3kTextOffset = widget_w - 130
-
-		if menuF3kTextOffset > 22 * text_w then
-			--lcd.color( 192, 192, 192 )  -- LIGHT_GREY = Silver
-			lcd.color( widget.backgroundcolor )  -- DARKGREY = Gray
-			lcd.drawFilledRectangle( menuF3kTextOffset - 3, 8, 130, 80 )
-			--lcd.color( 128, 128, 128 )  -- DARKGREY = Gray
-			lcd.color( WHITE )  -- DARKGREY = White
-			lcd.drawText( menuF3kTextOffset, 8, 'F3K', DBLSIZE )
-			lcd.drawText( menuF3kTextOffset, 48, 'Training', 0 )
-		end
+		lcd.color( widget.backgroundcolor )
+		lcd.drawFilledRectangle( menuF3kTextOffset - 3, 8, 130, 80 )
+		lcd.color( WHITE )
+		lcd.drawText( menuF3kTextOffset, 8, 'F3K' )
+		lcd.drawText( menuF3kTextOffset, 48, 'Training' )
 		
-		lcd.color( BROWN )  -- LIGHT_GREY = Gray
-		--lcd.drawFilledRectangle( widget_h - text_w * 4 - 2, widget_h - text_h, text_w * 4, text_h - 1, GREY_DEFAULT )
-		--lcd.color( BROWN ) -- DARKGREY = Gray
-		lcd.drawText( widget_w - text_w * 4 - 2, widget_h - text_h, 'v', 0 )
-		lcd.drawText( widget_w - text_w * 3 - 2, widget_h - text_h, F3KVersion, 0 )
-		lcd.color( BLACK ) -- BLACK = Black
+		lcd.color( lcd.GREY(192) )  -- LIGHT_GREY
+		lcd.drawText( widget_w - text_w * 4 - 2, widget_h - text_h, 'v' )
+		lcd.drawText( widget_w - text_w * 3 - 2, widget_h - text_h, F3KVersion )
+		lcd.color( BLACK )
 
-		--paintRanOnce=true
-		--needToDisplayNewStuff=false
 		return true
 	end
 	

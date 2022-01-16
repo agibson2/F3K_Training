@@ -25,7 +25,7 @@ function task.display(widget)
 		task.timer2.drawReverse( 143, 133, 0 )
 		lcd.font(FONT_L)
 	else
-		lcd.drawText( 113, 140, 'Done !', 0 )
+		lcd.drawText( 113, 140, 'Done !' )
 	end
 
 	print("FTRAIN: TEST 2")
@@ -36,7 +36,7 @@ function task.display(widget)
 		local y = 8 + text_h * i
 		local max = 180 + 120 * i
 		lcd.drawNumber( 333, y, max, UNIT_SECONDS, 0, RIGHT )
-		lcd.drawText( 333, y, 's', 0 )
+		lcd.drawText( 333, y, 's' )
 		if i < task.current - 1 then
 		--print (5-task.current+i)
 			local val = task.times.getVal( 5-task.current+i )

@@ -16,11 +16,11 @@ function task.display(widget)
 
 	lcd.color(WHITE)
 	if not task.done then
-		lcd.drawText( 65, 133, 'Current: ', 0 )
+		lcd.drawText( 65, 133, 'Current: ' )
 		local text_w, text_h = lcd.getTextSize("Current: ")
 		task.timer2.drawReverse( 85 + text_w, 133, 0 )
 	else
-		lcd.drawText( 95, 133, 'Done !', 0 )
+		lcd.drawText( 95, 133, 'Done !' )
 	end
 
 	local text_w, text_h = lcd.getTextSize("0")
@@ -31,14 +31,11 @@ function task.display(widget)
 	--print("i : " .. i)
 		local y = 15 + text_h * i
 		local max = 300
-		--lcd.drawNumber( 176, y, 300, RIGHT )
-		--lcd.drawText( lcd.getLastPos(), y, 's', 0 )
-		lcd.drawText( 303, y, text959, 0 )
+		lcd.drawText( 303, y, text959 )
 
 		if i < task.current - 1 then
 		--print (4-task.current+i)
 			local val = task.times.getVal( 3-task.current+i )
-			--local val = task.times.getVal( 2 + 1 * i )
 			
 			--print (val)
 			f3kDrawTimer( 303 + text959_w + text_w, y, val, 0 )
@@ -50,7 +47,7 @@ function task.display(widget)
 	end
 
 	--lcd.drawFilledRectangle( 160, 47, 52, 18, 0 )
-	f3kDrawTimer( 303, text_h*3, total, 0 ) --was INVERS
+	f3kDrawTimer( 303, text_h*3, total )
 	lcd.drawText( 381, text_h*3, "Total" )
 
 	return task.background( widget )

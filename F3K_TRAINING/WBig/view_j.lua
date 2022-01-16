@@ -18,13 +18,13 @@ function task.display( widget )
 
 	if task.state == 4 then
 		if task.possibleImprovement > 0 and task.flightCount >= task.COUNT then
-			lcd.drawText( 296, 3, 'Improve margin', 0 )
+			lcd.drawText( 296, 3, 'Improve margin' )
 			f3kDrawTimer( 304, text_h + 3, task.possibleImprovement, 0 )
 		end
 	end
 
 	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		lcd.drawText( 305, 16, 'Done !', 0 )
+		lcd.drawText( 305, 16, 'Done !' )
 	end
 	
 	lcd.color(BLACK)

@@ -19,12 +19,12 @@ function task.display( widget )
 	lcd.color(WHITE)
 	
 	if task.wellDone or (task.flightCount == 6 and task.state ~= 3) then
-		lcd.drawText( 104, 133, 'Done !', 0 )
+		lcd.drawText( 104, 133, 'Done !' )
 	else
-		lcd.drawText( 38, 133, 'Flight #', 0 )
+		lcd.drawText( 38, 133, 'Flight #' )
 		--lcd.drawText( 112, 133, '#', 0 )
-		lcd.drawText( 124, 133, tostring( math.max( 1, task.flightCount ) ), 0 )
-		lcd.drawText( 139, 133, ': ', 0 )
+		lcd.drawText( 124, 133, tostring( math.max( 1, task.flightCount ) ) )
+		lcd.drawText( 139, 133, ': ' )
 		task.timer2.drawReverse( 160, 133, 0 )
 	end
 
@@ -35,7 +35,7 @@ function task.display( widget )
 	--lcd.drawFilledRectangle( verticaldividerx + 1, 139, widget_w - verticaldividerx + 1, widget_h - 139, 0 )  -- was inverted background color
 	--lcd.color(WHITE)
 	f3kDrawTimer( 312, 145, task.times.getTotal( 3 ), 0 )
-	lcd.drawText( 390, 145, "Total", 0 )
+	lcd.drawText( 390, 145, "Total" )
 
 	return task.background( widget )
 end
