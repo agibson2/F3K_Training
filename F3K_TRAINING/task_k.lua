@@ -8,6 +8,7 @@
 
 local taskK = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
 
+taskK.PREP_TIME = 20
 
 taskK.MAX_FLIGHT_TIME = 60 	-- This won't be a constant here, but for consistency (and memory !), we'll keep it uppercase'd
 taskK.TIMES_SORTED = false
