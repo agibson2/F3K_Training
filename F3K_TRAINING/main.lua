@@ -1,4 +1,4 @@
-F3KVersion = '4.0.0'
+F3KVersion = '4.0.1'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	(Ethos conversion by xStatiCa)
@@ -54,9 +54,12 @@ F3KVersion = '4.0.0'
 		Fixed a regression introduced in 3.00 where a false launch could be detected when running the same task more than once
 	4.0.0 alpha 1 - xStatiCa (Adam)
 	      Major Ethos changes which removes OpenTX compatibility
-		  Task Free Flight and TaskA are working
-		  Task B working
-		  Tasks C D E F G H I J K working
+	      All tasks working.
+	      More descriptive TaskK announcement like taskM
+	      More voice announcement while flying taskH
+	4.0.1 xStatiCa (Adam)
+	      Some cleanup of code and removing files that were only for OpenTX radios
+	      Fixed taskH Done text.
 --]]
 
 local FTRAINDebug=0
