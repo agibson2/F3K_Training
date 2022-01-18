@@ -9,6 +9,10 @@
 -- Not working in 2.1.x
 --local CLOCK = getFieldInfo( 'clock' ).id
 
+LAUNCHHEIGHT_INIT = 1
+LAUNCHHEIGHT_WAITFORMAXSPEED = 2
+LAUNCHHEIGHT_WAITFORLESSTHANMAXSPEED = 3
+LAUNCHHEIGHT_END = 4
 
 local taskFF = {
 	running = true,
@@ -20,6 +24,10 @@ local taskFF = {
 	state,	-- 1=reset; 2=start; 3=flying; 4=landed, 5=end
 
 	name,
+	heightstate = LAUNCHHEIGHT_INIT,
+	launchheight = 0,
+	maxvspeed = 0,  --for DebugLaunchHeight
+	maxaltitude = 0, -- for DebugLaunchHeight
 	wav
 }
 
@@ -96,13 +104,45 @@ function taskFF.flyingState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.flyingState()") end
 	if not taskFF.earlyReset(widget) then
 		-- Wait for the pilot to catch/land/crash (he/she's supposed to pull the temp switch at that moment)
-		if f3klanded(widget) then  --FIXME not sure if this is supposed to be F3KConfig.landed()
+		if f3klanded(widget) then
 			taskFF.timer1.stop()
 			local val = taskFF.timer1.getVal()
 			if val > 0 then
 				taskFF.times.pushTime( val )
 			end
 			taskFF.state = 4
+		end
+	end
+	local curraltitude = widget.sensor_altitude:value()
+	if DebugLaunchHeight and curraltitude > taskFF.maxaltitude then
+		taskFF.maxaltitude = curraltitude
+	end
+	
+	-- For launch height in FF task
+	if widget.sensor_altitude ~= nil and widget.sensor_vspeed ~= nil then
+		--local rudderstick = system.getSource("Rudder")  -- to debug on sim since we can't modify telemetry
+		if taskFF.heightstate == LAUNCHHEIGHT_INIT then
+			taskFF.launchheight = 0
+			taskFF.heightstate = LAUNCHHEIGHT_WAITFORMAXSPEED
+			taskFF.maxvspeed = 0
+			taskFF.maxaltitude = 0
+		elseif taskFF.heightstate == LAUNCHHEIGHT_WAITFORMAXSPEED then
+			local currvspeed = widget.sensor_vspeed:value()
+			if DebugLaunchHeight and currvspeed > taskFF.maxvspeed then
+				taskFF.maxvspeed = currvspeed
+			end
+			if currvspeed >= 10 then
+			--if rudderstick:value() >= 80 then   -- to debug on sim since we can't modify telemetry
+				taskFF.heightstate = LAUNCHHEIGHT_WAITFORLESSTHANMAXSPEED
+			end
+		elseif taskFF.heightstate == LAUNCHHEIGHT_WAITFORLESSTHANMAXSPEED then
+			local currvspeed = widget.sensor_vspeed:value()
+			if currvspeed < 10 then
+			--if rudderstick:value() < 80 then   -- to debug on sim since we can't modify telemetry
+				taskFF.heightstate = LAUNCHHEIGHT_END
+				taskFF.launchheight = widget.sensor_altitude:value()
+				system.playNumber( taskFF.launchheight, widget.sensor_altitude:unit(), 0 )
+			end
 		end
 	end
 end
@@ -115,6 +155,7 @@ function taskFF.landedState(widget)
 		if f3klaunched(widget) then
 			taskFF.timer1.start()
 			taskFF.state = 3
+			taskFF.heightstate = LAUNCHHEIGHT_INIT
 		end
 	end
 end

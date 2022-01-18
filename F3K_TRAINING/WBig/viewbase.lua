@@ -27,7 +27,7 @@ vbase.horizontaldividery = 115
 vbase.verticaldividerx = 280
 vbase.f3kDashboardOffset = 143
 
-function vbase.drawDashboard( widget )
+function vbase.drawDashboard( widget, task )
 	local widget_w, widget_h = lcd.getWindowSize()
 	local text_w, text_h = lcd.getTextSize("0")
 	local f3kTextOffset = widget_w - vbase.f3kDashboardOffset
@@ -47,13 +47,27 @@ function vbase.drawDashboard( widget )
 
 	lcd.color(WHITE)
 	if widget.sensor_battery ~= nil then
-		lcd.drawText( f3kTextOffset + 8, text_h*4, "Rx Battery" )
-		lcd.drawNumber( f3kTextOffset + 8 + text_w*1, text_h*5, widget.sensor_battery:value(), UNIT_VOLT, 2)
+		lcd.drawText( f3kTextOffset + 8, text_h*3 -3, "Rx Battery" )
+		lcd.drawNumber( f3kTextOffset + 8 + text_w*6 -3, text_h*4, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
 	end
 	if widget.sensor_rssi ~= nil then
-		lcd.drawText( f3kTextOffset + 8, text_h*7, "Rx RSSI" )
-		lcd.drawNumber( f3kTextOffset + 8 + text_w*1, text_h*8, widget.sensor_rssi:value(), UNIT_DB )
+		lcd.drawText( f3kTextOffset + 8, text_h*6 -3, "Rx RSSI" )
+		lcd.drawNumber( f3kTextOffset + 8 + text_w*6, text_h*7 -3, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
 	end
+	lcd.drawText( f3kTextOffset + 8, text_h*9 -3, "Launch" )
+	if widget.sensor_vspeed == nil or widget.sensor_altitude == nil or task.launchheight == nil then
+		lcd.drawText( f3kTextOffset + 8 + text_w*1, text_h*10 -3, "disabled" ) 
+	else
+		lcd.drawNumber( f3kTextOffset + 8 + text_w*6, text_h*10 -3, task.launchheight, widget.sensor_altitude:unit(), 0, RIGHT )		
+	end
+	
+	if (DebugLaunchHeight) then 
+		lcd.drawNumber( text_w*8, 173, widget.sensor_vspeed:value(), widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
+		lcd.drawNumber( text_w*16, 173, task.maxvspeed, widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
+		lcd.drawNumber( text_w*8, 173+text_h, widget.sensor_altitude:value(), widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+		lcd.drawNumber( text_w*16, 173+text_h, task.maxaltitude, widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+	end
+
 end
 
 

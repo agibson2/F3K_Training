@@ -51,7 +51,7 @@ function task.display(widget)
 
 	--lcd.drawFilledRectangle( 160, 47, 52, 18, 0 )
 	f3kDrawTimer( 295, 133, total, 0 )  -- was bold and inverted text
-	lcd.drawText( 370, 133, "Total", 0 )
+	lcd.drawText( 370, 133, "Total" )
 
 	return task.background( widget )
 end

@@ -18,9 +18,9 @@ function task.display( widget )
 	 
 	lcd.color( widget.backgroundcolor )
 	-- background rect right side
-	lcd.drawFilledRectangle( vbase.verticaldividery, 0, widget_w - vbase.verticaldividerx, widget_h - 1 )
+	lcd.drawFilledRectangle( vbase.verticaldividerx, 0, widget_w - vbase.verticaldividerx, widget_h - 1 )
 	-- background rect bottom
-	lcd.drawFilledRectangle( 0, vbase.horizontaldividery, vbase.verticaldividery, widget_h - vbase.horizontaldividery )
+	lcd.drawFilledRectangle( 0, vbase.horizontaldividery, vbase.verticaldividerx, widget_h - vbase.horizontaldividery )
 	-- outline left side
 	lcd.color(BLACK)
 	lcd.drawLine( 0, vbase.horizontaldividery, 0, widget_h, SOLID )
@@ -52,7 +52,8 @@ function task.display( widget )
 		task.times.draw( 312, 3 + text_h*i, i+1, 0 )
 	end
 	
-	vbase.drawDashboard( widget )
+	
+	vbase.drawDashboard( widget, task )
 	return task.background(widget)
 end
 

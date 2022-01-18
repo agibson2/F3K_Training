@@ -1,4 +1,4 @@
-F3KVersion = '4.0.1'
+F3KVersion = '4.0.0'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	(Ethos conversion by xStatiCa)
@@ -54,12 +54,14 @@ F3KVersion = '4.0.1'
 		Fixed a regression introduced in 3.00 where a false launch could be detected when running the same task more than once
 	4.0.0 alpha 1 - xStatiCa (Adam)
 	      Major Ethos changes which removes OpenTX compatibility
-	      All tasks working.
-	      More descriptive TaskK announcement like taskM
-	      More voice announcement while flying taskH
-	4.0.1 xStatiCa (Adam)
-	      Some cleanup of code and removing files that were only for OpenTX radios
-	      Fixed taskH Done text.
+		  Task Free Flight and TaskA are working
+		  Task B working
+		  Tasks C D E F G H I J K working
+	4.0.1 First release
+		  All tasks working
+		  Cleanup of code and remove old files that were only needed for OpenTX
+		  Fixed Done text for TaskH
+	4.0.2 Added launch height detection for Free Flight task.  Need to configure altitude and vspeed sensors in widget config.
 --]]
 
 local FTRAINDebug=0
@@ -72,6 +74,7 @@ DebugLaunched=false
 DebugLanded=false
 DebugTimes=false
 DebugTimers=false
+DebugLaunchHeight=false
 
 if(FTRAINDebug >= 1) then
 	DebugInvalidateWindow=true
@@ -214,7 +217,7 @@ local function create()
 	currentTask = createMenu()
 	checkTimers()
 	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
-	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt")}
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=nil, sensor_altitude=nil}
 end
 
 local function read(widget)
@@ -227,6 +230,8 @@ local function read(widget)
 		widget.backgroundcolor = storage.read("color")
 		widget.sensor_rssi = storage.read("source")
 		widget.sensor_battery = storage.read("source")
+		widget.sensor_vspeed = storage.read("source")
+		widget.sensor_altitude = storage.read("source")
 	end
 end
 
@@ -240,6 +245,8 @@ local function write(widget)
 		storage.write("color", widget.backgroundcolor)
 		storage.write("source", widget.sensor_rssi)
 		storage.write("source", widget.sensor_battery)
+		storage.write("source", widget.sensor_vspeed)
+		storage.write("source", widget.sensor_altitude)
 	end
 end
 
@@ -320,10 +327,15 @@ local function configure(widget)
 	form.addSwitchField(line, nil, function() return widget.prelaunchswitch end, function(value) widget.prelaunchswitch = value end)
 	line = form.addLine("Menu Scroll Analog")
 	form.addSourceField(line, nil, function() return widget.menuscrollencoder end, function(value) widget.menuscrollencoder = value end)
-	line = form.addLine("RSSI")
+	line = form.addLine("RSSI Telemetry sensor")
 	form.addSourceField(line, nil, function() return widget.sensor_rssi end, function(value) widget.sensor_rssi = value end)
-	line = form.addLine("Receiver battery voltage")
+	line = form.addLine("Rx battery voltage sensor")
 	form.addSourceField(line, nil, function() return widget.sensor_battery end, function(value) widget.sensor_battery = value end)
+	line = form.addLine("Vario vertical speed sensor")
+	form.addSourceField(line, nil, function() return widget.sensor_vspeed end, function(value) widget.sensor_vspeed = value end)
+	line = form.addLine("Vario altitude sensor")
+	form.addSourceField(line, nil, function() return widget.sensor_altitude end, function(value) widget.sensor_altitude = value end)
+
 end
 
 
