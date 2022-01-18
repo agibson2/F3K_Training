@@ -54,20 +54,23 @@ function vbase.drawDashboard( widget, task )
 		lcd.drawText( f3kTextOffset + 8, text_h*6 -3, "Rx RSSI" )
 		lcd.drawNumber( f3kTextOffset + 8 + text_w*6, text_h*7 -3, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
 	end
-	lcd.drawText( f3kTextOffset + 8, text_h*9 -3, "Launch" )
-	if widget.sensor_vspeed == nil or widget.sensor_altitude == nil or task.launchheight == nil then
-		lcd.drawText( f3kTextOffset + 8 + text_w*1, text_h*10 -3, "disabled" ) 
-	else
-		lcd.drawNumber( f3kTextOffset + 8 + text_w*6, text_h*10 -3, task.launchheight, widget.sensor_altitude:unit(), 0, RIGHT )		
-	end
 	
-	if (DebugLaunchHeight) then 
-		lcd.drawNumber( text_w*8, 173, widget.sensor_vspeed:value(), widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
-		lcd.drawNumber( text_w*16, 173, task.maxvspeed, widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
-		lcd.drawNumber( text_w*8, 173+text_h, widget.sensor_altitude:value(), widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
-		lcd.drawNumber( text_w*16, 173+text_h, task.maxaltitude, widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+	-- launch height for Free Flight task
+	if task ~= nil and task.name == "Free Flight" then
+		lcd.drawText( f3kTextOffset + 8, text_h*9 -3, "Launch" )
+		if widget.sensor_vspeed == nil or widget.sensor_altitude == nil or task.launchheight == nil then
+			lcd.drawText( f3kTextOffset + 8 + text_w*1, text_h*10 -3, "disabled" ) 
+		else
+			lcd.drawNumber( f3kTextOffset + 8 + text_w*6, text_h*10 -3, task.launchheight, widget.sensor_altitude:unit(), 0, RIGHT )		
+		end
+		
+		if (DebugLaunchHeight) then 
+			lcd.drawNumber( text_w*8, 173, widget.sensor_vspeed:value(), widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
+			lcd.drawNumber( text_w*16, 173, task.maxvspeed, widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
+			lcd.drawNumber( text_w*8, 173+text_h, widget.sensor_altitude:value(), widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+			lcd.drawNumber( text_w*16, 173+text_h, task.maxaltitude, widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+		end
 	end
-
 end
 
 
