@@ -62,6 +62,7 @@ F3KVersion = '4.0.0'
 		  Cleanup of code and remove old files that were only needed for OpenTX
 		  Fixed Done text for TaskH
 	4.0.2 Added launch height detection for Free Flight task.  Need to configure altitude and vspeed sensors in widget config.
+		  Added list of launch height history to go along with times
 --]]
 
 local FTRAINDebug=0

@@ -18,7 +18,7 @@ local taskFF = {
 	running = true,
 
 	times,	-- best times (time keeper object)
-
+	heights,  -- corresponding launch heights
 	timer1,	-- work time
 
 	state,	-- 1=reset; 2=start; 3=flying; 4=landed, 5=end
@@ -41,8 +41,8 @@ end
 function taskFF.initTimers()
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.initTimers()") end
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskFF.timer1 = createTimer( "f3kZero", 0, AUDIO_MUTE, true )	-- current flight time
-	taskFF.timer2 = createTimer( "f3kOne", 0, AUDIO_VOICE, false )
+	taskFF.timer1 = createTimer( "f3kZero", 0, AUDIO_VOICE, true )	-- current flight time
+	taskFF.timer2 = createTimer( "f3kOne", 0, AUDIO_MUTE, false )
 end
 
 
@@ -52,6 +52,7 @@ function taskFF.init()
 	taskFF.wav = 'taskff'
 
 	taskFF.times = createTimeKeeper( 10, 0 )
+	taskFF.heights = createTimeKeeper( 10, 0 )
 	taskFF.state = 1 	-- 1=reset
 	taskFF.initTimers()
 	taskFF.timer1.stop()
@@ -82,6 +83,7 @@ function taskFF.resetState(widget)
 
 		-- reset the scores
 		taskFF.times.reset()
+		taskFF.heights.reset()
 
 		taskFF.initTimers()
 		taskFF.timer2.start()
@@ -109,6 +111,7 @@ function taskFF.flyingState(widget)
 			local val = taskFF.timer1.getVal()
 			if val > 0 then
 				taskFF.times.pushTime( val )
+				taskFF.heights.pushTime( taskFF.launchheight )
 			end
 			taskFF.state = 4
 		end

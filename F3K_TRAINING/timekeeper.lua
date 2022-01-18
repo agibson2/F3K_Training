@@ -75,6 +75,11 @@ function createTimeKeeper( size, limit )
 		end
 	end
 
+	-- for drawing things other than minutes that are stored in the timekeeper like launch heights for example
+	local function drawUnit( x, y, i, unit, decimal, flags )
+		local val = tab[ i ]
+		lcd.drawNumber( x, y, val, unit, decimal, flags )
+	end
 
 	-- "constructor"
 	initialize( size + 1 )
@@ -85,7 +90,8 @@ function createTimeKeeper( size, limit )
 		getVal=getVal,
 		getTotal=getTotal,
 		reset=reset,
-		draw=draw
+		draw=draw,
+		drawUnit=drawUnit
 	}
 end
 

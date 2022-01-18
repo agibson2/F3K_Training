@@ -50,6 +50,7 @@ function task.display( widget )
 	local text_w, text_h = lcd.getTextSize("")
 	for i=0,9 do
 		task.times.draw( 312, 3 + text_h*i, i+1, 0 )
+		task.heights.drawUnit( 412, 3 + text_h*i, i+1, widget.sensor_altitude:unit(), 0, 0 )
 	end
 	
 	
