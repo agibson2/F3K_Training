@@ -131,6 +131,10 @@ function taskFF.flyingState(widget)
 			taskFF.maxaltitude = 0
 		elseif taskFF.heightstate == LAUNCHHEIGHT_WAITFORMAXSPEED then
 			local currvspeed = widget.sensor_vspeed:value()
+			if widget.sensor_vspeed:unit() == UNIT_FOOT then
+				currvspeed = currvspeed * 0.3048  -- convert to meters for calculation
+			end
+
 			if DebugLaunchHeight and currvspeed > taskFF.maxvspeed then
 				taskFF.maxvspeed = currvspeed
 			end
