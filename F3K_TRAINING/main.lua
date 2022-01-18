@@ -1,4 +1,4 @@
-F3KVersion = '4.0.0'
+F3KVersion = '4.1.0'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	(Ethos conversion by xStatiCa)
@@ -61,7 +61,7 @@ F3KVersion = '4.0.0'
 		  All tasks working
 		  Cleanup of code and remove old files that were only needed for OpenTX
 		  Fixed Done text for TaskH
-	4.0.2 Added launch height detection for Free Flight task.  Need to configure altitude and vspeed sensors in widget config.
+	4.1.0 Added launch height detection for Free Flight task.  Need to configure altitude and vspeed sensors in widget config.
 		  Added list of launch height history to go along with times
 --]]
 
@@ -218,7 +218,7 @@ local function create()
 	currentTask = createMenu()
 	checkTimers()
 	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
-	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=nil, sensor_altitude=nil}
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude")}
 end
 
 local function read(widget)
