@@ -1,4 +1,4 @@
-F3KVersion = '4.1.0'
+F3KVersion = '4.1.1'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	(Ethos conversion by xStatiCa)
@@ -63,6 +63,7 @@ F3KVersion = '4.1.0'
 		  Fixed Done text for TaskH
 	4.1.0 Added launch height detection for Free Flight task.  Need to configure altitude and vspeed sensors in widget config.
 		  Added list of launch height history to go along with times
+	4.1.1 Changed Free Flight task to show session time at top left and current flight at bottom left to be consistent with other tasks
 --]]
 
 local FTRAINDebug=0
