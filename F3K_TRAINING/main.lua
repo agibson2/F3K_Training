@@ -1,7 +1,7 @@
 F3KVersion = '4.1.1'
 --[[
 	F3K Training - 	Mike, ON4MJ
-	(Ethos conversion by xStatiCa)
+	(Ethos conversion by StatiC on RCGroups)
 
 	telemN.lua
 	Main script (provides the UI and loads the relevant task script)
@@ -43,7 +43,7 @@ F3KVersion = '4.1.1'
 		Added the total flight time to the QT practice
 	2.05	Changed the QT practice to count down from 30s
 		Solved some OpenTX 2.0 vs. 2.1 incompatibilities
-	2.06    xStatiCa (Adam) - Imlemented Horus compatibility for large Widget size.  Other widget sizes will not display properly.
+	2.06    StatiC (Adam) - Imlemented Horus compatibility for large Widget size.  Other widget sizes will not display properly.
 			Allow persistent storage of options if run as a Widget (options storage is a feature of Widgets).
 
 	3.00	Refactoring again : separated the views from the domain.  
@@ -52,7 +52,7 @@ F3KVersion = '4.1.1'
 	3.01	Horus widget fix : browsing through widgets to install a new one in another zone broke an already installed Training widget.
 	3.02	Added AULD
 		Fixed a regression introduced in 3.00 where a false launch could be detected when running the same task more than once
-	4.0.0 alpha 1 - xStatiCa (Adam)
+	4.0.0 alpha 1 - StatiC (Adam)
 	      Major Ethos changes which removes OpenTX compatibility
 		  Task Free Flight and TaskA are working
 		  Task B working
