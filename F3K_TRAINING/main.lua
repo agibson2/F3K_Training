@@ -1,4 +1,4 @@
-F3KVersion = '4.1.1'
+F3KVersion = '4.1.2'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	(Ethos conversion by xStatiCa)
@@ -7,7 +7,7 @@ F3KVersion = '4.1.1'
 	Main script (provides the UI and loads the relevant task script)
 
 	This is a telemetry script
-	REQUIRES Ethos 1.1.0 alpha 11 or newer
+	REQUIRES Ethos 1.1.0 or newer
 
 	Provides a serie of specialized timer screens for most F3K tasks
 	NB: there's no telemetry at all in this "telemetry" script.
@@ -64,6 +64,7 @@ F3KVersion = '4.1.1'
 	4.1.0 Added launch height detection for Free Flight task.  Need to configure altitude and vspeed sensors in widget config.
 		  Added list of launch height history to go along with times
 	4.1.1 Changed Free Flight task to show session time at top left and current flight at bottom left to be consistent with other tasks
+	4.1.2 Added zeroing of Altitude for configured altitude sensor when pressing prelaunch switch
 --]]
 
 local FTRAINDebug=0
@@ -93,6 +94,7 @@ end
 
 
 local lastTimeLanded = 0	-- 0=must pull first ; other=time of the last pull
+local prelaunchpressed = false
 
 function resetLaunchDetection()
 	lastTimeLanded = 0
@@ -101,7 +103,6 @@ end
 -- >>> Launch / Land detection <<< ---
 function f3klaunched(widget)
 	local ret = false
-	local prelaunchpressed=false
 	if not widget.prelaunchswitch:state() then
 		-- if the tmp switch is held for more than 0.6s, it's a launch ;
 		-- otherwise it was just a trigger pull to indicate that the plane has landed		
@@ -112,8 +113,15 @@ function f3klaunched(widget)
 			end
 			lastTimeLanded = 0
 		end
+		prelaunchpressed=false
 	else
-		prelaunchpressed=true
+		if prelaunchpressed == false then
+			-- only do this stuff once when prelaunch if first pressed
+			prelaunchpressed = true
+			if widget.sensor_altitude ~= nil then
+				widget.sensor_altitude:reset()  -- reset the altitude height to zero to help compensate for altitude drift
+			end
+		end
 		if lastTimeLanded == 0 then
 			lastTimeLanded = os.clock()
 		end
@@ -219,7 +227,7 @@ local function create()
 	currentTask = createMenu()
 	checkTimers()
 	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
-	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,40,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude")}
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude")}
 end
 
 local function read(widget)
