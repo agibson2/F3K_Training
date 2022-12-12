@@ -26,9 +26,9 @@ function task.display( widget )
 
 	lcd.color(WHITE)
 	if not task.done then
-	lcd.font(FONT_XL)
-		lcd.drawText( 35, 133, 'Current: ' )
-		task.timer2.drawReverse( 170, 133, 0 )
+		lcd.font(FONT_XL)
+		lcd.drawText( 10, 133, 'Current: ' )
+		task.timer2.drawReverse( 100, 183, 0 )
 	else
 		lcd.font(FONT_L)
 		lcd.drawText( 312, 53, 'Done !' )

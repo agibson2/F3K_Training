@@ -42,8 +42,8 @@ function task.display( widget )
 	lcd.font(FONT_XL)
 
 	task.timer2.draw( 90, 33, 0 )
-	lcd.drawText( 20, 133, "Current:" )
-	task.timer1.draw( 154, 133, 0 )
+	lcd.drawText( 10, 133, "Current:" )
+	task.timer1.draw( 100, 183, 0 )
 	--f3kDrawTimer( 190, 133, getValue( 'clock' ), 0 )
 
 	lcd.font(FONT_L)

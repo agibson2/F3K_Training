@@ -32,6 +32,7 @@ function vbase.drawDashboard( widget, task )
 	local text_w, text_h = lcd.getTextSize("0")
 	local f3kTextOffset = widget_w - vbase.f3kDashboardOffset
 	
+	-- E Section F3K Title.
 	lcd.font(FONT_L)
 	lcd.color( widget.backgroundcolor )
 	lcd.drawFilledRectangle( f3kTextOffset + 1, 1, widget_w, text_h * 2 + 8 + 8 ) -- 8 pixel empty space at top and bottom
@@ -44,7 +45,7 @@ function vbase.drawDashboard( widget, task )
 	lcd.drawLine( f3kTextOffset, 8 + 8 + text_h*2, widget_w, 8 + 8+ text_h*2 )  -- bottom side of f3k logo area
 	lcd.drawLine( f3kTextOffset, 0, widget_w, 0 ) -- top of f3k logo area
 	lcd.drawLine( widget_w, 0, widget_w, 8 + 8 + text_h*2 ) -- bottom of f3k logo area
-
+	-- F Section For Sensor Monitoring
 	lcd.color(WHITE)
 	if widget.sensor_battery ~= nil then
 		lcd.drawText( f3kTextOffset + 8, text_h*3 -3, "Rx Battery" )
@@ -111,17 +112,15 @@ function vbase.drawCommonLastBest( widget, task )
 	local widget_w, widget_h = lcd.getWindowSize()
 	widget_w = widget_w - vbase.f3kDashboardOffset
 	vbase.drawCommon( widget, task )
-
+	--Draw Left Side Current Time
 	lcd.font(FONT_XL)
 	lcd.color(WHITE)
-	lcd.drawText( 35, 133, 'Current: ' )
-	task.timer2.drawReverse( 170, 133, 0 )
-	lcd.font(FONT_L)
-	--lcd.color(lcd.RGB(150,0,0)) --FIXME expriment with dark red to see what is being drawn
-	--lcd.drawFilledRectangle( 281, 130, widget_w - 281, widget_h - 130, 0 )
-
+	lcd.drawText( 10, 133, 'Current: ' )
+	task.timer2.drawReverse( 100, 183, 0 )
+	--Draw Central Total timer
+	lcd.font(FONT_XL)
 	f3kDrawTimer( 312, 153, task.times.getTotal(), 0 )
-	lcd.drawText( 312 + 75, 153, "Total" )
+	lcd.drawText( 312 + 95, 153, "Total" )
 	
 	vbase.drawDashboard( widget )
 end

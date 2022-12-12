@@ -13,12 +13,11 @@ local display = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
 
 function task.display(widget)
 	display.drawCommon( widget, task )
-
+	lcd.font(FONT_XL)
 	lcd.color(WHITE)
 	if not task.done then
-		lcd.drawText( 65, 133, 'Current: ' )
-		local text_w, text_h = lcd.getTextSize("Current: ")
-		task.timer2.drawReverse( 85 + text_w, 133, 0 )
+		lcd.drawText( 10, 133, 'Current: ' )
+		task.timer2.drawReverse(100, 183, 0 )
 	else
 		lcd.drawText( 95, 133, 'Done !' )
 	end
@@ -47,8 +46,9 @@ function task.display(widget)
 	end
 
 	--lcd.drawFilledRectangle( 160, 47, 52, 18, 0 )
+	lcd.font(FONT_XL)
 	f3kDrawTimer( 303, text_h*3, total )
-	lcd.drawText( 381, text_h*3, "Total" )
+	lcd.drawText( 391, text_h*3, "Total" )
 
 	return task.background( widget )
 end

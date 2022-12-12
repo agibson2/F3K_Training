@@ -230,6 +230,7 @@ local function create()
 	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude")}
 end
 
+--Read Configs from storage
 local function read(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: read()") end
 	if(not DebugConfig) then
@@ -244,7 +245,7 @@ local function read(widget)
 		widget.sensor_altitude = storage.read("source")
 	end
 end
-
+--Write Configs on storage
 local function write(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: write()") end
 	if(not DebugConfig) then
@@ -387,8 +388,7 @@ createMenu = function()
 		local widget_w, widget_h = lcd.getWindowSize()
 		if (DebugMenu) then print("widget_h=", widget_h, "widget_w=", widget_w) end
 
-		lcd.font(XL)
-
+		lcd.font(FONT_XL)
 		local text_w, text_h = lcd.getTextSize("A")
 		if (DebugMenu) then print("text_w = ", text_w, "text_h = ", text_h) end
 
