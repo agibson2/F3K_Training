@@ -10,12 +10,12 @@ local taskG = dofile( F3K_SCRIPT_PATH .. 'besttaskbase.lua' )
 
 
 taskG.MAX_FLIGHT_TIME = 120
-taskG.BEST_COUNT = 5
+taskG.COUNT = 5
 
 
 -- public interface
 function taskG.init()
-	taskG.commonInit( '5x2', taskG.BEST_COUNT, 'taskg' )
+	taskG.commonInit( '5x2', taskG.COUNT, 'taskg' )
 	taskG.timer1.stop()
 	taskG.timer2.stop()
 end

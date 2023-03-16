@@ -23,17 +23,17 @@ function taskQT.computeDeltas()
 	local avg = 0
 
 	if taskQT.flightCount > 0 then
-		print("QT: FlightCount=" .. taskQT.flightCount)
+		--print("QT: FlightCount=" .. taskQT.flightCount)
 		local tot = 0
 		for i=1,taskQT.flightCount do
 			local val = math.abs( taskQT.times.getVal( i ) - taskQT.MAX_FLIGHT_TIME )
 			tot = tot + val
 			max = math.max( max, val )
 			min = math.min( min, val )
-			print("QT: i=" .. i .. " tot=" .. tot .. " max=" .. max .. " min=" .. min )
+			--print("QT: i=" .. i .. " tot=" .. tot .. " max=" .. max .. " min=" .. min )
 		end
 		avg = tot / taskQT.flightCount
-		print("QT: avg=" .. avg )
+		--print("QT: avg=" .. avg )
 	else
 		min = 0
 	end

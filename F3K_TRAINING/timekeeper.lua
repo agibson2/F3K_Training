@@ -11,12 +11,13 @@
 function createTimeKeeper( size, limit )
 	local tab = {}
 	local LIMIT = limit
-
+	local nextSpot = size
 
 	local function initialize( size )
 		for i=1,size do
 			tab[ i ] = 0
 		end
+		nextSpot = 1
 	end
 
 
@@ -40,6 +41,13 @@ function createTimeKeeper( size, limit )
 		tab[ size ] = t
 	end
 
+	-- put the time in the next location. wont add any more when maximum is met
+	local function setNextTime( t )
+		if nextSpot < #tab then
+			tab[nextSpot] = t
+			nextSpot = nextSpot + 1
+		end
+	end
 
 	local function getVal( i, truncated )
 		-- Precondition : 1 <= i <= (#tab - 1)
@@ -84,7 +92,8 @@ function createTimeKeeper( size, limit )
 	-- "constructor"
 	initialize( size + 1 )
 
-	return { 
+	return {
+		setNextTime=setNextTime,
 		addTime=addTime, 
 		pushTime=pushTime,
 		getVal=getVal,

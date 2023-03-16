@@ -10,12 +10,12 @@ local taskI = dofile( F3K_SCRIPT_PATH .. 'besttaskbase.lua' )
 
 
 taskI.MAX_FLIGHT_TIME = 200
-taskI.BEST_COUNT = 3
+taskI.COUNT = 3
 
 
 -- public interface
 function taskI.init()
-	taskI.commonInit( 'Best three', taskI.BEST_COUNT, 'taski' )
+	taskI.commonInit( 'Best three', taskI.COUNT, 'taski' )
 end
 
 

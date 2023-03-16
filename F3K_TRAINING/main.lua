@@ -1,7 +1,7 @@
-F3KVersion = '4.1.2'
+F3KVersion = '4.2.0'
 --[[
 	F3K Training - 	Mike, ON4MJ
-	(Ethos conversion by StatiC on RCGroups)
+	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
 
 	telemN.lua
 	Main script (provides the UI and loads the relevant task script)
@@ -65,6 +65,12 @@ F3KVersion = '4.1.2'
 		  Added list of launch height history to go along with times
 	4.1.1 Changed Free Flight task to show session time at top left and current flight at bottom left to be consistent with other tasks
 	4.1.2 Added zeroing of Altitude for configured altitude sensor when pressing prelaunch switch
+	4.1.3 Widget config to enable/disable announcing/displaying of launch height for FF task
+	4.2.0 Initial release with X18, X18S, Twin X-Lite, and Twin X-Lite S support
+	      Fixed issue where using the switch to go back to the menu didn't take effect until you moved the stick
+		  Disabled some left in debug print statements
+		  Added new timekeeper.lua function setNextTime() to push times in next slot pushing all the other times up.  The 
+		   other functions addTime() and pushTime() move the positions up as times are inserted into the time arrays
 --]]
 
 local FTRAINDebug=0
@@ -78,6 +84,9 @@ DebugLanded=false
 DebugTimes=false
 DebugTimers=false
 DebugLaunchHeight=false
+
+-- Global used to know what directory to use for widget display lua code files
+FTRAINwidgetresolution = ""
 
 if(FTRAINDebug >= 1) then
 	DebugInvalidateWindow=true
@@ -227,7 +236,7 @@ local function create()
 	currentTask = createMenu()
 	checkTimers()
 	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
-	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude")}
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude"), launch_height_enabled=true}
 end
 
 local function read(widget)
@@ -242,6 +251,7 @@ local function read(widget)
 		widget.sensor_battery = storage.read("source")
 		widget.sensor_vspeed = storage.read("source")
 		widget.sensor_altitude = storage.read("source")
+		widget.launch_height_enabled = storage.read("bool")
 	end
 end
 
@@ -257,6 +267,7 @@ local function write(widget)
 		storage.write("source", widget.sensor_battery)
 		storage.write("source", widget.sensor_vspeed)
 		storage.write("source", widget.sensor_altitude)
+		storage.write("bool", widget.launch_height_enabled)
 	end
 end
 
@@ -283,6 +294,9 @@ local function unsupportedDisplay( widget )
 	 
 	lcd.drawText( 0, 0, 'F3K Training' )
 	lcd.drawText( 0, text_h, 'Unsupported widget size' )
+    local lwidget_w, lwidget_h = lcd.getWindowSize()
+    local screenrestext = string.format("%d x %d", lwidget_w, lwidget_h )
+    lcd.drawText( 0, text_h * 2, screenrestext )
 	return true
 end
 
@@ -311,9 +325,13 @@ local function display( widget )
 		lcd.color(BLACK)
 		lcd.drawText(0, 0, "Configure widget needed" )
 		return
-	elseif widget_w  >= 784 and widget_h >= 294 then
-		-- X20(s) Large Widget
-		running = currentTask.display( widget )
+	elseif (widget_w >= 478 and widget_h >= 194) then
+		if (widget_w  >= 784 and widget_h >= 294) then
+			FTRAINwidgetresolution = "784x294"
+		else
+			FTRAINwidgetresolution = "478x194"
+		end
+        running = currentTask.display( widget )
 	else
 		running = unsupportedDisplay( widget )
 	end
@@ -327,7 +345,9 @@ end
 local function configure(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: configure()") end
 	-- source choices
-	local line = form.addLine("Background Color")
+	local line = form.addLine("FF Launch height enabled")
+	form.addBooleanField(line, nil, function() return widget.launch_height_enabled end, function(value) widget.launch_height_enabled = value end)
+	line = form.addLine("Background Color")
 	form.addColorField(line, nil, function() return widget.backgroundcolor end, function(value) widget.backgroundcolor = value end)
 	line = form.addLine("Menu Select Switch Position")
 	form.addSwitchField(line, nil, function() return widget.menuswitch end, function(value) widget.menuswitch = value end)
@@ -427,8 +447,21 @@ createMenu = function()
 		return true
 	end
 	
+	local function bool_to_number(value)
+		return value and 1 or 0
+	end
+	
+	local LastMenuSwitchStates = 0
+	
 	local function background(widget)
 		local div = 2048 / (#TASKS)  -- we want [0..n-1] steps
+		
+		-- Make sure when the menuswitch or startswitch state changes, invalidate the lcd window to force a redraw
+		local menuswitchesstates = bool_to_number(widget.menuswitch:state()) + bool_to_number(widget.startswitch:state())
+		if (LastMenuSwitchStates ~= menuswitchstates) then
+			lcd.invalidate()
+			LastMenuSwitchStates = menuswitchesstates
+		end
 		if (DebugFunctionCalls) then print("FTRAIN: menu.background()") end
 			
 		selection = math.floor( (widget.menuscrollencoder:value() - 1024) / -div )
@@ -440,7 +473,7 @@ createMenu = function()
 
 		if (DebugMenu) then print("FTRAIN: menu.display() widget.menuswitch:state() = ", widget.menuswitch:state() ) end
 		if widget.menuswitch:state() then
-			currentTask = dofile( F3K_SCRIPT_PATH .. 'WBig/view_' .. TASKS[ selection+1 ].id .. '.lua' )
+			currentTask = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/view_' .. TASKS[ selection+1 ].id .. '.lua' )
 			local win = TASKS[ selection+1 ].win or 10
 			inittask( win * 60 )
 		end

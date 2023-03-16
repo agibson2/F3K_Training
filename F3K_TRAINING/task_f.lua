@@ -11,6 +11,7 @@ local taskF = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
 
 taskF.MAX_FLIGHT_TIME = 180
 taskF.saidSorry = false
+taskF.COUNT = 6
 
 
 function taskF.earlyReset(widget)
@@ -77,7 +78,7 @@ end
 
 -- public interface
 function taskF.init()
-	taskF.commonInit( '3oo6', 6, 'taskf' )
+	taskF.commonInit( '3oo6', taskF.COUNT, 'taskf' )
 end
 
 

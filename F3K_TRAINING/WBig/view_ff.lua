@@ -10,49 +10,23 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_ff.lua' )
-local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lua' )
 
 function task.display( widget )
 	if (DebugFunctionCalls) then print("FTRAIN: ff_display()") end
-	local widget_w, widget_h = lcd.getWindowSize()
-	 
-	lcd.color( widget.backgroundcolor )
-	-- background rect right side
-	lcd.drawFilledRectangle( vbase.verticaldividerx, 0, widget_w - vbase.verticaldividerx, widget_h - 1 )
-	-- background rect bottom
-	lcd.drawFilledRectangle( 0, vbase.horizontaldividery, vbase.verticaldividerx, widget_h - vbase.horizontaldividery )
-	-- outline left side
-	lcd.color(BLACK)
-	lcd.drawLine( 0, vbase.horizontaldividery, 0, widget_h, SOLID )
-	-- outline at top of right box
-	lcd.drawLine( vbase.verticaldividerx, 0, widget_w, 0, SOLID )
-	-- outline at right side
-	lcd.drawLine( widget_w, 0, widget_w, widget_h, SOLID )
-	-- outline at bottom
-	lcd.drawLine( 0, widget_h, widget_w, widget_h, SOLID )
-	-- top of horizontal box
-	lcd.drawLine( 0, vbase.horizontaldividery, vbase.verticaldividerx, vbase.horizontaldividery, SOLID )
-	-- left of vertical box
-	lcd.drawLine( vbase.verticaldividerx, 0, vbase.verticaldividerx, widget_h - 1, SOLID )
 
-	lcd.color(WHITE)
-	lcd.font(FONT_L)
-	lcd.drawText( 10, 0, task.name )
-	
-	lcd.font(FONT_XL)
-
-	task.timer2.draw( 90, 33, 0 )
-	lcd.drawText( 20, 133, "Current:" )
-	task.timer1.draw( 154, 133, 0 )
-	--f3kDrawTimer( 190, 133, getValue( 'clock' ), 0 )
+	vbase.drawCommon( widget, task )
+	vbase.drawPrepWorkTime( widget, task )
+	vbase.drawCurrent( widget, task )
+	vbase.drawTimes( widget, task )
 
 	lcd.font(FONT_L)
-	local text_w, text_h = lcd.getTextSize("")
-	for i=0,9 do
-		task.times.draw( 312, 3 + text_h*i, i+1, 0 )
-		task.heights.drawUnit( 422, 3 + text_h*i, i+1, widget.sensor_altitude:unit(), 0, 0 )
+	local text_w, text_h = lcd.getTextSize("0")
+	for i=0,task.COUNT - 1 do
+		if widget.launch_height_enabled then
+			task.heights.drawUnit( vbase.verticaldividerx + (text_w*11), 3 + text_h*i, i+1, widget.sensor_altitude:unit(), 0, 0 )
+		end
 	end
-	
 	
 	vbase.drawDashboard( widget, task )
 	return task.background(widget)

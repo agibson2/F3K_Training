@@ -14,6 +14,7 @@ taskL.TIMES_SORTED = false
 
 taskL.current = 1
 taskL.done = false
+taskL.COUNT = 1
 
 function taskL.earlyReset(widget) 
 	if taskL.earlyResetBase(widget) then
@@ -60,7 +61,7 @@ function taskL.flyingState(widget)
 			taskL.times.pushTime( taskL.MAX_FLIGHT_TIME - taskL.timer2.getVal() )
 			taskL.current = taskL.current + 1
 			
-			if taskL.current > 1 then
+			if taskL.current > taskL.COUNT then
 				taskL.timer1.stop()
 				taskL.done = true
 				taskL.playSound( 'taskend' )
@@ -82,7 +83,7 @@ function taskL.init()
 	taskL.name = 'One flight'
 	taskL.wav = 'taskL'
 
-	taskL.times = createTimeKeeper( 1, 600 )	-- We'll handle the max flight time ourselves here
+	taskL.times = createTimeKeeper( taskL.COUNT, 600 )	-- We'll handle the max flight time ourselves here
 	taskL.state = 1
 
 	taskL.initPrepTimer()

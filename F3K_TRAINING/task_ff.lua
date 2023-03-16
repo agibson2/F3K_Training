@@ -31,7 +31,7 @@ local taskFF = {
 	wav
 }
 
-
+taskFF.COUNT = 9
 
 function taskFF.playSound( sound )
 	system.playFile( SOUND_PATH .. sound .. '.wav' )
@@ -41,8 +41,8 @@ end
 function taskFF.initTimers()
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.initTimers()") end
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskFF.timer1 = createTimer( "f3kZero", 0, AUDIO_VOICE, true )	-- current flight time
-	taskFF.timer2 = createTimer( "f3kOne", 0, AUDIO_MUTE, false )
+	taskFF.timer1 = createTimer( "f3kZero", 0, AUDIO_MUTE, true )
+	taskFF.timer2 = createTimer( "f3kOne", 0, AUDIO_VOICE, false )	-- current flight time
 end
 
 
@@ -51,8 +51,8 @@ function taskFF.init()
 	taskFF.name = 'Free Flight'
 	taskFF.wav = 'taskff'
 
-	taskFF.times = createTimeKeeper( 10, 0 )
-	taskFF.heights = createTimeKeeper( 10, 0 )
+	taskFF.times = createTimeKeeper( taskFF.COUNT, 0 )
+	taskFF.heights = createTimeKeeper( taskFF.COUNT, 0 )
 	taskFF.state = 1 	-- 1=reset
 	taskFF.initTimers()
 	taskFF.timer1.stop()
@@ -86,7 +86,7 @@ function taskFF.resetState(widget)
 		taskFF.heights.reset()
 
 		taskFF.initTimers()
-		taskFF.timer2.start()
+		taskFF.timer1.start()
 
 		taskFF.state = 2
 	elseif not widget.menuswitch:state() then
@@ -107,8 +107,8 @@ function taskFF.flyingState(widget)
 	if not taskFF.earlyReset(widget) then
 		-- Wait for the pilot to catch/land/crash (he/she's supposed to pull the temp switch at that moment)
 		if f3klanded(widget) then
-			taskFF.timer1.stop()
-			local val = taskFF.timer1.getVal()
+			taskFF.timer2.stop()
+			local val = taskFF.timer2.getVal()
 			if val > 0 then
 				taskFF.times.pushTime( val )
 				taskFF.heights.pushTime( taskFF.launchheight )
@@ -148,7 +148,9 @@ function taskFF.flyingState(widget)
 			--if rudderstick:value() < 80 then   -- to debug on sim since we can't modify telemetry
 				taskFF.heightstate = LAUNCHHEIGHT_END
 				taskFF.launchheight = widget.sensor_altitude:value()
-				system.playNumber( taskFF.launchheight, widget.sensor_altitude:unit(), 0 )
+				if widget.launch_height_enabled then
+					system.playNumber( taskFF.launchheight, widget.sensor_altitude:unit(), 0 )
+				end
 			end
 		end
 	end
@@ -160,7 +162,7 @@ function taskFF.landedState(widget)
 	if not taskFF.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
 		if f3klaunched(widget) then
-			taskFF.timer1.start()
+			taskFF.timer2.start()
 			taskFF.state = 3
 			taskFF.heightstate = LAUNCHHEIGHT_INIT
 		end

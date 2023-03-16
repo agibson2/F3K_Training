@@ -9,9 +9,8 @@ local taskBase = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
 
 
 
-taskBase.BEST_COUNT = 0
+--taskBase.BEST_COUNT = 0  -- this is now called just COUNT and created by task_x.lua files but becomes part of taskbase
 taskBase.saidSorry = false
-
 
 function taskBase.earlyReset(widget)
 	if taskBase.earlyResetBase(widget) then
@@ -24,7 +23,7 @@ end
 function taskBase.landedState(widget)
 	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		local remaining = taskBase.timer1.getVal()
-		if remaining < taskBase.times.getVal( taskBase.BEST_COUNT ) then
+		if remaining < taskBase.times.getVal( taskBase.COUNT ) then
 			if not taskBase.saidSorry then		
 				taskBase.playSound( 'cant' )
 				taskBase.saidSorry = true

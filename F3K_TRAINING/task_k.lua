@@ -15,7 +15,8 @@ taskK.TIMES_SORTED = false
 
 taskK.current = 1
 taskK.done = false
-
+taskK.COUNT = 5
+taskK.TARGET_STRING_ARRAY = { "60", "90", "120","150","180" }
 
 function taskK.earlyReset(widget) 
 	if taskK.earlyResetBase(widget) then
@@ -41,7 +42,7 @@ function taskK.endOfWindow()
 
 		if timeRunning and not taskK.done then
 			val = taskK.MAX_FLIGHT_TIME - val
-			taskK.times.pushTime( val )
+			taskK.times.setNextTime( val )
 			taskK.current = taskK.current + 1
 		end
 
@@ -60,12 +61,12 @@ function taskK.flyingState(widget)
 		if f3klanded(widget) then
 			taskK.timer2.stop()
 
-			taskK.times.pushTime( taskK.MAX_FLIGHT_TIME - taskK.timer2.getVal() )
+			taskK.times.setNextTime( taskK.MAX_FLIGHT_TIME - taskK.timer2.getVal() )
 
 			taskK.MAX_FLIGHT_TIME = taskK.MAX_FLIGHT_TIME + 30
 			taskK.current = taskK.current + 1
 
-			if taskK.current > 5 then
+			if taskK.current > taskK.COUNT then
 				taskK.timer1.stop()
 				taskK.playSound( 'taskend' )
 				taskK.done = true
@@ -87,7 +88,7 @@ function taskK.init()
 	taskK.name = 'Big Ladder'
 	taskK.wav = 'taskK'
 
-	taskK.times = createTimeKeeper( 5, 180 )	-- We'll handle the max flight time ourselves here
+	taskK.times = createTimeKeeper( taskK.COUNT, 180 )	-- We'll handle the max flight time ourselves here
 	taskK.state = 1
 
 	taskK.initPrepTimer()

@@ -7,20 +7,21 @@
 
 
 local task = dofile( F3K_SCRIPT_PATH .. 'task_qt.lua' )
-local vbase = dofile( F3K_SCRIPT_PATH .. 'WBig/viewbase.lua' )
+local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lua' )
 
 
 function task.display( widget )
 	if (DebugFunctionCalls) then print("FTRAIN: viewQT.display()") end
 	local widget_w, widget_h = lcd.getWindowSize()
 	widget_w = widget_w - vbase.f3kDashboardOffset  -- exclude right side for dashboard
+	lcd.font(FONT_L)
 	local text_w, text_h = lcd.getTextSize("0")
 	vbase.drawCommon( widget, task )
 
 	lcd.font(FONT_XL)
 	local textxl_w, textxl_h = lcd.getTextSize("0")
-	lcd.drawText( textxl_w * 2, 133, 'Flight ' .. math.max( 1, task.flightCount ) .. ': ' )
-	task.timer2.drawReverse( textxl_w * 9, 133, 0 )
+	lcd.drawText( (textxl_w * 1 / 2), textxl_h * 5, 'Flight ' .. math.max( 1, task.flightCount ) )
+	task.timer2.drawReverse( textxl_w * 8, textxl_h * 5, 0 )
 
 	lcd.font(FONT_L)
 	lcd.drawText( vbase.verticaldividerx + 8 + text_w * 3, 8, 'Delta' )

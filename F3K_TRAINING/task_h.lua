@@ -14,12 +14,13 @@ taskH.MAX_FLIGHT_TIME = 240
 taskH.target = 4
 taskH.done = false
 taskH.previousTime = 0
+taskH.COUNT = 4
 
 
 function taskH.getDoneList()
 	local ret = { false, false, false, false }
 	local check = { 1, 2, 3, 4 }
-	for i=4,1,-1 do
+	for i=taskH.COUNT,1,-1 do
 		for k,v in pairs( check ) do
 			local t = taskH.times.getVal( v )
 			if t > 0 and t > i*60-30 then

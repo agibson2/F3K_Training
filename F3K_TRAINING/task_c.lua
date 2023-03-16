@@ -9,7 +9,7 @@
 local taskC = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
 
 taskC.MAX_FLIGHT_TIME = 180
-
+taskC.COUNT = 5
 
 
 function taskC.endOfTask()
@@ -53,7 +53,7 @@ end
 
 
 function taskC.gotDown()
-	if taskC.flightCount < 5 then
+	if taskC.flightCount < taskC.COUNT then
 		taskC.state = 4 -- landed
 	else
 		taskC.state = 5
@@ -81,7 +81,7 @@ end
 
 
 function taskC.landedState(widget)
-	if taskC.flightCount < 5 and not taskC.earlyReset(widget) then
+	if taskC.flightCount < taskC.COUNT and not taskC.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
 		if f3klaunched(widget) then
 			taskC.timer2.start()
@@ -97,7 +97,7 @@ function taskC.init()
 	taskC.name = 'AULD'
 	taskC.wav = 'taskc'
 
-	taskC.times = createTimeKeeper( 5, 180 )	-- We'll handle the max flight time ourselves here
+	taskC.times = createTimeKeeper( taskC.COUNT, 180 )	-- We'll handle the max flight time ourselves here
 	taskC.state = 1
 
 	taskC.initFlightTimer()

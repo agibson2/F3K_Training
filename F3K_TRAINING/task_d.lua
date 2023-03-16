@@ -15,6 +15,7 @@ taskD.TIMES_SORTED = false
 
 taskD.current = 1
 taskD.done = false
+taskD.COUNT = 2
 
 
 function taskD.earlyReset(widget) 
@@ -84,7 +85,7 @@ function taskD.init()
 	taskD.name = 'Two flights'
 	taskD.wav = 'taskD'
 
-	taskD.times = createTimeKeeper( 2, 300 )	-- We'll handle the max flight time ourselves here
+	taskD.times = createTimeKeeper( taskD.COUNT, 300 )	-- We'll handle the max flight time ourselves here
 	taskD.state = 1
 
 	taskD.initPrepTimer()
