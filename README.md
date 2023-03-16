@@ -35,4 +35,4 @@ This is how I configured the widget...
 
 - Optionally set the RSSI and RxBattery sensor options to have them displayed on right hand side.  They default to sensors named RSSI and RxBatt which are defaults for FrSky sensors.
 - Optionally set the VSpeed and Altitude sensor options to have launch height announced on the Free Flight task as well as list the launch height next to the history of flights on the Free Flight task.
-- Optionally disable announcing launch height
+- Optionally disable announcing and displaying launch height for the Free Flight task.
