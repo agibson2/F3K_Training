@@ -71,6 +71,8 @@ F3KVersion = '4.2.0'
 		  Disabled some left in debug print statements
 		  Added new timekeeper.lua function setNextTime() to push times in next slot pushing all the other times up.  The 
 		   other functions addTime() and pushTime() move the positions up as times are inserted into the time arrays
+		  Redesigned view files so that they call functions in viewbase so that only viewbase needs to be different per
+		   widget size.
 --]]
 
 local FTRAINDebug=0
@@ -473,7 +475,7 @@ createMenu = function()
 
 		if (DebugMenu) then print("FTRAIN: menu.display() widget.menuswitch:state() = ", widget.menuswitch:state() ) end
 		if widget.menuswitch:state() then
-			currentTask = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/view_' .. TASKS[ selection+1 ].id .. '.lua' )
+			currentTask = dofile( F3K_SCRIPT_PATH .. 'view_' .. TASKS[ selection+1 ].id .. '.lua' )
 			local win = TASKS[ selection+1 ].win or 10
 			inittask( win * 60 )
 		end
