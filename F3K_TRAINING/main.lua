@@ -1,4 +1,4 @@
-F3KVersion = '4.2.0'
+F3KVersion = '5.0.0'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -66,7 +66,8 @@ F3KVersion = '4.2.0'
 	4.1.1 Changed Free Flight task to show session time at top left and current flight at bottom left to be consistent with other tasks
 	4.1.2 Added zeroing of Altitude for configured altitude sensor when pressing prelaunch switch
 	4.1.3 Widget config to enable/disable announcing/displaying of launch height for FF task
-	4.2.0 Initial release with X18, X18S, Twin X-Lite, and Twin X-Lite S support
+	5.0.0 Initial release with support for X18, X18S, Twin X-Lite, and Twin X-Lite S support.
+	      Initial support of X10 radios.  Probably still needs some tweaks.  Need feedback.
 	      Fixed issue where using the switch to go back to the menu didn't take effect until you moved the stick
 		  Disabled some left in debug print statements
 		  Added new timekeeper.lua function setNextTime() to push times in next slot pushing all the other times up.  The 
@@ -327,11 +328,13 @@ local function display( widget )
 		lcd.color(BLACK)
 		lcd.drawText(0, 0, "Configure widget needed" )
 		return
-	elseif (widget_w >= 478 and widget_h >= 194) then
-		if (widget_w  >= 784 and widget_h >= 294) then
-			FTRAINwidgetresolution = "784x294"
-		else
+	elseif (widget_w >= 478 and widget_h >= 155) then
+		FTRAINwidgetresolution = "478x155"
+		if (widget_w >= 478 and widget_h >= 194) then
 			FTRAINwidgetresolution = "478x194"
+			if (widget_w  >= 784 and widget_h >= 294) then
+				FTRAINwidgetresolution = "784x294"
+			end
 		end
         running = currentTask.display( widget )
 	else
