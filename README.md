@@ -10,7 +10,9 @@ X18S
 Twin X-Lite
 Twin X-Lite S
 
-If there is enough requests to get it working on the other older radios that work with Ethos like the X12S and X10, I will likely adapt it to work on those screens also.  Feel free to ping me on RCGroups (StatiC) if you want it work on those older radios with Ethos installed.
+Experimental support on X10 Express also.
+
+Feel free to ping me on RCGroups (StatiC).
 
 This is code originally by Mike (ON4MJ on rcgroups) with previous changes also by me to help convert it to a Widget for OpenTX.  It was then modified by Mattoia90 to include some newer f3k tasks as well as add some missing views.  With this forked version though, OpenTX is no longer working.  A big thanks for all the work that was put into this over the years.  This new fork is for the newer FrSky Ethos Lua RC radios.
 
