@@ -29,7 +29,7 @@ This version does not work with OpenTX as there were too many changes for me to 
 
 ## CUSTOMIZE SWITCH
 Once installed, you can add the F3K Training widget to your model config and then configure it in the Widget config for the F3K Training widget.
-This is how I configured the widget...
+This is how I configured the widget on the X20S...
 - Menu Select Switch Position: SD-
 - Start Switch Position: SD down
 - PreLaunch Switch Position: SI down
