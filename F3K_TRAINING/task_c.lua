@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	task_c.lua
 	Task C : All Up Last Down

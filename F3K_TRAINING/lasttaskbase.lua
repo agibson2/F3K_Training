@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	lasttaskbase.lua
 	Specific state functions for "last" task serie (again, this will be overrided by specific tasks if needed)

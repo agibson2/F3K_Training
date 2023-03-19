@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	task_ff.lua
 	Free flight : start a simple timer when the launch switch is released

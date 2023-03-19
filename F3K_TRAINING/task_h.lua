@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	task_h.lua
 	Task H : 1234 (10 min window)

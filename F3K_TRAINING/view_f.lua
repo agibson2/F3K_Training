@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	WBig/view_f.lua
 	Big widget view for the Three Out Of Six task

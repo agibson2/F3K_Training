@@ -1,5 +1,6 @@
 --[[
 	F3K Training - Mike, ON4MJ
+	                Adam, StatiC
 
 	task_qt.lua
 	Task QT : 15x40s (10 min window)

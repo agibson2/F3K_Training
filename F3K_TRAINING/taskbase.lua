@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	taskbase.lua
 	Provides the core functionality which will be specialized in the tasks dedicated scripts

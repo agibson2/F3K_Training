@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	WBig/view_k.lua
 	Taranis view for the Big Ladder practice task

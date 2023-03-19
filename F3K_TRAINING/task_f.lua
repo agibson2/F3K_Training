@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	task_f.lua
 	Task F : 3 out of 6 (10 min window ; max 180s)

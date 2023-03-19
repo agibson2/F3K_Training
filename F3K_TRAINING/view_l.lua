@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	CIRRUS_RC   08 Mar 2020
+	                Adam, StatiC
 
 	view_l.lua
 	Task L : One Flight only (10 min window)

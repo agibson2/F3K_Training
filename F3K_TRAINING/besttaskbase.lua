@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	besttaskbase.lua
 	Specific state functions for "best" task serie (again, this will be overrided by specific tasks if needed)

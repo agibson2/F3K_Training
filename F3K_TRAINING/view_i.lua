@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	WBig/view_i.lua
 	Big widget view for the Best Three task

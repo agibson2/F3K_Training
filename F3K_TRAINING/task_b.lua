@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	task_b.lua
 	Task B : Last two flights (7 or 10 min window)

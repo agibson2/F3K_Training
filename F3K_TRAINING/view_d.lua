@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	CIRRUS_RC   08 Mar 2020
+	                Adam, StatiC
 
 	view_d.lua
 	Task D : Two Flights (10 min window)

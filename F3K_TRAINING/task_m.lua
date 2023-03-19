@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	task_m.lua
 	Fly-off Task M (Increasing time by 2 minutes “Huge Ladder”)

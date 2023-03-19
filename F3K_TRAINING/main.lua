@@ -1,4 +1,4 @@
-F3KVersion = '5.0.0'
+F3KVersion = '5.0.1'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -67,13 +67,17 @@ F3KVersion = '5.0.0'
 	4.1.2 Added zeroing of Altitude for configured altitude sensor when pressing prelaunch switch
 	4.1.3 Widget config to enable/disable announcing/displaying of launch height for FF task
 	5.0.0 Initial release with support for X18, X18S, Twin X-Lite, and Twin X-Lite S support.
-	      Initial support of X10 radios.  Probably still needs some tweaks.  Need feedback.
+	      Initial support of X10 Express radio.  Probably still needs some display format tweaks.  Need feedback.
 	      Fixed issue where using the switch to go back to the menu didn't take effect until you moved the stick
 		  Disabled some left in debug print statements
-		  Added new timekeeper.lua function setNextTime() to push times in next slot pushing all the other times up.  The 
+		  Added new timekeeper.lua function setNextTime() to push times in next slot.  The 
 		   other functions addTime() and pushTime() move the positions up as times are inserted into the time arrays
 		  Redesigned view files so that they call functions in viewbase so that only viewbase needs to be different per
 		   widget size.
+	5.0.1 Consolidated quicktime task draw functionality into functions into viewbase
+	      Added viewbase drawFlightCurrent() for functions to draw flight number and then current time
+          Added viewbase drawDelta() for quicktime practice task
+          More comments to viewbase lua file functions
 --]]
 
 local FTRAINDebug=0

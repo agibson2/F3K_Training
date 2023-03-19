@@ -1,5 +1,6 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
+	                Adam, StatiC
 
 	WBig/view_g.lua
 	Big widget view for the 5x2 task
