@@ -54,31 +54,32 @@ F3KVersion = '5.0.2'
 		Fixed a regression introduced in 3.00 where a false launch could be detected when running the same task more than once
 	4.0.0 alpha 1 - StatiC (Adam)
 	      Major Ethos changes which removes OpenTX compatibility
-		  Task Free Flight and TaskA are working
-		  Task B working
-		  Tasks C D E F G H I J K working
+	      Task Free Flight and TaskA are working
+	      Task B working
+	      Tasks C D E F G H I J K working
 	4.0.1 First release
-		  All tasks working
-		  Cleanup of code and remove old files that were only needed for OpenTX
-		  Fixed Done text for TaskH
+	      All tasks working
+	      Cleanup of code and remove old files that were only needed for OpenTX
+	      Fixed Done text for TaskH
 	4.1.0 Added launch height detection for Free Flight task.  Need to configure altitude and vspeed sensors in widget config.
-		  Added list of launch height history to go along with times
+	      Added list of launch height history to go along with times
 	4.1.1 Changed Free Flight task to show session time at top left and current flight at bottom left to be consistent with other tasks
 	4.1.2 Added zeroing of Altitude for configured altitude sensor when pressing prelaunch switch
 	4.1.3 Widget config to enable/disable announcing/displaying of launch height for FF task
 	5.0.0 Initial release with support for X18, X18S, Twin X-Lite, and Twin X-Lite S support.
 	      Initial support of X10 Express radio.  Probably still needs some display format tweaks.  Need feedback.
 	      Fixed issue where using the switch to go back to the menu didn't take effect until you moved the stick
-		  Disabled some left in debug print statements
-		  Added new timekeeper.lua function setNextTime() to push times in next slot.  The 
-		   other functions addTime() and pushTime() move the positions up as times are inserted into the time arrays
-		  Redesigned view files so that they call functions in viewbase so that only viewbase needs to be different per
-		   widget size.
+	      Disabled some left in debug print statements
+	      Added new timekeeper.lua function setNextTime() to push times in next slot.  The 
+	       other functions addTime() and pushTime() move the positions up as times are inserted into the time arrays
+	      Redesigned view files so that they call functions in viewbase so that only viewbase needs to be different per
+	       widget size.
 	5.0.1 Consolidated quicktime task draw functionality into functions into viewbase
 	      Added viewbase drawFlightCurrent() for functions to draw flight number and then current time
-          Added viewbase drawDelta() for quicktime practice task
-          More comments to viewbase lua file functions
+              Added viewbase drawDelta() for quicktime practice task
+              More comments to viewbase lua file functions
 	5.0.2 Added cycling the bottom right to cycle between launch height and max height for flight
+              Fixed X10Express launch height dashboard displaying the height below the screen size
 --]]
 
 local FTRAINDebug=0
