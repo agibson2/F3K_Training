@@ -51,27 +51,32 @@ function vbase.drawDashboard( widget, task )
 	lcd.color(WHITE)
 	if widget.sensor_battery ~= nil then
 		lcd.drawText( f3kTextOffset + 4, text_h*3 -3, "Rx Battery" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*4, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
+		lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*4 -3, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
 	end
 	if widget.sensor_rssi ~= nil then
-		lcd.drawText( f3kTextOffset + 4, text_h*5.5 -3, "Rx RSSI" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*6.5 -3, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
+		lcd.drawText( f3kTextOffset + 4, text_h*5.1-3, "Rx RSSI" )
+		lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*6.1 -3, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
 	end
 	
 	-- launch height for Free Flight task
 	if task ~= nil and task.name == "Free Flight" and widget.launch_height_enabled then
-		lcd.drawText( f3kTextOffset + 4, text_h*8 -3, "Launch" )
 		if widget.sensor_vspeed == nil or widget.sensor_altitude == nil or task.launchheight == nil then
-			lcd.drawText( f3kTextOffset + 4 + text_w*1, text_h*9 -3, "disabled" ) 
+			lcd.drawText( f3kTextOffset + 4, text_h*7.2 -3, "Launch" )
+			lcd.drawText( f3kTextOffset + 4 + text_w*1, text_h*8.2 -3, "disabled" ) 
 		else
-			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*9 -3, task.launchheight, widget.sensor_altitude:unit(), 0, RIGHT )		
-		end
-		
-		if (DebugLaunchHeight) then 
-			lcd.drawNumber( text_w*8, widget_h - (text_h * 2), widget.sensor_vspeed:value(), widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
-			lcd.drawNumber( text_w*16, widget_h - (text_h * 2), task.maxvspeed, widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
-			lcd.drawNumber( text_w*8, widget_h - text_h, widget.sensor_altitude:value(), widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
-			lcd.drawNumber( text_w*16, widget_h - text_h, task.maxaltitude, widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+			local altitudeval
+			local heightlabel = ""
+			-- Flip back and forth every 4 seconds between height after vspeed slows down and maximum height seen during flight
+			if os.clock() % 8 < 4 then
+				heightlabel = "Launch"
+				altitudeval = task.launchheight
+			else
+				heightlabel = "Max alt."
+				altitudeval = task.maxaltitude
+			end
+			
+			lcd.drawText( f3kTextOffset + 4, text_h*7.2 -3, heightlabel )
+			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*8.2 -3, altitudeval, widget.sensor_altitude:unit(), 0, RIGHT )
 		end
 	end
 end

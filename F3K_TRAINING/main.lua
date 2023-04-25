@@ -1,4 +1,4 @@
-F3KVersion = '5.0.1'
+F3KVersion = '5.0.2'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -78,6 +78,7 @@ F3KVersion = '5.0.1'
 	      Added viewbase drawFlightCurrent() for functions to draw flight number and then current time
           Added viewbase drawDelta() for quicktime practice task
           More comments to viewbase lua file functions
+	5.0.2 Added cycling the bottom right to cycle between launch height and max height for flight
 --]]
 
 local FTRAINDebug=0
@@ -90,7 +91,6 @@ DebugLaunched=false
 DebugLanded=false
 DebugTimes=false
 DebugTimers=false
-DebugLaunchHeight=false
 
 -- Global used to know what directory to use for widget display lua code files
 FTRAINwidgetresolution = ""

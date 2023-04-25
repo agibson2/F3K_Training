@@ -27,8 +27,8 @@ local taskFF = {
 	name,
 	heightstate = LAUNCHHEIGHT_INIT,
 	launchheight = 0,
-	maxvspeed = 0,  --for DebugLaunchHeight
-	maxaltitude = 0, -- for DebugLaunchHeight
+	maxvspeed = 0,  --for launch height dashboard bottom right
+	maxaltitude = 0, -- for launch height dashboard bottom right
 	wav
 }
 
@@ -118,7 +118,7 @@ function taskFF.flyingState(widget)
 		end
 	end
 	local curraltitude = widget.sensor_altitude:value()
-	if DebugLaunchHeight and curraltitude > taskFF.maxaltitude then
+	if curraltitude > taskFF.maxaltitude then
 		taskFF.maxaltitude = curraltitude
 	end
 	
@@ -136,7 +136,7 @@ function taskFF.flyingState(widget)
 				currvspeed = currvspeed * 0.3048  -- convert to meters for calculation
 			end
 
-			if DebugLaunchHeight and currvspeed > taskFF.maxvspeed then
+			if currvspeed > taskFF.maxvspeed then
 				taskFF.maxvspeed = currvspeed
 			end
 			if currvspeed >= 10 then
@@ -145,7 +145,7 @@ function taskFF.flyingState(widget)
 			end
 		elseif taskFF.heightstate == LAUNCHHEIGHT_WAITFORLESSTHANMAXSPEED then
 			local currvspeed = widget.sensor_vspeed:value()
-			if currvspeed < 10 then
+			if currvspeed < 3 then
 			--if rudderstick:value() < 80 then   -- to debug on sim since we can't modify telemetry
 				taskFF.heightstate = LAUNCHHEIGHT_END
 				taskFF.launchheight = widget.sensor_altitude:value()
