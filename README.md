@@ -2,6 +2,8 @@
 
 Requires at least Ethos version 1.1.0.
 
+Ethos 1.4.14 made a change to widget sizes for smaller Ethos LCD screen models (EXPRESS, Twin X-Lite, etc) so you need to update the F3K_TRAINING script to version 5.0.3 or you will get an unknown screen size error with F3K_TRAINING.
+
 Works with the following radios...
 X20
 X20S

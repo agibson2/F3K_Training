@@ -1,4 +1,4 @@
-F3KVersion = '5.0.2'
+F3KVersion = '5.0.3'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -80,6 +80,7 @@ F3KVersion = '5.0.2'
               More comments to viewbase lua file functions
 	5.0.2 Added cycling the bottom right to cycle between launch height and max height for flight
               Fixed X10Express launch height dashboard displaying the height below the screen size
+	5.0.3 Updated check for widget sizes to smaller sizes for screens with smaller LCD panels.  Ethos 1.4.14 made changes to avilable widget sizes (reduced)
 --]]
 
 local FTRAINDebug=0
@@ -333,10 +334,10 @@ local function display( widget )
 		lcd.color(BLACK)
 		lcd.drawText(0, 0, "Configure widget needed" )
 		return
-	elseif (widget_w >= 478 and widget_h >= 155) then
-		FTRAINwidgetresolution = "478x155"
-		if (widget_w >= 478 and widget_h >= 194) then
-			FTRAINwidgetresolution = "478x194"
+	elseif (widget_w >= 472 and widget_h >= 155) then
+		FTRAINwidgetresolution = "472x158"  -- it is actually 158 now in Ethos 1.4.14 but leave as 155 so older versions of Ethos are supported
+		if (widget_w >= 472 and widget_h >= 191) then
+			FTRAINwidgetresolution = "472x191"
 			if (widget_w  >= 784 and widget_h >= 294) then
 				FTRAINwidgetresolution = "784x294"
 			end
