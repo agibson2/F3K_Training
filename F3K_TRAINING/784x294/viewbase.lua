@@ -78,6 +78,13 @@ function vbase.drawDashboard( widget, task )
 			lcd.drawText( f3kTextOffset + 4, text_h*8 -3, heightlabel )
 			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*9 -3, altitudeval, widget.sensor_altitude:unit(), 0, RIGHT )
 		end
+
+		if (DebugLaunchHeight) then
+			lcd.drawNumber( text_w*8, widget_h - (text_h * 2), widget.sensor_vspeed:value(), widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
+			lcd.drawNumber( text_w*16, widget_h - (text_h * 2), task.maxvspeed, widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
+			lcd.drawNumber( text_w*8, widget_h - text_h, widget.sensor_altitude:value(), widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+			lcd.drawNumber( text_w*16, widget_h - text_h, task.maxaltitude, widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
+		end
 	end
 end
 

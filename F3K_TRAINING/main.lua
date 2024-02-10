@@ -1,4 +1,4 @@
-F3KVersion = '5.0.3'
+F3KVersion = '6.0.0'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -81,7 +81,22 @@ F3KVersion = '5.0.3'
 	5.0.2 Added cycling the bottom right to cycle between launch height and max height for flight
               Fixed X10Express launch height dashboard displaying the height below the screen size
 	5.0.3 Updated check for widget sizes to smaller sizes for screens with smaller LCD panels.  Ethos 1.4.14 made changes to avilable widget sizes (reduced)
+    6.0.0 Updated for Ethos 1.5.0.  No longer compatible with 1.4.x Ethos.
+          Fixed bug where timer:drawReverse was not drawing current flight time as up count.  It was showing the down count.
+          Timer:activeCondition() is now timer:startCondition() so map the old to the new function if it doesn't exist on older firmware
+          Added new 2024 task N (Best flight)
+          Changes to deal with Timer:mode being removed in 1.5.0 firwmare and replaced with a new more customizable Timer:audioActions().
+          f3kCreateTimer() now uses the new Ethos 1.5.0 audioTypes COUNTDOWN_BEEP and COUNTDOWN_VALUE instead of AUDIO_MODE defines from 1.4.x Ethos.
+          Fixed bug where taskbase playTime() had a playsound for remaining prefix audio but that was mistakenly put in.  Prefix audio needs to be different in different sections of code like target and was already handled in the code before playTime().
 --]]
+
+-- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
+-- map the old function also to the new name.  There are other things different that aren't
+-- accounted for with older 1.4.x Ethos so this is really useless since 1.4.x doesn't work anymore
+-- with this code... leaving it in to remind myself how to do it :)
+if (_G['Timer']['startCondition'] == nil) then
+    Timer.startCondition = Timer.activeCondition
+end
 
 local FTRAINDebug=0
 
@@ -93,6 +108,7 @@ DebugLaunched=false
 DebugLanded=false
 DebugTimes=false
 DebugTimers=false
+DebugLaunchHeight=false  -- only implemented on x20(s) 784x294 screeen and shows max height attained over the entire launch to make sure implementation is close
 
 -- Global used to know what directory to use for widget display lua code files
 FTRAINwidgetresolution = ""
@@ -389,15 +405,16 @@ createMenu = function()
 		{ id='A', desc='Last flight' },
 		{ id='B', desc='Last two' },
 		{ id='C', desc='AULD' },
-		{ id='D', desc='Two Flights' },
+		{ id='D', desc='Two flights' },
 		{ id='F', desc='3 out of 6' },
 		{ id='G', desc='5x2' },
 		{ id='H', desc='1234' },
 		{ id='I', desc='Best three' },
 		{ id='J', desc='Last three' },
-		{ id='K', desc='Big Ladder' },
+		{ id='K', desc='Big ladder' },
 		{ id='L', desc='One flight' },
-		{ id='M', desc='Huge Ladder' },
+		{ id='M', desc='Huge ladder' },
+		{ id='N', desc='Best flight' },
 		{ id='A', desc='Last flight (7 min)', win=7 },
 		{ id='B', desc='Last two (7 min)', win=7 },
 		{ id='QT', desc='QT practice (15 x 40s)' },
@@ -494,14 +511,14 @@ createMenu = function()
 		local f3kOTimer = model.getTimer("f3kOne")
 		if f3kZTimer ~= nil then
 			local catNoneSource = system.getSource(nil)
-			if f3kZTimer:activeCondition() ~= catNoneSource then
-				f3kZTimer:activeCondition(catNoneSource)
+			if f3kZTimer:startCondition() ~= catNoneSource then
+				f3kZTimer:startCondition(catNoneSource)
 			end
 		end
 		if f3kOTimer ~= nil then
 			local catNoneSource = system.getSource(nil)
-			if f3kZTimer:activeCondition() ~= catNoneSource then
-				f3kZTimer:activeCondition(catNoneSource)
+			if f3kZTimer:startCondition() ~= catNoneSource then
+				f3kZTimer:startCondition(catNoneSource)
 			end
 		end
 		

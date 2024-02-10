@@ -145,7 +145,7 @@ function taskFF.flyingState(widget)
 			end
 		elseif taskFF.heightstate == LAUNCHHEIGHT_WAITFORLESSTHANMAXSPEED then
 			local currvspeed = widget.sensor_vspeed:value()
-			if currvspeed < 3 then
+			if currvspeed < 4 then
 			--if rudderstick:value() < 80 then   -- to debug on sim since we can't modify telemetry
 				taskFF.heightstate = LAUNCHHEIGHT_END
 				taskFF.launchheight = widget.sensor_altitude:value()

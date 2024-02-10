@@ -6,43 +6,43 @@
 
 	Wrapper around the timer interface
 	
-	countdownBeep 	integer (none, beep, voice)
+	timerActionType 	one of the 1.5.0 timer timerActions types of COUNTDOWN_BEEP or COUNTDOWN_VALUE
 	minuteBeep	bool
 --]]
 
-function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
-	if (DebugFunctionCalls) then print("FTRAIN: timer.f3kCreateTimer()=" .. timerId .. " startValue=" .. startValue) end
-	-- Precondition: timerId is either 0 or 1
+function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
+	if (DebugFunctionCalls) then print("FTRAIN: timer.f3kCreateTimer()=" .. timerId .. " startValue=" .. startValue .. " timerActionType=" .. tostring(timerActionType) .. " minutebeep=" .. tostring(minuteBeep)) end
+	-- timerId is the name of the timer
 	local id = timerId
 	local timer = model.getTimer(id)
 	local running = false  -- Had to create something for Ethos to know if the timer is stopped or started
 	
 	if timer == nil then
-		timer = model.createTimer(id)
+		timer = model.createTimer()
 		if timer == nil then
 			print("FTRAIN: f3kCreateTimer() createTimer returned nil for '" .. timerId .. "'")
 		else
 			timer:name(timerId)
-			timer:activeCondition( system.getSource(nil) ) --nil is used to stop the timer
+			timer:startCondition( system.getSource(nil) ) --nil is used to stop the timer
 		end
 	end
 	
-	if countdownBeep == 1 then
-		timer:audioMode(AUDIO_BEEP)
-	elseif countdownBeep == 2 then
-		timer:audioMode(AUDIO_VOICE)
-	else
-		timer:audioMode(AUDIO_MUTE)
-	end
-	
+    local beepstart
 	if minuteBeep then
-		--countdown every minute
-		timer:countdownStart(540)
-		timer:countdownStep(60)
+        beepstart = 540  -- just use a value over the maximum flight time we might ever use
 	else
-		-- then disable the countdown... hopefully this works
-		timer:countdownStart(0)
-		timer:countdownStep(60)
+        beepstart = 0
+	end
+    
+    local audmode
+	if timerActionType ~= nil then
+        timer:audioActions({
+                            {type=timerActionType, start=beepstart, step=60},
+                            {type=timerActionType, start=10, step=1}
+        })
+	else
+		--Only way I could figure out how to remove audio actions and have it do nothing
+        timer:audioActions({ {type=COUNTDOWN_BEEP, start=0, step=60} })
 	end
 	
 	local originalStartValue = timer:start()
@@ -74,14 +74,14 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 			timer:direction(-1)
 		end
 		
-		timer:activeCondition({category=CATEGORY_ALWAYS_ON, member=1, options=0})
+		timer:startCondition({category=CATEGORY_ALWAYS_ON, member=1, options=0})
 	end
 
 	local function stop()
 		if (DebugFunctionCalls) then print("FTRAIN: timer.stop()") end
 		local wasRunning = running
 		--FIXME Hack to pause timer in Ethos.. it works but unsure what it is selecting as source.
-		timer:activeCondition( system.getSource({category=0, member=1, options=0}) ) 
+		timer:startCondition( system.getSource({category=0, member=1, options=0}) ) 
 		running = false
 		return wasRunning, timer:value()
 	end
@@ -108,7 +108,7 @@ function f3kCreateTimer( timerId, startValue, countdownBeep, minuteBeep )
 	end
 
 	local function drawReverse( x, y, att )
-		local thetime = timer:value()
+		local thetime = target - timer:value()
 		local isnegative=false
 		if thetime < 0 then
 			isnegative=true
