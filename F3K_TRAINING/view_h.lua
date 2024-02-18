@@ -25,7 +25,6 @@ function task.display( widget )
 	vbase.drawTimes( widget, task )
 	vbase.drawTimesTotal( widget, task )
 	vbase.drawPrepWorkTime( widget, task )
-	--vbase.drawCurrent( widget, task )
 
 	lcd.font(FONT_L)
 	local text_w, text_h = lcd.getTextSize("0")
