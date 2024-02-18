@@ -41,8 +41,7 @@ function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
                             {type=timerActionType, start=10, step=1}
         })
 	else
-		--Only way I could figure out how to remove audio actions and have it do nothing
-        timer:audioActions({ {type=COUNTDOWN_BEEP, start=0, step=60} })
+        timer:audioActions({})
 	end
 	
 	local originalStartValue = timer:start()

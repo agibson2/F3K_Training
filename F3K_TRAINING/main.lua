@@ -88,6 +88,8 @@ F3KVersion = '6.0.0'
           Changes to deal with Timer:mode being removed in 1.5.0 firwmare and replaced with a new more customizable Timer:audioActions().
           f3kCreateTimer() now uses the new Ethos 1.5.0 audioTypes COUNTDOWN_BEEP and COUNTDOWN_VALUE instead of AUDIO_MODE defines from 1.4.x Ethos.
           Fixed bug where taskbase playTime() had a playsound for remaining prefix audio but that was mistakenly put in.  Prefix audio needs to be different in different sections of code like target and was already handled in the code before playTime().
+    WIP   Fixed Done ! test not showing in the correct spot for Twin X-Lite S
+          Made Done ! text location consisten between flight modes
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware

@@ -242,7 +242,7 @@ function vbase.drawImproveMargin( widget, task )
 	end
 
 	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		lcd.drawText( vbase.verticaldividerx + (text_w*3), text_h * 2, 'Done !', 0 )
+		lcd.drawText( vbase.verticaldividerx + (text_w*3), text_h * (task.COUNT + 2), 'Done !', 0 )
 	end
 end
 
@@ -252,7 +252,7 @@ function vbase.drawDone( widget, task )
 	lcd.font(FONT_XL)
 	lcd.color(WHITE)
 	local text_w, text_h = lcd.getTextSize("0")
-	lcd.drawText( vbase.verticaldividerx / 2 - (text_w * 3), vbase.horizontaldividery + 3, 'Done !', 0 )
+	lcd.drawText( vbase.verticaldividerx / 2 - (text_w * 3), text_h * (task.COUNT + 2), 'Done !', 0 )
 end
 
 return vbase
