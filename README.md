@@ -1,6 +1,6 @@
 # F3K TRAINING for FrSky Ethos radios
 
-Requires at least Ethos version 1.5.0 RC2
+Requires at least Ethos version 1.5.0 RC4
 
 Works with the following radios...
 X20

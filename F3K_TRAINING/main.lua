@@ -1,4 +1,4 @@
-F3KVersion = '6.0.0'
+F3KVersion = '6.1.0'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -88,7 +88,7 @@ F3KVersion = '6.0.0'
           Changes to deal with Timer:mode being removed in 1.5.0 firwmare and replaced with a new more customizable Timer:audioActions().
           f3kCreateTimer() now uses the new Ethos 1.5.0 audioTypes COUNTDOWN_BEEP and COUNTDOWN_VALUE instead of AUDIO_MODE defines from 1.4.x Ethos.
           Fixed bug where taskbase playTime() had a playsound for remaining prefix audio but that was mistakenly put in.  Prefix audio needs to be different in different sections of code like target and was already handled in the code before playTime().
-    WIP   Fixed Done ! text not showing in the correct spot for Twin X-Lite S
+    6.1.0 Fixed Done ! text not showing in the correct spot for Twin X-Lite S
           Made Done ! text location consistent between flight modes
           Changed task screen design to say Worktime/Preptime and Flight on Twin X-Lite S(472x191 viewbase.lua)
           Changed task screen design for X20S (784x294 viewbase.lua)
