@@ -36,18 +36,6 @@ function vbase.drawDashboard( widget, task )
 	local f3kTextOffset = widget_w - vbase.f3kDashboardOffset
 	
 	lcd.font(FONT_L)
-	lcd.color( widget.backgroundcolor )
-	lcd.drawFilledRectangle( f3kTextOffset + 1, 1, widget_w, text_h * 2 + 8 + 8 ) -- 8 pixel empty space at top and bottom
-	lcd.color( WHITE )
-	lcd.drawText( f3kTextOffset + 8, 8, 'F3K' )
-	lcd.drawText( f3kTextOffset + 8, 8 + text_h, 'Training' )
-	
-	lcd.color(BLACK)
-	lcd.drawLine( f3kTextOffset, 0, f3kTextOffset, widget_h )  -- left side outline of f3k logo area
-	lcd.drawLine( f3kTextOffset, 8 + 8 + text_h*2, widget_w, 8 + 8+ text_h*2 )  -- bottom side of f3k logo area
-	lcd.drawLine( f3kTextOffset, 0, widget_w, 0 ) -- top of f3k logo area
-	lcd.drawLine( widget_w, 0, widget_w, 8 + 8 + text_h*2 ) -- bottom of f3k logo area
-
 	lcd.color(WHITE)
 	if widget.sensor_battery ~= nil then
 		lcd.drawText( f3kTextOffset + 4, text_h*3 -3, "Rx Battery" )
@@ -84,7 +72,15 @@ end
 function vbase.drawPrepWorkTime( widget, task )
 	lcd.font(FONT_XL)
 	local text_w, text_h = lcd.getTextSize("0")
-	task.timer1.draw( text_w * 5, text_h * 2, 0 )
+	local prefixString
+	if task.state == 1 or task.state == 2 then
+		prefixString = "Preptime"
+	else
+		prefixString = "Worktime"
+	end
+	lcd.drawText( text_w * 1, text_h, prefixString, 0 )
+	lcd.font(FONT_XXL)
+	task.timer1.draw( text_w * 3, text_h * 2, 0 )
 end
 
 -- Draw common stuff for every task
@@ -95,8 +91,6 @@ function vbase.drawCommon( widget, task )
 	lcd.color( widget.backgroundcolor )
 	-- background rect right side
 	lcd.drawFilledRectangle( vbase.verticaldividerx, 0, widget_w - vbase.verticaldividerx, widget_h - 1, 0 )
-	-- background rect bottom
-	lcd.drawFilledRectangle( 0, vbase.horizontaldividery, vbase.verticaldividerx, widget_h - vbase.horizontaldividery, 0 )
 	-- outline left side
 	lcd.color(BLACK)
 	lcd.drawLine( 0, vbase.horizontaldividery, 0, widget_h, SOLID, 2 )
@@ -107,7 +101,6 @@ function vbase.drawCommon( widget, task )
 	-- outline at bottom
 	lcd.drawLine( 0, widget_h, widget_w, widget_h, SOLID, 2 )
 
-	lcd.drawLine( 0, vbase.horizontaldividery, vbase.verticaldividerx, vbase.horizontaldividery, SOLID, 2 )
 	lcd.color(WHITE)
 	lcd.font(FONT_L)
 	local text_w, text_h = lcd.getTextSize("0")
@@ -123,8 +116,14 @@ function vbase.drawCurrent( widget, task )
 	lcd.font(FONT_XL)
 	lcd.color(WHITE)
 	local text_w, text_h = lcd.getTextSize("0")
-	lcd.drawText( text_w * 1, vbase.horizontaldividery + 3, 'Current: ' )
-	task.timer2.drawReverse( text_w * 8, vbase.horizontaldividery + 3, 0 )
+	lcd.drawText( text_w * 1, text_h * 4 - (text_h/2), 'Flight' )
+	lcd.font(FONT_XXL)
+	if task.timer2.getDirection() == -1 then
+		task.timer2.drawReverse( text_w * 3, text_h * 5 - (text_h/2), 0 )
+	else
+		-- ff and qt tasks have up timers
+		task.timer2.draw( text_w * 3, text_h * 5, 0 )
+	end
 end
 
 -- Draw target time and current time on bottom left side area C
@@ -133,8 +132,9 @@ function vbase.drawTargetCurrent( widget, task )
 	lcd.color(WHITE)
 	local prefixText = task.MAX_FLIGHT_TIME .. 's: '
 	local text_w, text_h = lcd.getTextSize("0")
-	lcd.drawText( text_w * 1, vbase.horizontaldividery + 3, prefixText )
-	task.timer2.drawReverse( text_w * 8, vbase.horizontaldividery + 3, 0 )
+    lcd.drawText( text_w * 1, text_h * 4 - (text_h/2), 'Target ' .. prefixText )
+	lcd.font(FONT_XXL)
+	task.timer2.drawReverse( text_w * 3, text_h * 5 - (text_h/2), 0 )
 end
 
 -- Draw flight count and current time on bottom left side area C
@@ -142,8 +142,9 @@ function vbase.drawFlightCurrent( widget, task )
 	lcd.font(FONT_XL)
 	lcd.color(WHITE)
 	local text_w, text_h = lcd.getTextSize("0")
-	lcd.drawText( (text_w * 1 / 2), vbase.horizontaldividery + 3, 'Flight ' .. math.max( 1, task.flightCount ) )
-	task.timer2.drawReverse( text_w * 8, vbase.horizontaldividery + 3, 0 )
+	lcd.drawText( text_w * 1, text_h * 4 - (text_h/2),'Flight ' .. math.max( 1, task.flightCount ) )
+	lcd.font(FONT_XL)
+	task.timer2.drawReverse( text_w * 3, text_h * 5 - (text_h/2), 0 )
 end
 
 -- Draw delta on top right side area B
@@ -242,7 +243,7 @@ function vbase.drawImproveMargin( widget, task )
 	end
 
 	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		lcd.drawText( vbase.verticaldividerx + (text_w*3), text_h * (task.COUNT + 2), 'Done !', 0 )
+		lcd.drawText( text_w * 5, text_h * 3, 'Done !', 0 )  -- right below Window time
 	end
 end
 
@@ -252,7 +253,7 @@ function vbase.drawDone( widget, task )
 	lcd.font(FONT_XL)
 	lcd.color(WHITE)
 	local text_w, text_h = lcd.getTextSize("0")
-	lcd.drawText( vbase.verticaldividerx / 2 - (text_w * 3), text_h * (task.COUNT + 2), 'Done !', 0 )
+	lcd.drawText( text_w * 5, text_h * 3, 'Done !', 0 )  -- right below Window time
 end
 
 return vbase
