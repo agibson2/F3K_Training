@@ -91,6 +91,7 @@ F3KVersion = '6.0.0'
     WIP   Fixed Done ! text not showing in the correct spot for Twin X-Lite S
           Made Done ! text location consistent between flight modes
           Changed task screen design to say Worktime/Preptime and Flight on Twin X-Lite S(472x191 viewbase.lua)
+          Changed task screen design for X20S (784x294 viewbase.lua)
           Removed F3K Training text on right hand side of flight screens so that space can be used for more useful stuff in the future
           Fixed Timer showing negative for FF task
           Changed H task to use down timer instead of up timer to match other F3K tasks
