@@ -35,20 +35,13 @@ function taskH.getDoneList()
 	return ret
 end
 
-
-function taskH.initFlightTimer()
-	taskH.timer2 = createTimer( "f3kOne", 0, AUDIO_MUTE, true )	-- current flight time, going up here
-	
-end
-
-
 function taskH.endOfWindow()
 	if taskH.timer1.getVal() <= 0 then
 		local timeRunning, val = taskH.timer2.stop()
 		taskH.timer1.stop()
 
 		if timeRunning then
-			taskH.times.addTime( val )
+			taskH.times.addTime( taskH.timer2.getTarget() - val )
 		end
 		taskH.playSound( 'taskend' )
 		taskH.state = 5
@@ -76,10 +69,10 @@ function taskH.flyingState(widget)
 		if f3klanded(widget) then
 			taskH.timer2.stop()
 
-			local val = taskH.timer2.getVal()
+			local val = taskH.timer2.getTarget() - taskH.timer2.getVal()
 			taskH.times.addTime( val )
 
-			if taskH.times.getVal( 4 ) > taskH.timer1.getVal() then
+			if taskH.times.getVal( 4 ) > taskH.timer1.getTarget() - taskH.timer1.getVal() then
 				-- not enough time remaining to improve
 				if not taskH.done then
 					taskH.playSound( 'cant' )
@@ -102,7 +95,7 @@ function taskH.flyingState(widget)
 			taskH.state = 4
 		else
 			-- Here we manage most of the counting ourselves
-			local t = taskH.timer2.getVal()
+			local t = taskH.timer2.getTarget() - taskH.timer2.getVal()
 			if t ~= taskH.previousTime then
 				local sec = t % 60
 				local minfract = t / 60

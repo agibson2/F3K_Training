@@ -137,8 +137,18 @@ end
 
 
 -- State functions (default implementation)
+local timersReset = false
 function taskBase.resetState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.resetState() taskBase.state=" .. taskBase.state .. " menuswitch=" .. tostring(widget.menuswitch:state()) ) end
+
+	-- reset timers so that printing Preptime shows correct prep time after a worktime ends and you want to start the same task again
+	if timersReset == false then
+		taskBase.times.reset()
+		taskBase.initPrepTimer()
+		taskBase.initFlightTimer()
+		timersReset = true
+	end
+
 	-- Wait for the start of the task
 	if widget.startswitch:state() then
 		taskBase.playSound( taskBase.wav )
@@ -151,6 +161,7 @@ function taskBase.resetState(widget)
 		taskBase.timer1.start()
 
 		taskBase.state = 2
+		timersReset = false
 	elseif not widget.menuswitch:state() then
 		taskBase.running = false
 	end

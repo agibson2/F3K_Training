@@ -14,6 +14,7 @@ function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
 	if (DebugFunctionCalls) then print("FTRAIN: timer.f3kCreateTimer()=" .. timerId .. " startValue=" .. startValue .. " timerActionType=" .. tostring(timerActionType) .. " minutebeep=" .. tostring(minuteBeep)) end
 	-- timerId is the name of the timer
 	local id = timerId
+	local direction = -1
 	local timer = model.getTimer(id)
 	local running = false  -- Had to create something for Ethos to know if the timer is stopped or started
 	
@@ -56,6 +57,10 @@ function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
 		return target
 	end
 
+    local function getDirection()
+        return direction
+    end
+
 	local function start( newStartValue )
 		if (DebugFunctionCalls) then print("FTRAIN: timer.start()") end
 
@@ -69,8 +74,10 @@ function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
 		running = true
 		if newStartValue == 0 then
 			timer:direction(1)
+			direction = 1
 		else
 			timer:direction(-1)
+			direction = -1
 		end
 		
 		timer:startCondition({category=CATEGORY_ALWAYS_ON, member=1, options=0})
@@ -143,7 +150,8 @@ function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
 		draw = draw,
 		drawReverse = drawReverse,
 		getVal = getVal,
-		getTarget = getTarget
+		getTarget = getTarget,
+		getDirection = getDirection
 	}
 end
 

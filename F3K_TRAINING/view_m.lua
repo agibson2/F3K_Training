@@ -17,6 +17,7 @@ function task.display(widget)
 	vbase.drawCommon( widget, task )
 
 	if not task.done then
+		vbase.drawPrepWorkTime( widget, task )
 		vbase.drawTargetCurrent( widget, task )
 	else
 		vbase.drawDone( widget, task )

@@ -33,6 +33,7 @@ local taskFF = {
 }
 
 taskFF.COUNT = 9
+taskFF.WINDOW_TIME = 0
 
 function taskFF.playSound( sound )
 	system.playFile( SOUND_PATH .. sound .. '.wav' )
@@ -76,20 +77,25 @@ end
 
 
 -- State functions
+local timersReset = false
 function taskFF.resetState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.resetState()") end
+
+	if timersReset == false then
+		-- reset the scores
+		taskFF.times.reset()
+		taskFF.heights.reset()
+		taskFF.initTimers()
+		timersReset = true
+	end
+
 	-- Wait for the start of the task
 	if widget.startswitch:state() then
 		taskFF.playSound( taskFF.wav )
 
-		-- reset the scores
-		taskFF.times.reset()
-		taskFF.heights.reset()
-
-		taskFF.initTimers()
-		taskFF.timer1.start()
-
 		taskFF.state = 2
+		taskFF.timer1.start()
+        timersReset = false
 	elseif not widget.menuswitch:state() then
 		taskFF.running = false
 	end
