@@ -27,8 +27,8 @@ local taskFF = {
 	name,
 	heightstate = LAUNCHHEIGHT_INIT,
 	launchheight = 0,
-	maxvspeed = 0,  --for DebugLaunchHeight
-	maxaltitude = 0, -- for DebugLaunchHeight
+	maxvspeed = 0,  --not used yet
+	maxaltitude = 0, -- Maximum altitude during flight
 	wav
 }
 
@@ -124,7 +124,7 @@ function taskFF.flyingState(widget)
 		end
 	end
 	local curraltitude = widget.sensor_altitude:value()
-	if DebugLaunchHeight and curraltitude > taskFF.maxaltitude then
+	if curraltitude > taskFF.maxaltitude then
 		taskFF.maxaltitude = curraltitude
 	end
 	

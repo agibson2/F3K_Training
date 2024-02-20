@@ -32,25 +32,25 @@ vbase.f3kDashboardOffset = 96 --86 --143
 
 function vbase.drawDashboard( widget, task )
 	local widget_w, widget_h = lcd.getWindowSize()
-	local text_w, text_h = lcd.getTextSize("0")
+	lcd.font(FONT_L)
+    local text_w, text_h = lcd.getTextSize("0")
 	local f3kTextOffset = widget_w - vbase.f3kDashboardOffset
 	
-	lcd.font(FONT_L)
 	lcd.color(WHITE)
 	if widget.sensor_battery ~= nil then
-		lcd.drawText( f3kTextOffset + 4, text_h*3 -3, "Rx Battery" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*4 -3, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
+		lcd.drawText( f3kTextOffset + 4, text_h*2, "Rx Battery" )
+		lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*3, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
 	end
 	if widget.sensor_rssi ~= nil then
-		lcd.drawText( f3kTextOffset + 4, text_h*5.1-3, "Rx RSSI" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*6.1 -3, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
+		lcd.drawText( f3kTextOffset + 4, text_h*4, "Rx RSSI" )
+		lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*5, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
 	end
 	
 	-- launch height for Free Flight task
 	if task ~= nil and task.name == "Free Flight" and widget.launch_height_enabled then
 		if widget.sensor_vspeed == nil or widget.sensor_altitude == nil or task.launchheight == nil then
-			lcd.drawText( f3kTextOffset + 4, text_h*7.2 -3, "Launch" )
-			lcd.drawText( f3kTextOffset + 4 + text_w*1, text_h*8.2 -3, "disabled" ) 
+			lcd.drawText( f3kTextOffset + 4, text_h*6, "Launch" )
+			lcd.drawText( f3kTextOffset + 4 + text_w*1, text_h*7, "disabled" ) 
 		else
 			local altitudeval
 			local heightlabel = ""
@@ -63,8 +63,8 @@ function vbase.drawDashboard( widget, task )
 				altitudeval = task.maxaltitude
 			end
 			
-			lcd.drawText( f3kTextOffset + 4, text_h*7.2 -3, heightlabel )
-			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*8.2 -3, altitudeval, widget.sensor_altitude:unit(), 0, RIGHT )
+			lcd.drawText( f3kTextOffset + 4, text_h*6, heightlabel )
+			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*7, altitudeval, widget.sensor_altitude:unit(), 0, RIGHT )
 		end
 	end
 end

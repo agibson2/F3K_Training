@@ -32,25 +32,25 @@ vbase.f3kDashboardOffset = 156 -- 96 --143
 
 function vbase.drawDashboard( widget, task )
 	local widget_w, widget_h = lcd.getWindowSize()
+	lcd.font(FONT_L)
 	local text_w, text_h = lcd.getTextSize("0")
 	local f3kTextOffset = widget_w - vbase.f3kDashboardOffset
 	
-	lcd.font(FONT_L)
 	lcd.color(WHITE)
 	if widget.sensor_battery ~= nil then
-		lcd.drawText( f3kTextOffset + 4, text_h*3 -3, "Rx Battery" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*4, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
+		lcd.drawText( f3kTextOffset + 4, text_h*3 +3, "Rx Battery" )
+		lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*4 +4, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
 	end
 	if widget.sensor_rssi ~= nil then
-		lcd.drawText( f3kTextOffset + 4, text_h*5.5 -3, "Rx RSSI" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*6.5 -3, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
+		lcd.drawText( f3kTextOffset + 4, text_h*5 +5, "Rx RSSI" )
+		lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*6 +6, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
 	end
 	
 	-- launch height for Free Flight task
 	if task ~= nil and task.name == "Free Flight" and widget.launch_height_enabled then
 		if widget.sensor_vspeed == nil or widget.sensor_altitude == nil or task.launchheight == nil then
-			lcd.drawText( f3kTextOffset + 4, text_h*8 -3, "Launch" )
-			lcd.drawText( f3kTextOffset + 4 + text_w*1, text_h*9 -3, "disabled" ) 
+			lcd.drawText( f3kTextOffset + 4, text_h*7 +7, "Launch" )
+			lcd.drawText( f3kTextOffset + 4 + text_w*1, text_h*8 +8, "disabled" ) 
 		else
 			local altitudeval
 			local heightlabel = ""
@@ -63,15 +63,13 @@ function vbase.drawDashboard( widget, task )
 				altitudeval = task.maxaltitude
 			end
 			
-			lcd.drawText( f3kTextOffset + 4, text_h*8 -3, heightlabel )
-			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*9 -3, altitudeval, widget.sensor_altitude:unit(), 0, RIGHT )
+			lcd.drawText( f3kTextOffset + 4, text_h*7 +7, heightlabel )
+			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*8 +8, altitudeval, widget.sensor_altitude:unit(), 0, RIGHT )
 		end
 
 		if (DebugLaunchHeight) then
 			lcd.drawNumber( text_w*8, widget_h - (text_h * 2), widget.sensor_vspeed:value(), widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
 			lcd.drawNumber( text_w*16, widget_h - (text_h * 2), task.maxvspeed, widget.sensor_vspeed:unit(), 1, RIGHT ) --DEBUG
-			lcd.drawNumber( text_w*8, widget_h - text_h, widget.sensor_altitude:value(), widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
-			lcd.drawNumber( text_w*16, widget_h - text_h, task.maxaltitude, widget.sensor_altitude:unit(), 1, RIGHT ) --DEBUG
 		end
 	end
 end

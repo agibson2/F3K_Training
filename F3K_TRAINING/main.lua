@@ -1,4 +1,4 @@
-F3KVersion = '6.1.0'
+F3KVersion = '6.1.1'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -99,6 +99,8 @@ F3KVersion = '6.1.0'
           Added getDirection() to timer as we need to know if it is an up or down timer for geting value of timer
           (-1 is down timer and 1 is up timer)
           Added missing prep/work time to task M screen
+    6.1.1 Fixed display of Max alt. only working if DebugLaunchHeight debugging was enabled
+          Fixed formating of right side display on all models.  Smallest display couldn't show launch height and some were cut off.
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
@@ -119,7 +121,7 @@ DebugLaunched=false
 DebugLanded=false
 DebugTimes=false
 DebugTimers=false
-DebugLaunchHeight=false  -- only implemented on x20(s) 784x294 screeen and shows max height attained over the entire launch to make sure implementation is close
+DebugLaunchHeight=false  -- only implemented on x20(s) 784x294 screeen and shows max vspeed attained
 
 -- Global used to know what directory to use for widget display lua code files
 FTRAINwidgetresolution = ""
