@@ -101,6 +101,8 @@ F3KVersion = '6.1.1'
           Added missing prep/work time to task M screen
     6.1.1 Fixed display of Max alt. only working if DebugLaunchHeight debugging was enabled
           Fixed formating of right side display on all models.  Smallest display couldn't show launch height and some were cut off.
+    6.2.0 Detect radio model and set menu and start switches as well as pre-launch to a usable default
+          Assign RSSI source to first detected "RSSI", "RSSI 2.4G", "RSSI 900M", in that order to set to a sane default
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
@@ -273,8 +275,33 @@ local function create()
 	if (DebugFunctionCalls) then print("FTRAIN: create()") end
 	currentTask = createMenu()
 	checkTimers()
+	local menuswitch
+	local startswitch
+	local board=system.getVersion().board
+	print ( "FTRAIN: board=" .. board )
+	if ( board == "TWXLITES" or board == "TWXLITE" ) then
+		menusw=4
+		startsw=5
+		prelsw=14
+	elseif ( board == "X10EXPRESS" or board == "X10SEXPRESS" or board == "X12S" ) then
+		menusw=10
+		startsw=11
+		prelsw=17
+	else  --( board == "X20S" or board == "X20" or board == "X18" or board == "X18S" ) then
+		menusw=10
+		startsw=11
+		prelsw=26
+	end
+	local rssisrc
+	rssisrc = system.getSource("RSSI")
+	if rssisrc == nil then
+		rssisrc = system.getSource("RSSI 2.4G")
+        if rssisrc == nil then
+            rssisrc = system.getSource("RSSI 900M")
+        end
+    end
 	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
-	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=10}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=11}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=26}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=system.getSource("RSSI"), sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude"), launch_height_enabled=true}
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=menusw}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=startsw}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=prelsw}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=rssisrc, sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude"), launch_height_enabled=true}
 end
 
 local function read(widget)

@@ -9,8 +9,7 @@ X18
 X18S
 Twin X-Lite
 Twin X-Lite S
-
-Experimental support on X10 Express also.
+X10 Express
 
 Feel free to ping me on RCGroups (StatiC).
 
@@ -28,13 +27,13 @@ This version does not work with OpenTX as there were too many changes for me to 
 - ... etc
 
 ## CUSTOMIZE SWITCH
-Once installed, you can add the F3K Training widget to your model config and then configure it in the Widget config for the F3K Training widget.
+Once installed, you can add the F3K Training widget to your model config and then configure it in the Widget config for the F3K Training widget.  Sane defaults are attempted to be set based on radio model.
 This is how I configured the widget on the X20S...
 - Menu Select Switch Position: SD-
 - Start Switch Position: SD down
 - PreLaunch Switch Position: SI down
 - Menu Scroll Analog: Throttle (no motor on DLGs as i use flaps for throttle)
 
-- Optionally set the RSSI and RxBattery sensor options to have them displayed on right hand side.  They default to sensors named RSSI and RxBatt which are defaults for FrSky sensors.
+- Optionally set the RSSI and RxBattery sensor options to have them displayed on right hand side.  They default to sensors named RSSI/RSSI 2.4G/RSSI 900M and RxBatt which are defaults for FrSky sensors.
 - Optionally set the VSpeed and Altitude sensor options to have launch height announced on the Free Flight task as well as list the launch height next to the history of flights on the Free Flight task.
 - Optionally disable announcing and displaying launch height for the Free Flight task.
