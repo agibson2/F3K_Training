@@ -1,4 +1,4 @@
-F3KVersion = '6.1.1'
+F3KVersion = '6.2.1'
 --[[
 	F3K Training - 	Mike, ON4MJ
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -103,6 +103,7 @@ F3KVersion = '6.1.1'
           Fixed formating of right side display on all models.  Smallest display couldn't show launch height and some were cut off.
     6.2.0 Detect radio model and set menu and start switches as well as pre-launch to a usable default
           Assign RSSI source to first detected "RSSI", "RSSI 2.4G", "RSSI 900M", in that order to set to a sane default
+    6.2.1 Bump version because of bad commit
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
