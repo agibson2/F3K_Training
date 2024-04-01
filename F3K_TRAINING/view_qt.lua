@@ -17,6 +17,7 @@ function task.display( widget )
 	widget_w = widget_w - vbase.f3kDashboardOffset  -- exclude right side for dashboard
 
 	vbase.drawCommon( widget, task )
+	vbase.drawPrepWorkTime( widget, task )
 	vbase.drawFlightCurrent( widget, task )
 	vbase.drawDelta( widget, task )
 
