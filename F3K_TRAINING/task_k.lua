@@ -9,7 +9,6 @@
 
 local taskK = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
 
-taskK.PREP_TIME = 20
 
 taskK.MAX_FLIGHT_TIME = 60 	-- This won't be a constant here, but for consistency (and memory !), we'll keep it uppercase'd
 taskK.TIMES_SORTED = false
@@ -18,6 +17,7 @@ taskK.current = 1
 taskK.done = false
 taskK.COUNT = 5
 taskK.TARGET_STRING_ARRAY = { "60", "90", "120","150","180" }
+taskK.INTRO_LENGTH = 9
 
 function taskK.earlyReset(widget) 
 	if taskK.earlyResetBase(widget) then

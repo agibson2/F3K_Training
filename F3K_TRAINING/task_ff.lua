@@ -43,8 +43,8 @@ end
 function taskFF.initTimers()
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.initTimers()") end
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskFF.timer1 = createTimer( "f3kZero", 0, AUDIO_MUTE, true )
-	taskFF.timer2 = createTimer( "f3kOne", 0, AUDIO_VOICE, false )	-- current flight time
+	taskFF.timer1 = createTimer( "f3kZero", 0, 0, true )
+	taskFF.timer2 = createTimer( "f3kOne", 0, 20, false )	-- current flight time
 end
 
 
@@ -78,6 +78,7 @@ end
 
 -- State functions
 local timersReset = false
+local announcedTaskIntro = false
 function taskFF.resetState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskFF.resetState()") end
 
@@ -89,9 +90,18 @@ function taskFF.resetState(widget)
 		timersReset = true
 	end
 
+	if announcedTaskIntro == false then
+		if widget.task_intro_mode == FTRAIN_INTRO_MODE_SELECT then
+			taskFF.playSound( taskFF.wav )
+		end
+		 announcedTaskIntro = true
+	end
+
 	-- Wait for the start of the task
 	if widget.startswitch:state() then
-		taskFF.playSound( taskFF.wav )
+		if widget.task_intro_mode == FTRAIN_INTRO_MODE_START then
+			taskFF.playSound( taskFF.wav )
+		end
 
 		taskFF.state = 2
 		taskFF.timer1.start()

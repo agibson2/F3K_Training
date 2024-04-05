@@ -1,6 +1,6 @@
-F3KVersion = '6.2.2'
+F3KVersion = '6.3.0'
 --[[
-	F3K Training - 	Mike, ON4MJ
+	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
 
 	telemN.lua
@@ -105,6 +105,15 @@ F3KVersion = '6.2.2'
           Assign RSSI source to first detected "RSSI", "RSSI 2.4G", "RSSI 900M", in that order to set to a sane default
     6.2.1 Bump version because of bad commit
     6.2.2 Fixed QT task not showing work/prep time
+    6.3.0 Moved the 7 min a and b tasks near the top so they are listed with the other a and b tasks.
+          Added separator for non-FAI tasks like QT and Free Flight
+          Added widget option to select when to play task introduction. When selecting the task, The start of the task, or disable it.
+          Task introduction audio play time is added to prep time to make sure it doesn't conflict with prep time count down.  In other words, If task introduction is set to 'start of task' then prep time starts when task intruduction is done.
+          Added widget option to set custom prep time.
+          Added widget option to start worktime on launch.  This disables prep time of course.
+          Changed it so that Done ! is shown where Worktime text is on the screen when task completes fixing where it was displayed in the wrong spot before.  Moved that code to viewbase also to simplify view_X.lua files.
+          The last Flight time is left on the screen when the task is Done.  I kind of like being able to see that last time in bigger text.  I can likely be persuaded to change it back though and remove the Flight time on the left when task is done.
+		  Removed redundant code for task completion 'Done !' text in drawImproveMargin function.
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
@@ -143,6 +152,15 @@ if(FTRAINDebug >= 3) then
 	--DebugMenu=true
 end
 
+FTRAIN_INTRO_MODE_DISABLED = 0
+FTRAIN_INTRO_MODE_START = 1
+FTRAIN_INTRO_MODE_SELECT = 2
+FTRAIN_INTRO_MODE_DEFAULT = FTRAIN_INTRO_MODE_START
+
+-- can be adjusted in widget config
+FTRAIN_PREP_TIME_DEFAULT = 15
+FTRAIN_PREP_TIME_MIN = 0
+FTRAIN_PREP_TIME_MAX = 60
 
 local lastTimeLanded = 0	-- 0=must pull first ; other=time of the last pull
 local prelaunchpressed = false
@@ -303,7 +321,7 @@ local function create()
         end
     end
 	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
-	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=menusw}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=startsw}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=prelsw}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=rssisrc, sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude"), launch_height_enabled=true}
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=menusw}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=startsw}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=prelsw}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=rssisrc, sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude"), launch_height_enabled=true,task_intro_mode=FTRAIN_INTRO_MODE_DEFAULT, prep_time=FTRAIN_PREP_TIME_DEFAULT, start_worktime_on_launch=true}
 end
 
 local function read(widget)
@@ -319,6 +337,18 @@ local function read(widget)
 		widget.sensor_vspeed = storage.read("source")
 		widget.sensor_altitude = storage.read("source")
 		widget.launch_height_enabled = storage.read("bool")
+		widget.task_intro_mode = storage.read("number")
+		if widget.task_intro_mode == nil or widget.task_intro_mode < 0 or widget.task_intro_mode > 2 then
+			widget.task_intro_mode = FTRAIN_INTRO_MODE_DEFAULT
+		end
+		widget.prep_time = storage.read("number")
+		if widget.prep_time == nil or widget.prep_time < FTRAIN_PREP_TIME_MIN or widget.prep_time > FTRAIN_PREP_TIME_MAX then
+			widget.prep_time = FTRAIN_PREP_TIME_DEFAULT
+		end
+		widget.start_worktime_on_launch = storage.read("bool")
+		if widget.start_worktime_on_launch == nil then
+			widget.start_worktime_on_launch = false
+		end
 	end
 end
 
@@ -335,6 +365,9 @@ local function write(widget)
 		storage.write("source", widget.sensor_vspeed)
 		storage.write("source", widget.sensor_altitude)
 		storage.write("bool", widget.launch_height_enabled)
+		storage.write("number", widget.task_intro_mode)
+		storage.write("number", widget.prep_time)
+		storage.write("bool", widget.start_worktime_on_launch)
 	end
 end
 
@@ -412,10 +445,17 @@ end
 
 
 local function configure(widget)
+	local introModes = { {"Start of task", FTRAIN_INTRO_MODE_START}, {"Select task", FTRAIN_INTRO_MODE_SELECT} , {"Disable", FTRAIN_INTRO_MODE_DISABLED} }
 	if (DebugFunctionCalls) then print("FTRAIN: configure()") end
 	-- source choices
 	local line = form.addLine("FF Launch height enabled")
 	form.addBooleanField(line, nil, function() return widget.launch_height_enabled end, function(value) widget.launch_height_enabled = value end)
+	line = form.addLine("Start worktime on launch")
+	form.addBooleanField(line, nil, function() return widget.start_worktime_on_launch end, function(value) widget.start_worktime_on_launch = value end)
+	line = form.addLine("Prep time")
+	form.addNumberField(line, nil, FTRAIN_PREP_TIME_MIN, FTRAIN_PREP_TIME_MAX, function() return widget.prep_time end, function(value) widget.prep_time = value end)
+	line = form.addLine("Play task introduction")
+	form.addChoiceField(line, nil, introModes, function() return widget.task_intro_mode end, function(value) widget.task_intro_mode = value end)
 	line = form.addLine("Background Color")
 	form.addColorField(line, nil, function() return widget.backgroundcolor end, function(value) widget.backgroundcolor = value end)
 	line = form.addLine("Menu Select Switch Position")
@@ -444,8 +484,10 @@ end
 createMenu = function()
 	if (DebugFunctionCalls) then print("FTRAIN: createMenu()") end
 	local TASKS = {
-		{ id='A', desc='Last flight' },
-		{ id='B', desc='Last two' },
+		{ id='A', desc='Last flight (10m)' },
+		{ id='A', desc='Last flight (7m)', win=7 },
+		{ id='B', desc='Last two (10m)' },
+		{ id='B', desc='Last two (7m)', win=7 },
 		{ id='C', desc='AULD' },
 		{ id='D', desc='Two flights' },
 		{ id='F', desc='3 out of 6' },
@@ -457,10 +499,9 @@ createMenu = function()
 		{ id='L', desc='One flight' },
 		{ id='M', desc='Huge ladder' },
 		{ id='N', desc='Best flight' },
-		{ id='A', desc='Last flight (7 min)', win=7 },
-		{ id='B', desc='Last two (7 min)', win=7 },
-		{ id='QT', desc='QT practice (15 x 40s)' },
-		{ id='FF', desc='Free flight (simple timer)' }
+		{ id='--', desc='[ Non-FAI tasks ]' },
+		{ id='QT', desc='QT practice (15 x 40s)',
+		{ id='FF', desc='Free flight (simple timer)' } }
 	}
 
 	local function dummy()
@@ -542,7 +583,7 @@ createMenu = function()
 		end
 
 		if (DebugMenu) then print("FTRAIN: menu.display() widget.menuswitch:state() = ", widget.menuswitch:state() ) end
-		if widget.menuswitch:state() then
+		if widget.menuswitch:state() and TASKS[ selection+1 ].id ~= '--' then
 			currentTask = dofile( F3K_SCRIPT_PATH .. 'view_' .. TASKS[ selection+1 ].id .. '.lua' )
 			local win = TASKS[ selection+1 ].win or 10
 			inittask( win * 60 )

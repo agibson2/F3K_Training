@@ -60,7 +60,7 @@ function taskBase.landedState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: lastTaskBase.landedState()") end
 	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
-		if f3klaunched(widget) then
+		if f3klaunched(widget) or ( widget.start_worktime_on_launch and taskBase.flightCount == 0 ) then
 			local remaining = taskBase.timer1.getVal()
 
 			if remaining < taskBase.MAX_FLIGHT_TIME then

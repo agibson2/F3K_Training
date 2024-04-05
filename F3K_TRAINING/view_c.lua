@@ -13,9 +13,7 @@ local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lu
 
 function task.display( widget )
 	vbase.drawCommonAULD( widget, task )
-	if task.state == 5 then
-		vbase.drawDone( widget, task )
-	end
+	vbase.drawDone( widget, task )
 
 	return task.background( widget )
 end

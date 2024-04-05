@@ -13,13 +13,8 @@ local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lu
 
 function task.display( widget )
 	vbase.drawCommonLastBest( widget, task )
-
-	if task.state == 4 and task.possibleImprovement > 0 and task.flightCount >= task.COUNT then
-		vbase.drawDone( widget, task )
-	else
-		vbase.drawImproveMargin( widget, task )
-		vbase.drawCurrent( widget, task )
-	end
+	vbase.drawImproveMargin( widget, task )
+	vbase.drawCurrent( widget, task )
 
 	return task.background( widget )
 end

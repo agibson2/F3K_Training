@@ -11,7 +11,7 @@
 
 local taskM = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
 -- override prep and window for this task
-taskM.PREP_TIME = 20
+
 taskM.WINDOW_TIME = 900
 
 taskM.MAX_FLIGHT_TIME = 180 	-- This won't be a constant here, but for consistency (and memory !), we'll keep it uppercase'd
@@ -21,6 +21,7 @@ taskM.current = 1
 taskM.done = false
 taskM.COUNT = 3
 taskM.TARGET_STRING_ARRAY = { "180", "300", "420" }
+taskM.INTRO_LENGTH = 8
 
 function taskM.earlyReset(widget) 
 	if taskM.earlyResetBase(widget) then

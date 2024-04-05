@@ -10,8 +10,8 @@
 	minuteBeep	bool
 --]]
 
-function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
-	if (DebugFunctionCalls) then print("FTRAIN: timer.f3kCreateTimer()=" .. timerId .. " startValue=" .. startValue .. " timerActionType=" .. tostring(timerActionType) .. " minutebeep=" .. tostring(minuteBeep)) end
+function f3kCreateTimer( timerId, startValue, countDownStart, minuteBeep )
+	if (DebugFunctionCalls) then print("FTRAIN: timer.f3kCreateTimer()=" .. timerId .. " startValue=" .. startValue .. " countDownStart=" .. tostring(countDownStart) .. " minutebeep=" .. tostring(minuteBeep)) end
 	-- timerId is the name of the timer
 	local id = timerId
 	local direction = -1
@@ -30,16 +30,16 @@ function f3kCreateTimer( timerId, startValue, timerActionType, minuteBeep )
 	
     local beepstart
 	if minuteBeep then
-        beepstart = 540  -- just use a value over the maximum flight time we might ever use
+        beepstart = 900  -- just use a value over the maximum flight time we might ever use
 	else
         beepstart = 0
 	end
     
     local audmode
-	if timerActionType ~= nil then
+	if countDownStart ~= nil then
         timer:audioActions({
                             {type=timerActionType, start=beepstart, step=60},
-                            {type=timerActionType, start=10, step=1}
+                            {type=timerActionType, start=countDownStart, step=1}
         })
 	else
         timer:audioActions({})

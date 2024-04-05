@@ -22,6 +22,7 @@ function taskBase.earlyReset(widget)
 end
 
 function taskBase.landedState(widget)
+	if (DebugFunctionCalls) then print("FTRAIN: besttaskbase.landedState()") end
 	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		local remaining = taskBase.timer1.getVal()
 		if remaining < taskBase.times.getVal( taskBase.COUNT ) then
@@ -32,7 +33,8 @@ function taskBase.landedState(widget)
 		end
 
 		-- Wait for the pilot to launch the plane
-		if f3klaunched(widget) then
+		-- Or start right away if there is no prep time set and this is the first launch
+		if f3klaunched(widget) or ( widget.start_worktime_on_launch and taskBase.flightCount == 0 ) then
 			if remaining < taskBase.MAX_FLIGHT_TIME then
 				taskBase.timer2.start( remaining )
 				taskBase.playSound( 'remaining' )
@@ -40,6 +42,8 @@ function taskBase.landedState(widget)
 			else
 				taskBase.timer2.start()
 			end
+
+			taskBase.flightCount = taskBase.flightCount + 1
 			taskBase.state = 3 -- flying
 		end
 	end

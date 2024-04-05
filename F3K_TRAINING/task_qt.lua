@@ -17,6 +17,8 @@ taskQT.deltas = {min = 0, max = 0, avg = 0}
 
 taskQT.previousTime = 0
 
+taskQT.INTRO_LENGTH = 5
+
 
 function taskQT.computeDeltas()
 	local max = 0
@@ -52,7 +54,7 @@ end
 function taskQT.initFlightTimer()
 	if (DebugFunctionCalls) then print("FTRAIN: taskQT.initFlightTimer()") end
 	-- createTimer parameters : timerId, startValue, countdownBeep, minuteBeep
-	taskQT.timer2 = createTimer( "f3kOne", taskQT.MAX_FLIGHT_TIME, AUDIO_MUTE, false )
+	taskQT.timer2 = createTimer( "f3kOne", taskQT.MAX_FLIGHT_TIME, 0, false )
 end
 
 
@@ -104,7 +106,7 @@ function taskQT.landedState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskQT.landedState()") end
 	if not taskQT.endOfWindow() and not taskQT.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
-		if f3klaunched(widget) then
+		if f3klaunched(widget) or ( widget.start_worktime_on_launch and taskQT.flightCount == 0 ) then
 			local remaining = taskQT.timer1.getVal()
 			if remaining < taskQT.MAX_FLIGHT_TIME then
 				taskQT.timer2.start( remaining )

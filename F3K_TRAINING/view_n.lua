@@ -13,12 +13,7 @@ local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lu
 
 function task.display( widget )
 	vbase.drawCommonLastBest( widget, task )
-
-	if task.state == 4 and task.times.getVal( task.COUNT ) >= task.timer1.getVal() then
-		vbase.drawDone( widget, task )
-	else
-		vbase.drawCurrent( widget, task )
-	end
+	vbase.drawCurrent( widget, task )
 
 	return task.background( widget )
 end

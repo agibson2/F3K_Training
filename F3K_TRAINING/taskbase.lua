@@ -1,6 +1,7 @@
 --[[
 	F3K Training - 	Mike, ON4MJ
 	                Adam, StatiC
+					Steven, OOSteven
 
 	taskbase.lua
 	Provides the core functionality which will be specialized in the tasks dedicated scripts
@@ -15,8 +16,10 @@
 --]]
 
 local taskBase = {
-	PREP_TIME = 16,
+	PREP_TIME = 20,
 	WINDOW_TIME = 600,
+	INTRO_LENGTH = 10,  --should be overrode in each task#.lua file
+	prep_count_down_start = 10,
 
 	MAX_FLIGHT_TIME,
 
@@ -65,12 +68,12 @@ end
 
 function taskBase.initFlightTimer()
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.initFlightTimer()") end
-	taskBase.timer2 = createTimer( "f3kOne", taskBase.MAX_FLIGHT_TIME, COUNTDOWN_VALUE, true )	-- current flight time (descending from MAX_FLIGHT_TIME)
+	taskBase.timer2 = createTimer( "f3kOne", taskBase.MAX_FLIGHT_TIME, 20, true )	-- current flight time (descending from MAX_FLIGHT_TIME)
 end
 
 function taskBase.initPrepTimer()
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.PrepTimer()") end
-	taskBase.timer1 = createTimer( "f3kZero", taskBase.PREP_TIME, COUNTDOWN_VALUE, false )
+	taskBase.timer1 = createTimer( "f3kZero", taskBase.PREP_TIME, taskBase.prep_count_down_start, false )
 end
 
 
@@ -138,30 +141,66 @@ end
 
 -- State functions (default implementation)
 local timersReset = false
+local announcedTaskIntro = false
+local announcedWaitForLaunch = false
 function taskBase.resetState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.resetState() taskBase.state=" .. taskBase.state .. " menuswitch=" .. tostring(widget.menuswitch:state()) ) end
 
 	-- reset timers so that printing Preptime shows correct prep time after a worktime ends and you want to start the same task again
 	if timersReset == false then
 		taskBase.times.reset()
-		taskBase.initPrepTimer()
+		-- Initialize the prep time countdown to start depending on if the intro is played at start or at task selection
+		if widget.task_intro_mode == FTRAIN_INTRO_MODE_START then
+			taskBase.prep_count_down_start = widget.prep_time
+			taskBase.PREP_TIME = widget.prep_time + taskBase.INTRO_LENGTH
+		else
+			taskBase.prep_count_down_start = widget.prep_time
+			taskBase.PREP_TIME = widget.prep_time
+		end
+
+		if widget.start_worktime_on_launch then
+			taskBase.timer1 = createTimer( "f3kZero", taskBase.WINDOW_TIME, nil, false )	-- working time
+		else
+			taskBase.initPrepTimer()
+		end
+
 		taskBase.initFlightTimer()
 		timersReset = true
 	end
 
+	if announcedTaskIntro == false then
+		if widget.task_intro_mode == FTRAIN_INTRO_MODE_SELECT then
+			taskBase.playSound( taskBase.wav )
+		end
+		
+		announcedTaskIntro = true
+	end
+
 	-- Wait for the start of the task
 	if widget.startswitch:state() then
-		taskBase.playSound( taskBase.wav )
+		if announcedWaitForLaunch == false then
+			if widget.start_worktime_on_launch then
+				taskBase.playSound( "wt4lnch" )
+			end
+			announcedWaitForLaunch = true
+		end
+		
+		if not widget.start_worktime_on_launch or f3klaunched(widget) then
+			if widget.task_intro_mode == FTRAIN_INTRO_MODE_START then
+				taskBase.playSound( taskBase.wav )
+			end
 
-		-- reset the scores
-		taskBase.times.reset()
+			-- reset the scores
+			--taskBase.times.reset()  -- already done above
 
-		taskBase.initPrepTimer()
-		taskBase.initFlightTimer()
-		taskBase.timer1.start()
+			--taskBase.initPrepTimer()  -- already done above
+			--taskBase.initFlightTimer()  -- already done above
+			taskBase.timer1.start()
+			announcedWaitForLaunch = true
+			taskBase.state = 2
+			timersReset = false
 
-		taskBase.state = 2
-		timersReset = false
+		end
 	elseif not widget.menuswitch:state() then
 		taskBase.running = false
 	end
@@ -171,8 +210,11 @@ end
 function taskBase.startedState(widget)
 	if (DebugFunctionCalls) then print("FTRAIN: taskbase.startedState()") end
 	if not taskBase.earlyReset(widget) then
-		if taskBase.timer1.getVal() <= 0 then
-			taskBase.timer1 = createTimer( "f3kZero", taskBase.WINDOW_TIME, nil, false )	-- working time
+		if widget.start_worktime_on_launch or taskBase.timer1.getVal() <= 0 then
+			if not widget.start_worktime_on_launch then  -- already setup timer1 in reset state for worktime instead of doing preptime there
+				taskBase.timer1 = createTimer( "f3kZero", taskBase.WINDOW_TIME, nil, false )	-- working time
+			end
+
 			taskBase.timer1.start()
 
 			taskBase.state = 4
@@ -198,10 +240,11 @@ end
 
 
 function taskBase.landedState(widget)
-	if (DebugFunctionCalls) then print("FTRAIN: taskbase.landedState()") end
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.landedState() endofWindow=" .. taskBase.endOfWindow() .. " earlyReset=" .. taskBase.earlyReset(widget) ) end
 	if not taskBase.endOfWindow() and not taskBase.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
-		if f3klaunched(widget) then
+		-- Or start right away if there is no prep time set and this is the first launch
+		if f3klaunched(widget) or ( widget.start_worktime_on_launch and taskBase.flightCount == 0 ) then
 			taskBase.timer2.start()
 			taskBase.flightCount = taskBase.flightCount + 1
 			taskBase.state = 3
@@ -228,7 +271,7 @@ end
 local lasttimestamp = 0
 -- Run the correct function based on the current state
 function taskBase.background(widget)
-	if (DebugFunctionCalls) then print("FTRAIN: taskbase.background()") end
+	if (DebugFunctionCalls) then print("FTRAIN: taskbase.background() state=" .. taskBase.state) end
 	local newtimestamp = os.clock()
 	if (newtimestamp - lasttimestamp > 1) then
 		lcd.invalidate()

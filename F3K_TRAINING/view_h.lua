@@ -15,13 +15,7 @@ function task.display( widget )
 	local widget_w, widget_h = lcd.getWindowSize()
 	widget_w = widget_w - vbase.f3kDashboardOffset  -- exclude right side for dashboard
 	vbase.drawCommon( widget, task )
-
-	if task.done then
-		vbase.drawDone( widget, task )
-	else
-		vbase.drawCurrent( widget, task )
-	end
-	
+	vbase.drawCurrent( widget, task )
 	vbase.drawTimes( widget, task )
 	vbase.drawTimesTotal( widget, task )
 	vbase.drawPrepWorkTime( widget, task )

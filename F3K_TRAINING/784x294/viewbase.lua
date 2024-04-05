@@ -78,10 +78,14 @@ function vbase.drawPrepWorkTime( widget, task )
 	lcd.font(FONT_XL)
 	local text_w, text_h = lcd.getTextSize("0")
 	local prefixString
-	if task.state == 1 or task.state == 2 then
+	if not widget.start_worktime_on_launch and (task.state == 1 or task.state == 2) then
 		prefixString = "Preptime"
 	else
-		prefixString = "Worktime"
+		if task.state == 5 then
+			prefixString = "DONE !"
+		else
+			prefixString = "Worktime"
+		end
 	end
 	lcd.drawText( text_w * 1, text_h, prefixString, 0 )
 	lcd.font(FONT_XXL)
@@ -246,19 +250,6 @@ function vbase.drawImproveMargin( widget, task )
 			f3kDrawTimer( vbase.verticaldividerx + (text_w*12), text_h * (task.COUNT+2), task.possibleImprovement, 0 )
 		end
 	end
-
-	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		lcd.drawText( text_w * 5, text_h * 3, 'Done !', 0 )  -- right below Window time
-	end
-end
-
--- Draw done on bottom right area D
-function vbase.drawDone( widget, task )
-
-	lcd.font(FONT_XL)
-	lcd.color(WHITE)
-	local text_w, text_h = lcd.getTextSize("0")
-	lcd.drawText( text_w * 5, text_h * 3, 'Done !', 0 )  -- right below Window time
 end
 
 return vbase

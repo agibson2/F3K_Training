@@ -11,6 +11,7 @@ local taskC = dofile( F3K_SCRIPT_PATH .. 'taskbase.lua' )
 
 taskC.MAX_FLIGHT_TIME = 180
 taskC.COUNT = 5
+taskC.INTRO_LENGTH = 4
 
 
 function taskC.endOfTask()
@@ -28,23 +29,6 @@ function taskC.earlyReset(widget)
 		return true
 	end
 	return false
-end
-
-
--- state functions
-function taskC.resetState(widget)
-	-- Wait for the start of the task
-	if widget.startswitch:state() then
-		taskC.playSound( taskC.wav )
-
-		-- reset the scores
-		taskC.times.reset()
-
-		taskC.initFlightTimer()
-		taskC.state = 2
-	elseif not widget.menuswitch:state() then
-		taskC.running = false
-	end
 end
 
 

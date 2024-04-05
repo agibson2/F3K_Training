@@ -14,15 +14,8 @@ local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lu
 function task.display(widget)
 	vbase.drawCommon( widget, task )
 	vbase.drawPrepWorkTime( widget, task )
-	
-	if not task.done then
-		vbase.drawTargetCurrent( widget, task )
-	else
-		vbase.drawDone( widget, task )
-	end
-
+	vbase.drawTargetCurrent( widget, task )
 	vbase.drawTargetList( widget, task )
-
 	vbase.drawTimes( widget, task )
 	vbase.drawTimesTotal( widget, task )
 

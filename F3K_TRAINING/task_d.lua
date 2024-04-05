@@ -17,6 +17,7 @@ taskD.TIMES_SORTED = false
 taskD.current = 1
 taskD.done = false
 taskD.COUNT = 2
+taskD.INTRO_LENGTH = 5
 
 
 function taskD.earlyReset(widget) 

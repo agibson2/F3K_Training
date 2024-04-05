@@ -16,13 +16,9 @@ function task.display( widget )
 	local widget_w, widget_h = lcd.getWindowSize()
 	widget_w = widget_w - vbase.f3kDashboardOffset  -- exclude right side for dashboard
 	vbase.drawCommonLastBest( widget, task )
-	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		vbase.drawDone( widget, task )
-	else
-		vbase.drawCurrent( widget, task )
-		vbase.drawImproveMargin( widget, task )
-	end
-	
+	vbase.drawCurrent( widget, task )
+	vbase.drawImproveMargin( widget, task )
+
 	return task.background( widget )
 end
 

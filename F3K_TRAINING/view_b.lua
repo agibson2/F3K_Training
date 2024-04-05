@@ -14,12 +14,8 @@ local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lu
 function task.display( widget )
 	if (DebugFunctionCalls) then print("FTRAIN: viewB.display()") end
 	vbase.drawCommonLastBest( widget, task )
-	
-	if task.shoutedStop or task.timer1.getVal() <= 0 then
-		vbase.drawDone( widget, task )
-	else
-		vbase.drawImproveMargin( widget, task )
-		vbase.drawCurrent( widget, task )
+	vbase.drawImproveMargin( widget, task )
+	vbase.drawCurrent( widget, task )
 	end
 
 	return task.background( widget )
