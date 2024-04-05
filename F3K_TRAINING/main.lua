@@ -1,4 +1,4 @@
-F3KVersion = '6.3.1'
+F3KVersion = '6.3.2'
 --[[
 	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -115,6 +115,7 @@ F3KVersion = '6.3.1'
           The last Flight time is left on the screen when the task is Done.  I kind of like being able to see that last time in bigger text.  I can likely be persuaded to change it back though and remove the Flight time on the left when task is done.
           Removed redundant code for task completion 'Done !' text in drawImproveMargin function.
     6.3.1 Bugfix.  FF task not shown.
+	6.3.2 Bugfix...Change new option to start worktime on launch to false to stay with old behavior by default
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
@@ -322,7 +323,7 @@ local function create()
         end
     end
 	--Default switche positions to menuswitch=SD- startswitch=SDdown prelaunchswitch=SIdown
-	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=menusw}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=startsw}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=prelsw}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=rssisrc, sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude"), launch_height_enabled=true,task_intro_mode=FTRAIN_INTRO_MODE_DEFAULT, prep_time=FTRAIN_PREP_TIME_DEFAULT, start_worktime_on_launch=true}
+	return {menuswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=menusw}), startswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=startsw}), prelaunchswitch=system.getSource({category=CATEGORY_SWITCH_POSITION, member=prelsw}), menuscrollencoder=system.getSource("Throttle"), backgroundcolor=lcd.RGB(0,90,0), sensor_rssi=rssisrc, sensor_battery=system.getSource("RxBatt"), sensor_vspeed=system.getSource("VSpeed"), sensor_altitude=system.getSource("Altitude"), launch_height_enabled=true,task_intro_mode=FTRAIN_INTRO_MODE_DEFAULT, prep_time=FTRAIN_PREP_TIME_DEFAULT, start_worktime_on_launch=false}
 end
 
 local function read(widget)
