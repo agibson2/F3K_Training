@@ -13,7 +13,7 @@ local vbase = dofile( F3K_SCRIPT_PATH .. FTRAINwidgetresolution .. '/viewbase.lu
 
 function task.display( widget )
 	vbase.drawCommonAULD( widget, task )
-	vbase.drawDone( widget, task )
+	vbase.drawPrepWorkTime( widget, task )
 
 	return task.background( widget )
 end
