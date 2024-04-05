@@ -1,4 +1,4 @@
-F3KVersion = '6.3.2'
+F3KVersion = '6.3.3'
 --[[
 	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -115,7 +115,8 @@ F3KVersion = '6.3.2'
           The last Flight time is left on the screen when the task is Done.  I kind of like being able to see that last time in bigger text.  I can likely be persuaded to change it back though and remove the Flight time on the left when task is done.
           Removed redundant code for task completion 'Done !' text in drawImproveMargin function.
     6.3.1 Bugfix.  FF task not shown.
-	6.3.2 Bugfix...Change new option to start worktime on launch to false to stay with old behavior by default
+    6.3.2 Bugfix...Change new option to start worktime on launch to false to stay with old behavior by default
+    6.3.3 Bugfix Task C and F didn't start flight time when 'start worktime on launch' widget option was set
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware

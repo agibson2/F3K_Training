@@ -63,7 +63,7 @@ function taskF.landedState(widget)
 		end
 
 		-- Wait for the pilot to launch the plane
-		if f3klaunched(widget) then
+		if f3klaunched(widget)  or ( widget.start_worktime_on_launch and taskBase.flightCount == 0 ) then
 			if remaining < taskF.MAX_FLIGHT_TIME then
 				taskF.timer2.start( remaining )
 				taskF.playSound( 'remaining' )
