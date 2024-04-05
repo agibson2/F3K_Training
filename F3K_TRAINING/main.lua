@@ -1,4 +1,4 @@
-F3KVersion = '6.3.3'
+F3KVersion = '6.3.4'
 --[[
 	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -117,6 +117,7 @@ F3KVersion = '6.3.3'
     6.3.1 Bugfix.  FF task not shown.
     6.3.2 Bugfix...Change new option to start worktime on launch to false to stay with old behavior by default
     6.3.3 Bugfix Task C and F didn't start flight time when 'start worktime on launch' widget option was set
+	6.3.4 Bugfix Last fix for Task C and F referenced the wrong function names
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware

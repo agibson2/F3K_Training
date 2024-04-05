@@ -68,7 +68,7 @@ end
 function taskC.landedState(widget)
 	if taskC.flightCount < taskC.COUNT and not taskC.earlyReset(widget) then
 		-- Wait for the pilot to launch the plane
-		if f3klaunched(widget) or ( widget.start_worktime_on_launch and taskBase.flightCount == 0 ) then
+		if f3klaunched(widget) or ( widget.start_worktime_on_launch and taskC.flightCount == 0 ) then
 			taskC.timer2.start()
 			taskC.flightCount = taskC.flightCount + 1
 			taskC.state = 3
