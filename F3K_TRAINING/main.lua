@@ -1,4 +1,4 @@
-F3KVersion = '6.3.0'
+F3KVersion = '6.3.1'
 --[[
 	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -113,7 +113,8 @@ F3KVersion = '6.3.0'
           Added widget option to start worktime on launch.  This disables prep time of course.
           Changed it so that Done ! is shown where Worktime text is on the screen when task completes fixing where it was displayed in the wrong spot before.  Moved that code to viewbase also to simplify view_X.lua files.
           The last Flight time is left on the screen when the task is Done.  I kind of like being able to see that last time in bigger text.  I can likely be persuaded to change it back though and remove the Flight time on the left when task is done.
-		  Removed redundant code for task completion 'Done !' text in drawImproveMargin function.
+          Removed redundant code for task completion 'Done !' text in drawImproveMargin function.
+    6.3.1 Bugfix.  FF task not shown.
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
@@ -500,8 +501,8 @@ createMenu = function()
 		{ id='M', desc='Huge ladder' },
 		{ id='N', desc='Best flight' },
 		{ id='--', desc='[ Non-FAI tasks ]' },
-		{ id='QT', desc='QT practice (15 x 40s)',
-		{ id='FF', desc='Free flight (simple timer)' } }
+		{ id='QT', desc='QT practice (15 x 40s)' },
+		{ id='FF', desc='Free flight (simple timer)' }
 	}
 
 	local function dummy()
