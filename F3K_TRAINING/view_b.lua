@@ -16,7 +16,6 @@ function task.display( widget )
 	vbase.drawCommonLastBest( widget, task )
 	vbase.drawImproveMargin( widget, task )
 	vbase.drawCurrent( widget, task )
-	end
 
 	return task.background( widget )
 end

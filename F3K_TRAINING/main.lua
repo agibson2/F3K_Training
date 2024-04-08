@@ -1,4 +1,4 @@
-F3KVersion = '6.3.5'
+F3KVersion = '6.3.6'
 --[[
 	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -119,6 +119,7 @@ F3KVersion = '6.3.5'
     6.3.3 Bugfix Task C and F didn't start flight time when 'start worktime on launch' widget option was set
 	6.3.4 Bugfix Last fix for Task C and F referenced the wrong function names
 	6.3.5 Bugfix Task C Didn't show worktime
+	6.3.6 Bugfix Task B didn't start.  Left an errant end statem in view_b.lua when moving the printing of the Done text.
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
