@@ -1,4 +1,4 @@
-F3KVersion = '6.3.6'
+F3KVersion = '6.3.7'
 --[[
 	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -117,9 +117,11 @@ F3KVersion = '6.3.6'
     6.3.1 Bugfix.  FF task not shown.
     6.3.2 Bugfix...Change new option to start worktime on launch to false to stay with old behavior by default
     6.3.3 Bugfix Task C and F didn't start flight time when 'start worktime on launch' widget option was set
-	6.3.4 Bugfix Last fix for Task C and F referenced the wrong function names
-	6.3.5 Bugfix Task C Didn't show worktime
-	6.3.6 Bugfix Task B didn't start.  Left an errant end statem in view_b.lua when moving the printing of the Done text.
+    6.3.4 Bugfix Last fix for Task C and F referenced the wrong function names
+    6.3.5 Bugfix Task C Didn't show worktime
+    6.3.6 Bugfix Task B didn't start.  Left an errant end statem in view_b.lua when moving the printing of the Done text.
+    6.3.7 Bugfix Task C fixed again
+          Added more time between task announcement and start of count down so that announcements don't conflict with start of prep count down
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware

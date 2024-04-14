@@ -17,7 +17,7 @@ taskK.current = 1
 taskK.done = false
 taskK.COUNT = 5
 taskK.TARGET_STRING_ARRAY = { "60", "90", "120","150","180" }
-taskK.INTRO_LENGTH = 9
+taskK.INTRO_LENGTH = 10
 
 function taskK.earlyReset(widget) 
 	if taskK.earlyResetBase(widget) then

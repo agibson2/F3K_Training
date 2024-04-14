@@ -21,7 +21,7 @@ taskM.current = 1
 taskM.done = false
 taskM.COUNT = 3
 taskM.TARGET_STRING_ARRAY = { "180", "300", "420" }
-taskM.INTRO_LENGTH = 8
+taskM.INTRO_LENGTH = 9
 
 function taskM.earlyReset(widget) 
 	if taskM.earlyResetBase(widget) then

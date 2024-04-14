@@ -16,7 +16,7 @@ taskH.target = 4
 taskH.done = false
 taskH.previousTime = 0
 taskH.COUNT = 4
-taskH.INTRO_LENGTH = 5
+taskH.INTRO_LENGTH = 6
 
 
 function taskH.getDoneList()

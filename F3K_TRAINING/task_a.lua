@@ -12,7 +12,7 @@ local taskA = dofile( F3K_SCRIPT_PATH .. 'lasttaskbase.lua' )
 
 taskA.MAX_FLIGHT_TIME = 300
 taskA.COUNT = 1
-taskA.INTRO_LENGTH = 4
+taskA.INTRO_LENGTH = 5
 
 
 -- public interface

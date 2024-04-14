@@ -16,7 +16,7 @@ taskL.TIMES_SORTED = false
 taskL.current = 1
 taskL.done = false
 taskL.COUNT = 1
-taskL.INTRO_LENGTH = 5
+taskL.INTRO_LENGTH = 6
 
 function taskL.earlyReset(widget) 
 	if taskL.earlyResetBase(widget) then
