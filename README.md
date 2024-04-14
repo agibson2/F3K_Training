@@ -2,6 +2,18 @@
 
 Requires at least Ethos version 1.5.0 RC4
 
+## Changes to original version besides obviously being for Ethos:
+- Task H (1,2,3,4) audio changes to keep you updated about the next task
+- Newer tasks added (Updated to 2024 tasks)
+- Auto detect radio model and set sane widget config defaults
+- Widget option for callout of task introduction. Disabled / Selection of task / Start of task
+- Widget option to start work time on launch instead of using a prep time
+- Show RSSI and RxBatt on right hand side of task views
+- Timer draw functions now work for negative countdowns like on QT when you go past the countdown time
+- Launch height announcement to Free Flight task as well as display list of launch height with previous flight times (can be disable in widget settings)
+- Code changes to simplify adding new screen sizes/radios. There is only a single viewbase.lua file per radio/screen size that needs to be created/changed for all view functions. That simplifies the view_X.lua files.
+- Other stuff I forgot 
+
 Works with the following radios...
 X20
 X20S
