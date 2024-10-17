@@ -24,7 +24,7 @@ local taskFF = {
 
 	state,	-- 1=reset; 2=start; 3=flying; 4=landed, 5=end
 
-	name,
+	name = '',
 	heightstate = LAUNCHHEIGHT_INIT,
 	launchheight = 0,
 	maxvspeed = 0,  --not used yet

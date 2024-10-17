@@ -39,11 +39,17 @@ function vbase.drawDashboard( widget, task )
 	lcd.color(WHITE)
 	if widget.sensor_battery ~= nil then
 		lcd.drawText( f3kTextOffset + 4, text_h*2, "Rx Battery" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*3, widget.sensor_battery:value(), UNIT_VOLT, 2, RIGHT)
+		local batteryvalue = widget.sensor_battery:value()
+		if batteryvalue ~= nil then
+			lcd.drawNumber( f3kTextOffset + 4 + text_w*6 -3, text_h*3, batteryvalue, UNIT_VOLT, 2, RIGHT)
+		end
 	end
 	if widget.sensor_rssi ~= nil then
 		lcd.drawText( f3kTextOffset + 4, text_h*4, "Rx RSSI" )
-		lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*5, widget.sensor_rssi:value(), UNIT_DB, 0, RIGHT )
+		local rssivalue = widget.sensor_rssi:value()
+		if rssivalue ~= nil then
+			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*5, rssivalue, UNIT_DB, 0, RIGHT )
+		end
 	end
 	
 	-- launch height for Free Flight task
@@ -64,7 +70,10 @@ function vbase.drawDashboard( widget, task )
 			end
 			
 			lcd.drawText( f3kTextOffset + 4, text_h*6, heightlabel )
-			lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*7, altitudeval, widget.sensor_altitude:unit(), 0, RIGHT )
+			local altitudevalue = widget.sensor_altitude:unit()
+			if altitudevalue ~= nil then
+				lcd.drawNumber( f3kTextOffset + 4 + text_w*6, text_h*7, altitudeval, altitudevalue, 0, RIGHT )
+			end
 		end
 	end
 end

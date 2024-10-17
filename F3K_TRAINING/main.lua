@@ -1,4 +1,4 @@
-F3KVersion = '6.3.7'
+F3KVersion = '6.3.9'
 --[[
 	F3K Training - 	Mike, ON4MJ, 00steven
 	 Ethos conversion by Adam Gibson (StatiC on RCGroups)
@@ -122,6 +122,8 @@ F3KVersion = '6.3.7'
     6.3.6 Bugfix Task B didn't start.  Left an errant end statem in view_b.lua when moving the printing of the Done text.
     6.3.7 Bugfix Task C fixed again
           Added more time between task announcement and start of count down so that announcements don't conflict with start of prep count down
+    6.3.8 Bugfix FF Task showed unimportant errors on 1.5.12 on startup... still more to do on this front
+	6.3.9 Add fixes for Ethos 1.5.17 pre-release which now returns nil for getting sensor data if Telemetry has not been received yet
 --]]
 
 -- 1.5.0 firmware changed Timer.activeCondition to Timer.startCondition so make older firmware
@@ -229,7 +231,7 @@ function f3kDrawTimer( x, y, value, flags )
 	end
 end
 
-F3K_SCRIPT_PATH = "/SCRIPTS/F3K_TRAINING/"
+F3K_SCRIPT_PATH = "/scripts/F3K_TRAINING/"
 SOUND_PATH = F3K_SCRIPT_PATH .. 'sounds/'
 
 createTimer = dofile( F3K_SCRIPT_PATH .. 'timer.lua' )
@@ -591,7 +593,7 @@ createMenu = function()
 		end
 
 		if (DebugMenu) then print("FTRAIN: menu.display() widget.menuswitch:state() = ", widget.menuswitch:state() ) end
-		if widget.menuswitch:state() and TASKS[ selection+1 ].id ~= '--' then
+		if widget.menuswitch:state() and TASKS[ selection+1 ].id ~= '--' and FTRAINwidgetresolution ~= "" then
 			currentTask = dofile( F3K_SCRIPT_PATH .. 'view_' .. TASKS[ selection+1 ].id .. '.lua' )
 			local win = TASKS[ selection+1 ].win or 10
 			inittask( win * 60 )
